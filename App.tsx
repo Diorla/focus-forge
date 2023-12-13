@@ -2,8 +2,7 @@ import { scheduleNotificationAsync } from "expo-notifications";
 import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, Text, View } from "react-native";
 import * as Notifications from "expo-notifications";
-import useNotification from "./hooks/useNotification";
-import { clearBadges } from "./services/clearBadges";
+import { clearBadges, useNotification } from "./services/notification";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
