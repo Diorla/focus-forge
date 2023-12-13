@@ -1,0 +1,28 @@
+interface User {
+  /**
+   * The user id
+   */
+  id: string;
+  /**
+   * the email for the user
+   */
+  email: string;
+  /**
+   * Used to identify the user and refer to the user as well
+   */
+  name: string;
+  /**
+   * Hours and minute
+   */
+  weeklyQuota: number;
+  /**
+   * The time for each day of the week
+   */
+  dailyQuota: [number, number, number, number, number, number, number];
+  /**
+   * Whether to use daily or weekly quota
+   */
+  useWeeklyQuota: boolean;
+}
+
+export default User;
