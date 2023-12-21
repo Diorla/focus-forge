@@ -24,7 +24,6 @@ export default function Button(props: ButtonProps) {
         buttonStyle={{ backgroundColor: colors.black }}
         containerStyle={{
           width: 200,
-          marginHorizontal: 50,
           marginVertical: 10,
         }}
         titleStyle={{ color: colors.white }}

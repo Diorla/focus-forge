@@ -1,3 +1,13 @@
+export type DailyQuota = [
+  number,
+  number,
+  number,
+  number,
+  number,
+  number,
+  number
+];
+
 interface User {
   /**
    * The user id
@@ -18,11 +28,19 @@ interface User {
   /**
    * The time for each day of the week
    */
-  dailyQuota: [number, number, number, number, number, number, number];
+  dailyQuota: DailyQuota;
   /**
    * Whether to use daily or weekly quota
    */
   useWeeklyQuota: boolean;
+  /**
+   * Indicates whether the user has provided name and quota
+   */
+  registered: boolean;
+  /**
+   * metadata
+   */
+  updatedAt: number;
 }
 
 export default User;

@@ -6,19 +6,14 @@ import Button from "./components/button";
 import { signOut } from "./services/auth";
 import Onboarding from "./Onboarding";
 import Form from "./container/Form";
+import Registration from "./container/Registration";
 
 export default function Root() {
   const { user } = useUser();
   const [showForm, setShowForm] = useState(false);
 
   if (user) {
-    if (!user?.name)
-      return (
-        <View style={{ marginTop: 30 }}>
-          <Text>Add name here</Text>
-          <Button title="Sign out" color="error" onPress={signOut} />
-        </View>
-      );
+    if (!user?.registered) return <Registration />;
     return (
       <View style={{ flex: 1 }}>
         <Text>Welcome user</Text>

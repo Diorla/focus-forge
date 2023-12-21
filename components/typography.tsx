@@ -8,7 +8,7 @@ export default function Typography({
   style,
 }: {
   type?: "bigHeader" | "header" | "big" | "body" | "small" | "caption";
-  children: string | string[];
+  children: (string | number)[] | string | number;
   color?: string;
   style?: TextStyle;
 }) {

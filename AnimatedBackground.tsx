@@ -25,15 +25,17 @@ const enlarge = {
 export default function AnimatedBackground({
   color = "primary",
   prevColor = "white",
+  externalKey,
 }: {
   color?: "primary" | "secondary" | "accent";
   prevColor?: string;
+  externalKey?: string;
 }) {
   const {
     theme: { colors },
   } = useTheme();
 
-  const id = Math.random();
+  const id = externalKey || Math.random();
   return (
     <>
       <View
