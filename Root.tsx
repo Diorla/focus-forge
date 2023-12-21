@@ -7,6 +7,7 @@ import { signOut } from "./services/auth";
 import Onboarding from "./Onboarding";
 import Form from "./container/Form";
 import Registration from "./container/Registration";
+import Nav from "./container/Nav";
 
 export default function Root() {
   const { user } = useUser();
@@ -14,11 +15,7 @@ export default function Root() {
 
   if (user) {
     if (!user?.registered) return <Registration />;
-    return (
-      <View style={{ flex: 1 }}>
-        <Text>Welcome user</Text>
-      </View>
-    );
+    return <Nav />;
   }
   if (showForm) return <Form />;
   return <Onboarding getStarted={() => setShowForm(true)} />;
