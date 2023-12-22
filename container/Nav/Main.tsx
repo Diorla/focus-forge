@@ -1,13 +1,17 @@
 import * as React from "react";
-import { View, Text } from "react-native";
+import { View, Text, Platform, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, useTheme } from "@rneui/themed";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import HomeScreen from "../../screens/Home";
+import { Octicons } from "@expo/vector-icons";
+import { Typography } from "../../components";
 
 type path = "home" | "list" | "history" | "stat";
 
+const isIOS = Platform.OS === "ios";
 const BottomNavigation = ({
   route = "home",
   onToggle,
@@ -18,13 +22,14 @@ const BottomNavigation = ({
   const {
     theme: { colors },
   } = useTheme();
+  const { navigate } = useNavigation();
   return (
     <View
       style={{
         position: "absolute",
         bottom: 0,
         width: "100%",
-        height: 56,
+        height: 70,
         flexDirection: "row",
         justifyContent: "space-evenly",
         alignItems: "center",
@@ -32,42 +37,86 @@ const BottomNavigation = ({
         borderTopWidth: 1,
         borderLeftWidth: 1,
         borderRightWidth: 1,
-        borderTopLeftRadius: 56,
-        borderTopRightRadius: 56,
-        marginBottom: 10,
+        backgroundColor: colors.white,
       }}
     >
-      <MaterialCommunityIcons
-        name={route === "home" ? "view-grid" : "view-grid-outline"}
-        size={28}
-        color={route === "home" ? colors.primary : colors.black}
+      <TouchableOpacity
+        style={{ alignItems: "center" }}
         onPress={() => onToggle("home")}
-      />
-      <MaterialCommunityIcons
-        name={route === "list" ? "clipboard-list" : "clipboard-list-outline"}
-        size={28}
-        color={route === "list" ? colors.primary : colors.black}
+      >
+        <MaterialCommunityIcons
+          name={route === "home" ? "view-grid" : "view-grid-outline"}
+          size={28}
+          color={route === "home" ? colors.primary : colors.black}
+        />
+        <Typography
+          color={route === "home" ? colors.primary : colors.black}
+          type="small"
+        >
+          Home
+        </Typography>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ alignItems: "center" }}
         onPress={() => onToggle("list")}
-      />
-      <MaterialCommunityIcons
-        name="history"
-        size={28}
-        color={route === "history" ? colors.primary : colors.black}
+      >
+        <MaterialCommunityIcons
+          name={route === "list" ? "clipboard-list" : "clipboard-list-outline"}
+          size={28}
+          color={route === "list" ? colors.primary : colors.black}
+        />
+        <Typography
+          color={route === "list" ? colors.primary : colors.black}
+          type="small"
+        >
+          Activities
+        </Typography>
+      </TouchableOpacity>
+      {isIOS ? (
+        <TouchableOpacity
+          style={{ alignItems: "center" }}
+          onPress={() => navigate("Add" as never)}
+        >
+          <Octicons name="diff-added" size={24} color="black" />
+          <Typography type="small">Create</Typography>
+        </TouchableOpacity>
+      ) : null}
+      <TouchableOpacity
+        style={{ alignItems: "center" }}
         onPress={() => onToggle("history")}
-      />
-      <Ionicons
-        name={route === "stat" ? "stats-chart" : "stats-chart-outline"}
-        size={28}
-        color={route === "stat" ? colors.primary : colors.black}
+      >
+        <MaterialCommunityIcons
+          name="history"
+          size={28}
+          color={route === "history" ? colors.primary : colors.black}
+        />
+        <Typography
+          color={route === "history" ? colors.primary : colors.black}
+          type="small"
+        >
+          History
+        </Typography>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ alignItems: "center" }}
         onPress={() => onToggle("stat")}
-      />
+      >
+        <Ionicons
+          name={route === "stat" ? "stats-chart" : "stats-chart-outline"}
+          size={28}
+          color={route === "stat" ? colors.primary : colors.black}
+        />
+        <Typography
+          color={route === "stat" ? colors.primary : colors.black}
+          type="small"
+        >
+          Stat
+        </Typography>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const HomeScreen = () => {
-  return <Text>Home Screen</Text>;
-};
 const ListScreen = () => {
   return <Text>List Screen</Text>;
 };
@@ -92,18 +141,18 @@ export function Main() {
     <View
       style={{
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
       }}
     >
       <Tab route={route} />
 
       <BottomNavigation route={route} onToggle={(route) => setRoute(route)} />
-      <FAB
-        icon={{ name: "add", color: "white" }}
-        style={{ bottom: 48, position: "absolute" }}
-        onPress={() => navigate("Add" as never)}
-      />
+      {isIOS ? null : (
+        <FAB
+          icon={{ name: "add", color: "white" }}
+          style={{ bottom: 72, position: "absolute", right: 36 }}
+          onPress={() => navigate("Add" as never)}
+        />
+      )}
     </View>
   );
 }
