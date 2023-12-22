@@ -1,47 +1,22 @@
-import { ScrollView, View, Image } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Typography } from "../../components";
-import useUser from "../../context/user/useUser";
 import TopSpace from "../../components/topSpace";
-import { format } from "../../services/date";
 import { Card, Divider, useTheme } from "@rneui/themed";
 import * as Progress from "react-native-progress";
 import TxtButton from "../../components/txtButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import ActivityCard from "./ActivityCard";
 import { TodayCard } from "./TodayCard";
+import TabHeader from "../../container/Nav/TabHeader";
 
 export default function HomeScreen() {
-  const {
-    user: { name },
-  } = useUser();
   const {
     theme: { colors },
   } = useTheme();
   return (
     <ScrollView>
       <TopSpace />
-      <View
-        style={{
-          padding: 8,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Image
-          source={require("../../assets/logo.png")}
-          style={{
-            height: 50,
-            width: 50,
-            borderRadius: 50,
-            marginHorizontal: 20,
-          }}
-        />
-        <View>
-          <Typography type="big">{name}</Typography>
-          <Typography>{format()}</Typography>
-        </View>
-      </View>
-
+      <TabHeader />
       <Card
         containerStyle={{
           backgroundColor: colors.primary,

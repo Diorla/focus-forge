@@ -3,6 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Main from "./Main";
 import AddScreen from "../../screens/Add";
+import ProfileScreen from "../../screens/Profile";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,7 @@ function Nav() {
           component={Main}
         />
         <Stack.Screen name="Add" component={AddScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
