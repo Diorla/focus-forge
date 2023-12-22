@@ -1,17 +1,10 @@
 import * as React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Main } from "./Main";
-import { View } from "react-native";
-import { Typography } from "../../components";
+import Main from "./Main";
+import AddScreen from "../../screens/Add";
 
 const Stack = createNativeStackNavigator();
-
-const AddScreen = () => (
-  <View>
-    <Typography>Hello add</Typography>
-  </View>
-);
 
 function Nav() {
   return (
