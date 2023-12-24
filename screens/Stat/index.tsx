@@ -5,6 +5,7 @@ import TopSpace from "../../components/topSpace";
 import ProgressView from "./ProgressView";
 import Header from "./Header";
 import useNavigate from "../../container/Nav/useNavigate";
+import CardButton from "./CardButton";
 
 export default function StatScreen() {
   const { theme } = useTheme();
@@ -36,57 +37,28 @@ export default function StatScreen() {
               justifyContent: "space-evenly",
             }}
           >
-            <TouchableOpacity
-              onPress={() => navigate("ViewStat", { type: "compare" })}
-            >
-              <Card
-                containerStyle={{
-                  width: "40%",
-                  minWidth: 140,
-                  maxWidth: 180,
-                }}
-              >
-                <Card.Title>Compare</Card.Title>
-                <Card.Divider />
-                <Card.Image source={require("../../assets/versus.png")} />
-              </Card>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => navigate("ViewStat", { type: "daily" })}
-            >
-              <Card
-                containerStyle={{ width: "40%", minWidth: 140, maxWidth: 180 }}
-              >
-                <Card.Title>Daily stats</Card.Title>
-                <Card.Divider />
-                <Card.Image source={require("../../assets/daily.png")} />
-              </Card>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigate("ViewStat", { type: "trends" })}
-            >
-              <Card
-                containerStyle={{ width: "40%", minWidth: 140, maxWidth: 180 }}
-              >
-                <Card.Title>Trends</Card.Title>
-                <Card.Divider />
-                <Card.Image source={require("../../assets/trend.png")} />
-              </Card>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => navigate("ViewStat", { type: "general" })}
-            >
-              <Card
-                containerStyle={{ width: "40%", minWidth: 140, maxWidth: 180 }}
-              >
-                <Card.Title>General stat</Card.Title>
-                <Card.Divider />
-                <Card.Image source={require("../../assets/graph.png")} />
-              </Card>
-            </TouchableOpacity>
+            <CardButton
+              title="Compare"
+              type="compare"
+              source={require("../../assets/versus.png")}
+            />
+            <CardButton
+              title="Daily stats"
+              type="daily"
+              source={require("../../assets/daily.png")}
+            />
+            <CardButton
+              title="Trends"
+              type="trends"
+              source={require("../../assets/trend.png")}
+            />
+            <CardButton
+              title="General stat"
+              type="general"
+              source={require("../../assets/graph.png")}
+            />
           </View>
-          <View style={{ height: 270 }} />
+          <View style={{ height: 240 }} />
         </View>
       </ScrollView>
     </View>
