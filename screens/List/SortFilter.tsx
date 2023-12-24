@@ -74,7 +74,7 @@ export default function SortFilter({
           />
         </View>
         <View style={{ alignItems: "center", marginTop: 24 }}>
-          <Button onPress={closeModal}>Close modal</Button>
+          <Button onPress={closeModal}>Close</Button>
         </View>
       </View>
     </Modal>

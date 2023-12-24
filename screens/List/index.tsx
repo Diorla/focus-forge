@@ -16,7 +16,7 @@ export default function ListScreen() {
   const [visible, setVisible] = useState(false);
 
   return (
-    <ScrollView>
+    <View>
       <TopSpace />
       <TabHeader />
       <View
@@ -31,19 +31,21 @@ export default function ListScreen() {
         </View>
         <Button onPress={() => setVisible(true)}>Filter</Button>
       </View>
-      <Divider style={{ marginVertical: 10 }} />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <ActivityCard />
-      <View style={{ height: 76 }} />
+      <ScrollView>
+        <Divider style={{ marginVertical: 10 }} />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <ActivityCard />
+        <View style={{ height: 240 }} />
+      </ScrollView>
       <SortFilter
         sort={sort}
         filter={filter}
@@ -52,6 +54,6 @@ export default function ListScreen() {
         closeModal={() => setVisible(false)}
         visible={visible}
       />
-    </ScrollView>
+    </View>
   );
 }
