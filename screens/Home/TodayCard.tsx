@@ -5,19 +5,20 @@ import * as Progress from "react-native-progress";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import PlayButton from "./PlayButton";
+import { useNavigation } from "@react-navigation/native";
+import NavProps from "../../container/Nav/NavProps";
 
 export function TodayCard({
-  onExpand,
   showList,
   togglePlay,
 }: {
-  onExpand: () => void;
   showList: () => void;
   togglePlay: () => void;
 }) {
   const {
     theme: { colors },
   } = useTheme();
+  const { navigate } = useNavigation<NavProps>();
   return (
     <Card containerStyle={{ borderRadius: 8 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -26,7 +27,9 @@ export function TodayCard({
           name="arrow-expand-all"
           size={24}
           color="black"
-          onPress={onExpand}
+          onPress={() =>
+            navigate("Activity", { title: "activity name" } as undefined)
+          }
         />
       </View>
       <View
