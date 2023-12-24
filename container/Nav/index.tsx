@@ -6,6 +6,7 @@ import AddScreen from "../../screens/Add";
 import ProfileScreen from "../../screens/Profile";
 import ActivityScreen from "../../screens/Activity";
 import RootStackParamList from "./RootStackParamList";
+import ViewStatScreen from "../../screens/ViewStat";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,6 +24,7 @@ function Nav() {
         <Stack.Screen name="Add" component={AddScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Activity" component={ActivityScreen} />
+        <Stack.Screen name="ViewStat" component={ViewStatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
