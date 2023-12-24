@@ -4,5 +4,11 @@ type RootStackParamList = {
   Profile: undefined;
   Activity: undefined;
   ViewStat: undefined;
+  Subscription: undefined;
+  HelpCentre: undefined;
+  PrivacyPolicy: undefined;
+  Settings: undefined;
+  RateUs: undefined;
+  EditProfile: undefined;
 };
 export default RootStackParamList;

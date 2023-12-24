@@ -7,9 +7,13 @@ import ProfileScreen from "../../screens/Profile";
 import ActivityScreen from "../../screens/Activity";
 import RootStackParamList from "./RootStackParamList";
 import ViewStatScreen from "../../screens/ViewStat";
+import { Typography } from "../../components";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+const PlaceholderScreen = () => {
+  return <Typography>Placeholder screen</Typography>;
+};
 function Nav() {
   return (
     <NavigationContainer>
@@ -25,6 +29,12 @@ function Nav() {
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Activity" component={ActivityScreen} />
         <Stack.Screen name="ViewStat" component={ViewStatScreen} />
+        <Stack.Screen name="Subscription" component={PlaceholderScreen} />
+        <Stack.Screen name="HelpCentre" component={PlaceholderScreen} />
+        <Stack.Screen name="PrivacyPolicy" component={PlaceholderScreen} />
+        <Stack.Screen name="Settings" component={PlaceholderScreen} />
+        <Stack.Screen name="RateUs" component={PlaceholderScreen} />
+        <Stack.Screen name="EditProfile" component={PlaceholderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
