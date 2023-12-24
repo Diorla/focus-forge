@@ -4,8 +4,7 @@ import { Typography } from "../../components";
 import { Card } from "@rneui/themed";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getContrastColor, random } from "../../services/color";
-import { useNavigation } from "@react-navigation/native";
-import NavProps from "../../container/Nav/NavProps";
+import useNavigate from "../../container/Nav/useNavigate";
 
 const list = ["Completed", "Ongoing", "Archived"];
 
@@ -13,11 +12,9 @@ export default function ActivityCard() {
   const bgColor = random();
   const color = getContrastColor(bgColor);
   const i = Math.floor(Math.random() * 3);
-  const { navigate } = useNavigation<NavProps>();
+  const navigate = useNavigate<{ color: string; bgColor: string }>();
   return (
-    <TouchableOpacity
-      onPress={() => navigate("Activity", { color, bgColor } as undefined)}
-    >
+    <TouchableOpacity onPress={() => navigate("Activity", { color, bgColor })}>
       <Card containerStyle={{ backgroundColor: bgColor, borderRadius: 4 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography color={color}>Activity</Typography>

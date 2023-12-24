@@ -2,15 +2,14 @@ import { View, Image, TouchableOpacity } from "react-native";
 import { Typography } from "../../components";
 import useUser from "../../context/user/useUser";
 import { format } from "../../services/date";
-import { useNavigation } from "@react-navigation/native";
-import NavProps from "./NavProps";
+import useNavigate from "./useNavigate";
 
 export default function TabHeader() {
   const {
     user: { name },
   } = useUser();
 
-  const { navigate } = useNavigation<NavProps>();
+  const navigate = useNavigate();
   return (
     <TouchableOpacity
       onPress={() => navigate("Profile")}

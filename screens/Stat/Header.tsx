@@ -1,14 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@rneui/themed";
 import * as React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
-import NavProps from "../../container/Nav/NavProps";
 import { Typography } from "../../components";
 import { format } from "../../services/date";
 import useUser from "../../context/user/useUser";
+import useNavigate from "../../container/Nav/useNavigate";
 
 export default function Header() {
-  const { navigate } = useNavigation<NavProps>();
+  const navigate = useNavigate();
   const {
     user: { name },
   } = useUser();

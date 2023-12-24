@@ -2,15 +2,15 @@ import * as React from "react";
 import { View, Platform } from "react-native";
 import { FAB } from "@rneui/themed";
 import { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
 import BottomNavigation from "./BottomNavigation";
 import Tab from "./Tab";
 import path from "./path";
-import NavProps from "./NavProps";
+import useNavigate from "./useNavigate";
 
 export default function Main() {
   const [route, setRoute] = useState<path>("home");
-  const { navigate } = useNavigation<NavProps>();
+
+  const navigate = useNavigate();
   const isIOS = Platform.OS === "ios";
   return (
     <View

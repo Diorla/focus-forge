@@ -4,7 +4,7 @@ import { ScrollView, TouchableOpacity, View } from "react-native";
 import TopSpace from "../../components/topSpace";
 import ProgressView from "./ProgressView";
 import Header from "./Header";
-import useNavigate from "../../hooks/useNavigate";
+import useNavigate from "../../container/Nav/useNavigate";
 
 export default function StatScreen() {
   const { theme } = useTheme();

@@ -4,14 +4,13 @@ import { format } from "../../services/date";
 import { Card, Divider, useTheme } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import NavProps from "../../container/Nav/NavProps";
+import useNavigate from "../../container/Nav/useNavigate";
 
 export default function ActivityCard({ showList }: { showList: () => void }) {
   const {
     theme: { colors },
   } = useTheme();
-  const { navigate } = useNavigation<NavProps>();
+  const navigate = useNavigate<{ title: string }>();
   return (
     <Card containerStyle={{ width: 300, borderRadius: 8 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -20,9 +19,7 @@ export default function ActivityCard({ showList }: { showList: () => void }) {
           name="arrow-expand-all"
           size={24}
           color="black"
-          onPress={() =>
-            navigate("Activity", { title: "activity name" } as undefined)
-          }
+          onPress={() => navigate("Activity", { title: "activity name" })}
         />
       </View>
       <View

@@ -5,8 +5,7 @@ import * as Progress from "react-native-progress";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import PlayButton from "./PlayButton";
-import { useNavigation } from "@react-navigation/native";
-import NavProps from "../../container/Nav/NavProps";
+import useNavigate from "../../container/Nav/useNavigate";
 
 export function TodayCard({
   showList,
@@ -18,7 +17,7 @@ export function TodayCard({
   const {
     theme: { colors },
   } = useTheme();
-  const { navigate } = useNavigation<NavProps>();
+  const navigate = useNavigate<{ title: string }>();
   return (
     <Card containerStyle={{ borderRadius: 8 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -27,9 +26,7 @@ export function TodayCard({
           name="arrow-expand-all"
           size={24}
           color="black"
-          onPress={() =>
-            navigate("Activity", { title: "activity name" } as undefined)
-          }
+          onPress={() => navigate("Activity", { title: "activity name" })}
         />
       </View>
       <View

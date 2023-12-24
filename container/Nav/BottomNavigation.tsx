@@ -3,11 +3,11 @@ import { View, TouchableOpacity, Platform } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@rneui/themed";
-import { useNavigation } from "@react-navigation/native";
 import { Octicons } from "@expo/vector-icons";
 import { Typography } from "../../components";
 import path from "./path";
 import NavProps from "./NavProps";
+import useNavigate from "./useNavigate";
 
 export default function BottomNavigation({
   route = "home",
@@ -19,7 +19,8 @@ export default function BottomNavigation({
   const {
     theme: { colors },
   } = useTheme();
-  const { navigate } = useNavigation<NavProps>();
+
+  const navigate = useNavigate();
 
   const isIOS = Platform.OS === "ios";
   return (
