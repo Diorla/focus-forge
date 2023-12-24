@@ -13,6 +13,7 @@ export default function HomeScreen() {
   const {
     theme: { colors },
   } = useTheme();
+  const progress = 0.75;
   return (
     <ScrollView>
       <TopSpace />
@@ -26,10 +27,13 @@ export default function HomeScreen() {
         <View style={{ flexDirection: "row" }}>
           <Progress.Circle
             size={100}
-            progress={0.75}
+            progress={progress}
             color={colors.grey5}
             unfilledColor={colors.grey0}
             borderColor={colors.grey0}
+            showsText
+            thickness={9}
+            formatText={() => progress * 100 + "%"}
           />
           <View style={{ flex: 1, marginLeft: 16 }}>
             <Typography type="header" color={colors.white}>
