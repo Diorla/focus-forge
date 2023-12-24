@@ -7,6 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Octicons } from "@expo/vector-icons";
 import { Typography } from "../../components";
 import path from "./path";
+import NavProps from "./NavProps";
 
 export default function BottomNavigation({
   route = "home",
@@ -18,7 +19,7 @@ export default function BottomNavigation({
   const {
     theme: { colors },
   } = useTheme();
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<NavProps>();
 
   const isIOS = Platform.OS === "ios";
   return (
@@ -73,7 +74,7 @@ export default function BottomNavigation({
       {isIOS ? (
         <TouchableOpacity
           style={{ alignItems: "center" }}
-          onPress={() => navigate("Add" as never)}
+          onPress={() => navigate("Add")}
         >
           <Octicons name="diff-added" size={24} color="black" />
           <Typography type="small">Create</Typography>

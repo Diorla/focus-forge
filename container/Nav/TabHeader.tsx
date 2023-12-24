@@ -3,16 +3,17 @@ import { Typography } from "../../components";
 import useUser from "../../context/user/useUser";
 import { format } from "../../services/date";
 import { useNavigation } from "@react-navigation/native";
+import NavProps from "./NavProps";
 
 export default function TabHeader() {
   const {
     user: { name },
   } = useUser();
 
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<NavProps>();
   return (
     <TouchableOpacity
-      onPress={() => navigate("Profile" as never)}
+      onPress={() => navigate("Profile")}
       style={{
         padding: 8,
         flexDirection: "row",

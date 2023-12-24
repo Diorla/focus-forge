@@ -6,10 +6,11 @@ import { useNavigation } from "@react-navigation/native";
 import BottomNavigation from "./BottomNavigation";
 import Tab from "./Tab";
 import path from "./path";
+import NavProps from "./NavProps";
 
 export default function Main() {
   const [route, setRoute] = useState<path>("home");
-  const { navigate } = useNavigation();
+  const { navigate } = useNavigation<NavProps>();
   const isIOS = Platform.OS === "ios";
   return (
     <View
@@ -24,7 +25,7 @@ export default function Main() {
         <FAB
           icon={{ name: "add", color: "white" }}
           style={{ bottom: 72, position: "absolute", right: 36 }}
-          onPress={() => navigate("Add" as never)}
+          onPress={() => navigate("Add")}
         />
       )}
     </View>
