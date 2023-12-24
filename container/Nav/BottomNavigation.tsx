@@ -44,7 +44,7 @@ export default function BottomNavigation({
       >
         <MaterialCommunityIcons
           name={route === "home" ? "view-grid" : "view-grid-outline"}
-          size={28}
+          size={24}
           color={route === "home" ? colors.primary : colors.black}
         />
         <Typography
@@ -60,7 +60,7 @@ export default function BottomNavigation({
       >
         <MaterialCommunityIcons
           name={route === "list" ? "clipboard-list" : "clipboard-list-outline"}
-          size={28}
+          size={24}
           color={route === "list" ? colors.primary : colors.black}
         />
         <Typography
@@ -85,7 +85,7 @@ export default function BottomNavigation({
       >
         <MaterialCommunityIcons
           name="history"
-          size={28}
+          size={24}
           color={route === "history" ? colors.primary : colors.black}
         />
         <Typography
@@ -101,7 +101,7 @@ export default function BottomNavigation({
       >
         <Ionicons
           name={route === "stat" ? "stats-chart" : "stats-chart-outline"}
-          size={28}
+          size={24}
           color={route === "stat" ? colors.primary : colors.black}
         />
         <Typography
