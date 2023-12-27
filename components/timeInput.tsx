@@ -15,10 +15,14 @@ export default function TimeInput({
   value,
   color,
   onChange,
+  errorMessage,
+  onFocus,
 }: {
   value: number;
   color?: string;
   onChange: (value: number) => void;
+  errorMessage?: string;
+  onFocus?: () => void;
 }) {
   const [hh, mm] = minutesToHrMm(value);
 
@@ -35,6 +39,8 @@ export default function TimeInput({
             onChange(hrMmToSeconds(value, mm));
           }}
           keyboardType="numbers-and-punctuation"
+          errorMessage={errorMessage}
+          onFocus={onFocus}
         />
       </View>
       <View style={{ flex: 1 }}>
@@ -48,6 +54,7 @@ export default function TimeInput({
             onChange(hrMmToSeconds(hh, value));
           }}
           keyboardType="numbers-and-punctuation"
+          onFocus={onFocus}
         />
       </View>
     </View>

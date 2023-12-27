@@ -10,7 +10,7 @@ import app from "../../constants/firebaseConfig";
 
 const db = getFirestore(app);
 
-export type Collection = "users" | "tasks" | "errors";
+export type Collection = "users" | "activities" | "errors";
 
 export const collection = (collectionName: Collection) => {
   return col(db, collectionName);

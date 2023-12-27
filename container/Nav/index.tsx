@@ -25,7 +25,13 @@ function Nav() {
           }}
           component={Main}
         />
-        <Stack.Screen name="Add" component={AddScreen} />
+        <Stack.Screen
+          name="Add"
+          component={AddScreen}
+          options={{
+            headerTitle: "Add Activity",
+          }}
+        />
         <Stack.Screen name="Profile" component={ProfileScreen} />
         <Stack.Screen name="Activity" component={ActivityScreen} />
         <Stack.Screen name="ViewStat" component={ViewStatScreen} />
