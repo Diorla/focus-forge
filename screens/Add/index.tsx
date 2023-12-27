@@ -11,6 +11,7 @@ import SelectCategory from "../../components/selectCategory";
 import Activity, { Priority } from "../../models/Activity";
 import { createActivity } from "../../services/database";
 import uuid from "react-native-uuid";
+import useUser from "../../context/user/useUser";
 
 const baseForm: Activity = {
   name: "",
@@ -25,10 +26,14 @@ const baseForm: Activity = {
   archived: false,
   createdAt: Date.now(),
   updatedAt: Date.now(),
+  userId: "",
 };
 export default function AddScreen() {
   const { theme } = useTheme();
-  const [form, setForm] = useState<Activity>(baseForm);
+  const {
+    user: { id },
+  } = useUser();
+  const [form, setForm] = useState<Activity>({ ...baseForm, userId: id });
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -59,9 +64,8 @@ export default function AddScreen() {
     }
     createActivity({
       ...form,
-      id: String(uuid.v4()),
     }).then(() => {
-      setForm(baseForm);
+      setForm({ ...baseForm, userId: id });
     });
   };
 

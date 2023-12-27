@@ -13,4 +13,5 @@ export default interface Activity {
   archived: boolean;
   updatedAt: number;
   createdAt: number;
+  userId: string;
 }
