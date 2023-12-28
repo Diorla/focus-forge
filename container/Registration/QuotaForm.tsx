@@ -6,7 +6,7 @@ import { useTheme } from "@rneui/themed";
 import Button from "../../components/button";
 import { DailyQuota } from "../../models/User";
 import { TimeInput } from "../../components";
-import { minutesToHrMm } from "../../components/timeInput";
+import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { updateUser } from "../../services/database";
 import useUser from "../../context/user/useUser";
 
@@ -29,7 +29,7 @@ export function QuotaForm({ name }: { name: string }) {
     useWeeklyQuota: false,
   });
 
-  const [hh, mm] = minutesToHrMm(
+  const [hh, mm] = secondsToHrMm(
     quota.dailyQuota.reduce((prev, next) => prev + next, 0)
   );
 

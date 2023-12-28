@@ -14,4 +14,12 @@ export default interface Activity {
   updatedAt: number;
   createdAt: number;
   userId: string;
+  done: {
+    [key: string]: number;
+  };
+  timer?: {
+    startTime: number;
+  };
+  tasks: { title: string; checked: number }[];
+  lastDone: number;
 }

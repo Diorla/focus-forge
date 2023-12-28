@@ -1,19 +1,30 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
+import useActivity from "../../context/activity/useActivity";
 
 export default function RecentView() {
-  return (
-    <>
-      <SectionHeader title="Recent" />
-      <ScrollView horizontal>
-        <ActivityCard showList={() => console.log("show check list")} />
-        <ActivityCard showList={() => console.log("show check list")} />
-        <ActivityCard showList={() => console.log("show check list")} />
-        <ActivityCard showList={() => console.log("show check list")} />
-        <ActivityCard showList={() => console.log("show check list")} />
-        <ActivityCard showList={() => console.log("show check list")} />
-      </ScrollView>
-    </>
-  );
+  const { schedule = [] } = useActivity();
+
+  const completed = schedule.filter((item) => {
+    const timeLeft = item.todayRemaining + item.thisWeekRemaining;
+    return timeLeft <= 0;
+  });
+  if (completed.length)
+    return (
+      <>
+        <SectionHeader title="Recent" />
+        <ScrollView horizontal>
+          {completed.map((item) => (
+            <ActivityCard
+              key={item.id}
+              showList={() => console.log("show check list")}
+              schedule={item}
+              type="completed"
+            />
+          ))}
+        </ScrollView>
+      </>
+    );
+  return null;
 }

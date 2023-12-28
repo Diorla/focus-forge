@@ -1,11 +1,12 @@
 import { useContext } from "react";
 import activityContext from "./activityContext";
 import Activity from "../../models/Activity";
+import { Schedule } from "./getSchedule";
 
 export default function useActivity() {
   interface TaskContext {
     /**
-     * All the activitys of the user
+     * All the activities of the user
      */
     activities: Activity[];
     /**
@@ -13,9 +14,23 @@ export default function useActivity() {
      */
     error: Error;
     /**
-     * Still retrieving the activitys
+     * Still retrieving the activities
      */
     loading: boolean;
+
+    time: {
+      doneThisWeek: number;
+      doneToday: number;
+      thisWeekRemaining: number;
+      todayRemaining: number;
+      weeklyQuota: number;
+      daysRemaining: number;
+      todayQuota: number;
+      leftover: number;
+      todayTime: number;
+      upcomingTime: number;
+    };
+    schedule: Schedule[];
   }
 
   return useContext<TaskContext>(activityContext);

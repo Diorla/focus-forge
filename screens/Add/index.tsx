@@ -10,7 +10,6 @@ import { random } from "../../services/color";
 import SelectCategory from "../../components/selectCategory";
 import Activity, { Priority } from "../../models/Activity";
 import { createActivity } from "../../services/database";
-import uuid from "react-native-uuid";
 import useUser from "../../context/user/useUser";
 
 const baseForm: Activity = {
@@ -27,6 +26,9 @@ const baseForm: Activity = {
   createdAt: Date.now(),
   updatedAt: Date.now(),
   userId: "",
+  done: {},
+  tasks: [],
+  lastDone: 0,
 };
 export default function AddScreen() {
   const { theme } = useTheme();

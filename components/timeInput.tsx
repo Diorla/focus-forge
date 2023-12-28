@@ -1,16 +1,9 @@
 import { Input } from "@rneui/themed";
 import { View } from "react-native";
 import Typography from "./typography";
+import secondsToHrMm from "../services/date/minutesToHrMm";
+import hrMmToSeconds from "../services/date/hrMmToSeconds";
 
-export const minutesToHrMm = (minutes: number) => {
-  const hour = minutes / 60;
-  const minute = minutes % 60;
-  return [Math.floor(hour), minute];
-};
-
-export const hrMmToSeconds = (hour: number, minute: number) => {
-  return hour * 60 + minute;
-};
 export default function TimeInput({
   value,
   color,
@@ -24,7 +17,7 @@ export default function TimeInput({
   errorMessage?: string;
   onFocus?: () => void;
 }) {
-  const [hh, mm] = minutesToHrMm(value);
+  const [hh, mm, ss] = secondsToHrMm(value);
 
   return (
     <View style={{ flexDirection: "row" }}>
@@ -36,7 +29,7 @@ export default function TimeInput({
           onChangeText={(text) => {
             const value = Number(text);
             if (Number.isNaN(value)) return 0;
-            onChange(hrMmToSeconds(value, mm));
+            onChange(hrMmToSeconds(value, mm, ss));
           }}
           keyboardType="numbers-and-punctuation"
           errorMessage={errorMessage}
@@ -51,7 +44,7 @@ export default function TimeInput({
           onChangeText={(text) => {
             const value = Number(text);
             if (Number.isNaN(value)) return 0;
-            onChange(hrMmToSeconds(hh, value));
+            onChange(hrMmToSeconds(hh, value, ss));
           }}
           keyboardType="numbers-and-punctuation"
           onFocus={onFocus}
