@@ -92,8 +92,9 @@ export default function formatTime(
     }
 
     const accountedTime = doneThisWeek + doneToday + todayRemaining;
-    const unaccountedTime = item.weeklyTarget - accountedTime;
+    let unaccountedTime = item.weeklyTarget - accountedTime;
 
+    if (unaccountedTime < 0) unaccountedTime = 0;
     futureTime += unaccountedTime;
 
     if (userUpcomingTime > futureTime) {
