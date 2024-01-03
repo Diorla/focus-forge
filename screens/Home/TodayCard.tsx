@@ -22,7 +22,7 @@ export function TodayCard({
   const {
     theme: { colors },
   } = useTheme();
-  const navigate = useNavigate<{ title: string }>();
+  const navigate = useNavigate<{ id: string }>();
   const {
     timer,
     todayTime,
@@ -45,7 +45,7 @@ export function TodayCard({
           name="arrow-expand-all"
           size={24}
           color="black"
-          onPress={() => navigate("Activity", { title: "activity name" })}
+          onPress={() => navigate("Activity", { id: schedule.id })}
         />
       </View>
       <View

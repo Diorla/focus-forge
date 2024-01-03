@@ -10,5 +10,6 @@ type RootStackParamList = {
   Settings: undefined;
   RateUs: undefined;
   EditProfile: undefined;
+  EditActivity: undefined;
 };
 export default RootStackParamList;

@@ -31,18 +31,18 @@ const getProgress = ({
   return "Completed";
 };
 export default function ActivityCard({ activity }: { activity: Schedule }) {
-  const { doneThisWeek, doneToday, weeklyTarget, overflowTime, archived } =
+  const { doneThisWeek, doneToday, weeklyTarget, overflowTime, archived, id } =
     activity;
   const bgColor = activity.color;
   const color = getContrastColor(bgColor);
 
-  const navigate = useNavigate<{ color: string; bgColor: string }>();
+  const navigate = useNavigate<{ id: string }>();
   const [hr, mm] = secondsToHrMm(weeklyTarget);
 
   const progress = ((doneToday + doneThisWeek) / weeklyTarget) * 100;
 
   return (
-    <TouchableOpacity onPress={() => navigate("Activity", { color, bgColor })}>
+    <TouchableOpacity onPress={() => navigate("Activity", { id })}>
       <Card containerStyle={{ backgroundColor: bgColor, borderRadius: 4 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography color={color}>{activity.name}</Typography>
