@@ -12,16 +12,3 @@ export default async function signOut() {
     })
     .catch((err) => console.log(err));
 }
-
-/*
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import logError from "../services/logError";
-
-export default async function clearCredential() {
-  try {
-    await AsyncStorage.removeItem("auth");
-  } catch (err) {
-    logError("", "removing local data", err);
-  }
-}
-*/

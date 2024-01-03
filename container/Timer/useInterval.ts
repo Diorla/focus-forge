@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
 
-// export type UseDebounceReturn = [() => boolean | null, () => void];
-
 /**
  * This code was adapted for react-native from
  * https://overreacted.io/making-setinterval-declarative-with-react-hooks/
