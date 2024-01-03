@@ -7,6 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
 import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { Schedule } from "../../context/activity/getSchedule";
+import dayjs from "dayjs";
 
 const generateTime = (
   type: "completed" | "overflow" | "upcoming" | "previous",
@@ -20,12 +21,18 @@ const generateTime = (
 
 const Info = ({
   type,
-  lastDone,
+  done,
 }: {
   type: "completed" | "overflow" | "upcoming" | "previous";
-  lastDone: number;
+  done: { [key: string]: number };
 }) => {
-  if (type === "completed") return <Typography>{format(lastDone)}</Typography>;
+  if (type === "completed") {
+    const doneList = Object.keys(done);
+    const lastDone = doneList.sort(
+      (a, b) => dayjs(b).valueOf() - dayjs(a).valueOf()
+    )[0];
+    return <Typography>{format(lastDone)}</Typography>;
+  }
   if (type === "overflow") return <Typography>Over the limit</Typography>;
   if (type === "upcoming") return <Typography>Todo this week</Typography>;
   return <Typography>Done this week</Typography>;
@@ -45,7 +52,7 @@ export default function ActivityCard({
   } = useTheme();
   const navigate = useNavigate<{ title: string }>();
   const [hr, mm] = secondsToHrMm(generateTime(type, schedule));
-  const { lastDone } = schedule;
+  const { done } = schedule;
 
   return (
     <Card containerStyle={{ width: 300, borderRadius: 8 }}>
@@ -71,7 +78,7 @@ export default function ActivityCard({
           color={colors.grey3}
           style={{ width: "50%", marginVertical: 4 }}
         />
-        <Info type={type} lastDone={lastDone} />
+        <Info type={type} done={done} />
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Typography style={{ textTransform: "capitalize" }}>

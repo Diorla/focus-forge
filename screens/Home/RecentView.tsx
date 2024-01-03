@@ -7,9 +7,9 @@ export default function RecentView() {
   const { schedule = [] } = useActivity();
 
   const completed = schedule.filter((item) => {
-    const timeLeft = item.todayRemaining + item.thisWeekRemaining;
-    return timeLeft <= 0;
+    return item.todayRemaining <= 0;
   });
+
   if (completed.length)
     return (
       <>

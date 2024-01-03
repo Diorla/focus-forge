@@ -6,9 +6,11 @@ export default function endTimer(
   startTime: number,
   done: {
     [key: string]: number;
-  }
+  },
+  endTime?: number
 ) {
-  const length = (Date.now() - startTime) / 1000;
+  const now = endTime ?? Date.now();
+  const length = (now - startTime) / 1000;
   const key = getDateTimeKey();
   updateActivity({
     id,

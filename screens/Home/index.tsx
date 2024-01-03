@@ -21,8 +21,8 @@ export default function HomeScreen() {
       <TabHeader />
       <ScrollView>
         <ProgressCard />
-        <RecentView />
         <TodayView />
+        <RecentView />
         <UpcomingView />
         <OverflowView />
         <PreviousView />

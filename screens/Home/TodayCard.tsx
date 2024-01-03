@@ -60,6 +60,8 @@ export function TodayCard({
             startTime={timer.startTime}
             todayTime={todayTime}
             todayRemaining={todayRemaining}
+            id={id}
+            done={done}
           />
         ) : (
           <>
