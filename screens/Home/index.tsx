@@ -8,7 +8,6 @@ import UpcomingView from "./UpcomingView";
 import OverflowView from "./OverflowView";
 import PreviousView from "./PreviousView";
 
-// TODO: Add past activity
 /**
  * This will be based on "done this week" to indicate the total number of activity
  * done over the week, excluding today of course (that will be in the recent view)
@@ -22,9 +21,9 @@ export default function HomeScreen() {
       <ScrollView>
         <ProgressCard />
         <TodayView />
-        <RecentView />
         <UpcomingView />
         <OverflowView />
+        <RecentView />
         <PreviousView />
         <View style={{ height: 200 }} />
       </ScrollView>
