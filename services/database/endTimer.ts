@@ -11,7 +11,7 @@ export default function endTimer(
 ) {
   const now = endTime ?? Date.now();
   const length = (now - startTime) / 1000;
-  const key = getDateTimeKey();
+  const key = getDateTimeKey(now);
   updateActivity({
     id,
     timer: null,
