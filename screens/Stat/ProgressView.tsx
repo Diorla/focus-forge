@@ -3,12 +3,44 @@ import * as React from "react";
 import { View } from "react-native";
 import { Typography } from "../../components";
 import * as Progress from "react-native-progress";
+import useActivity from "../../context/activity/useActivity";
 
 export default function ProgressView() {
   const { theme } = useTheme();
-  const low = Math.random();
-  const medium = Math.random();
-  const high = Math.random();
+  const { schedule } = useActivity();
+
+  // Prevent 0 error, yet small enough to be insignificant;
+  let lowTop = 0.0000001;
+  let lowBottom = 0.0000001;
+  let mediumTop = 0.0000001;
+  let mediumBottom = 0.0000001;
+  let highTop = 0.0000001;
+  let highBottom = 0.0000001;
+
+  schedule.forEach((item) => {
+    const done = item.doneThisWeek + item.doneToday;
+    const total = item.weeklyTarget < done ? done : item.weeklyTarget;
+    if (item.priority === "low") {
+      console.log("low:", item.name);
+      lowTop += done;
+      lowBottom += total;
+    }
+    if (item.priority === "medium") {
+      console.log("medium:", item.name);
+      mediumTop += done;
+      mediumBottom += total;
+    }
+    if (item.priority === "high") {
+      console.log("high", item.name);
+      highTop += done;
+      highBottom += total;
+    }
+  });
+
+  const low = lowTop / lowBottom;
+  const medium = mediumTop / mediumBottom;
+  const high = highTop / highBottom;
+
   return (
     <View
       style={{
