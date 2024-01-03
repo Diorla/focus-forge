@@ -4,17 +4,68 @@ import TopSpace from "../../components/topSpace";
 import TabHeader from "../../container/Nav/TabHeader";
 import { useTheme } from "@rneui/themed";
 import HistoryItem from "./HistoryItem";
+import useActivity from "../../context/activity/useActivity";
+import { useEffect, useState } from "react";
+import getDateKey from "../../services/date/getDateKey";
+import { format } from "../../services/date";
+import dayjs from "dayjs";
+import secondsToHrMm from "../../services/date/minutesToHrMm";
 
 export default function HistoryScreen() {
   const { theme } = useTheme();
+  const { schedule } = useActivity();
+  const [history, setHistory] = useState({});
+
+  useEffect(() => {
+    const history = {};
+    schedule.forEach((item) => {
+      const doneList = Object.keys(item.done);
+      doneList.forEach((datetime) => {
+        const date = getDateKey(datetime);
+        const length = item.done[datetime];
+        const [hr, mm, ss] = secondsToHrMm(length);
+        if (history[date]) {
+          history[date].push({
+            time: format(datetime, "time"),
+            title: item.name,
+            description: `${String(hr).padStart(2, "0")}:${String(mm).padStart(
+              2,
+              "0"
+            )}:${String(ss).padStart(2, "0")}`,
+            length,
+          });
+        } else {
+          history[date] = [
+            {
+              time: format(datetime, "time"),
+              title: item.name,
+              description: `${String(hr).padStart(2, "0")}:${String(
+                mm
+              ).padStart(2, "0")}:${String(ss).padStart(2, "0")}`,
+              length,
+            },
+          ];
+        }
+      });
+    });
+
+    setHistory(history);
+  }, []);
+
   return (
     <View style={{ flex: 1 }}>
       <TopSpace />
       <TabHeader />
       <ScrollView>
-        <HistoryItem />
-        <HistoryItem />
-        <HistoryItem />
+        {Object.keys(history)
+          .sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
+          .map((item) => (
+            <HistoryItem
+              data={history[item]}
+              key={item}
+              date={format(item, "date")}
+            />
+          ))}
         <View style={{ alignItems: "center", marginTop: 24 }}>
           <View
             style={{

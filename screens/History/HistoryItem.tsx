@@ -3,10 +3,18 @@ import { View } from "react-native";
 import Timeline from "react-native-timeline-flatlist";
 import { useTheme } from "@rneui/themed";
 import { Typography } from "../../components";
-import data from "./data";
+import secondsToHrMm from "../../services/date/minutesToHrMm";
 
-export default function HistoryItem() {
+export default function HistoryItem({
+  data,
+  date,
+}: {
+  data: { time: string; title: string; description: string; length: number }[];
+  date: string;
+}) {
   const { theme } = useTheme();
+  const total = data.reduce((prev, curr) => prev + curr.length, 0);
+  const [hr, mm] = secondsToHrMm(total);
   return (
     <>
       <View
@@ -18,8 +26,10 @@ export default function HistoryItem() {
           paddingHorizontal: 8,
         }}
       >
-        <Typography type="header">06 Nov, 2022</Typography>
-        <Typography>8h 40</Typography>
+        <Typography type="header">{date}</Typography>
+        <Typography>
+          {hr}h {String(mm).padStart(2, "0")}
+        </Typography>
       </View>
       <Timeline
         style={{ marginTop: 20, flex: 1 }}
