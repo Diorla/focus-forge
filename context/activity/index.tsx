@@ -31,18 +31,36 @@ export default function ActivityProvider({
     leftover: 0,
     todayTime: 0,
     upcomingTime: 0,
+    todoTime: 0,
+    taskDone: 0,
+    taskLeft: 0,
   });
 
   useEffect(() => {
     let unsubscribe: Unsubscribe;
     try {
       unsubscribe = watchActivities(user?.id, (activities) => {
-        setActivities(activities);
         const time = getTime(activities, user);
-        setTime(time);
-        setSchedule(
-          getSchedule(activities, time.todayRemaining, time.upcomingTime)
+
+        const scheduleList = getSchedule(
+          activities,
+          time.todayRemaining,
+          time.upcomingTime
         );
+
+        let todoTime = 0;
+        let taskDone = 0;
+        let taskLeft = 0;
+
+        scheduleList.forEach((item) => {
+          todoTime += item.additionalTime + item.todayRemaining;
+          if (item.todayRemaining + item.additionalTime > 0) taskLeft++;
+          if (item.todayRemaining + item.thisWeekRemaining < 0) taskDone++;
+        });
+
+        setActivities(activities);
+        setSchedule(scheduleList);
+        setTime({ ...time, todoTime, taskDone, taskLeft });
         setLoading(false);
       });
     } catch (error) {

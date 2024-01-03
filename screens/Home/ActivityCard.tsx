@@ -9,12 +9,26 @@ import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { Schedule } from "../../context/activity/getSchedule";
 
 const generateTime = (
-  type: "completed" | "overflow" | "upcoming",
+  type: "completed" | "overflow" | "upcoming" | "previous",
   schedule: Schedule
 ) => {
   if (type === "completed") return schedule.doneToday;
   if (type === "upcoming") return schedule.upcomingTime;
+  if (type === "previous") return schedule.doneThisWeek;
   return schedule.overflowTime;
+};
+
+const Info = ({
+  type,
+  lastDone,
+}: {
+  type: "completed" | "overflow" | "upcoming" | "previous";
+  lastDone: number;
+}) => {
+  if (type === "completed") return <Typography>{format(lastDone)}</Typography>;
+  if (type === "overflow") return <Typography>Over the limit</Typography>;
+  if (type === "upcoming") return <Typography>Todo this week</Typography>;
+  return <Typography>Done this week</Typography>;
 };
 
 export default function ActivityCard({
@@ -24,7 +38,7 @@ export default function ActivityCard({
 }: {
   showList: () => void;
   schedule: Schedule;
-  type: "completed" | "overflow" | "upcoming";
+  type: "completed" | "overflow" | "upcoming" | "previous";
 }) {
   const {
     theme: { colors },
@@ -32,7 +46,7 @@ export default function ActivityCard({
   const navigate = useNavigate<{ title: string }>();
   const [hr, mm] = secondsToHrMm(generateTime(type, schedule));
   const { lastDone } = schedule;
-  const info = lastDone ? format(lastDone) : "Never";
+
   return (
     <Card containerStyle={{ width: 300, borderRadius: 8 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -57,7 +71,7 @@ export default function ActivityCard({
           color={colors.grey3}
           style={{ width: "50%", marginVertical: 4 }}
         />
-        <Typography>{info}</Typography>
+        <Info type={type} lastDone={lastDone} />
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Typography style={{ textTransform: "capitalize" }}>

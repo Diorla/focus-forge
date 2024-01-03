@@ -2,10 +2,12 @@ import { setDoc } from "firebase/firestore";
 import { doc } from "../database/firestore";
 import Activity from "../../models/Activity";
 
-type Exclude = "updatedAt";
-export type UpdateActivity = Omit<Activity, Exclude>;
-export default async function updateActivity(data: UpdateActivity) {
-  const formattedData: Activity = {
+export type UpdateActivity = Partial<Activity>;
+
+export default async function updateActivity(
+  data: UpdateActivity & { id: string }
+) {
+  const formattedData: UpdateActivity = {
     ...data,
     updatedAt: Date.now(),
   };

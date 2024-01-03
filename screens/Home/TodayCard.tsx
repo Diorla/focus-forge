@@ -8,26 +8,37 @@ import PlayButton from "./PlayButton";
 import useNavigate from "../../container/Nav/useNavigate";
 import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { Schedule } from "../../context/activity/getSchedule";
+import Timer from "../../container/Timer";
+import startTimer from "../../services/database/startTimer";
+import endTimer from "../../services/database/endTimer";
 
-const Timer = () => <Typography>01</Typography>;
 export function TodayCard({
   showList,
-  togglePlay,
   schedule,
 }: {
   showList: () => void;
-  togglePlay: () => void;
   schedule: Schedule;
 }) {
   const {
     theme: { colors },
   } = useTheme();
   const navigate = useNavigate<{ title: string }>();
-  const { timer, todayTime, additionalTime, todayRemaining } = schedule;
+  const {
+    timer,
+    todayTime,
+    additionalTime,
+    todayRemaining,
+    id,
+    done = {},
+  } = schedule;
 
   const [hh, mm, ss] = secondsToHrMm(todayRemaining + additionalTime);
+  const running = !!timer;
+  const borderStyle = running
+    ? { borderSize: 1, borderColor: colors.primary }
+    : {};
   return (
-    <Card containerStyle={{ borderRadius: 8 }}>
+    <Card containerStyle={{ borderRadius: 8, ...borderStyle }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Typography>{schedule.name}</Typography>
         <MaterialCommunityIcons
@@ -44,7 +55,12 @@ export function TodayCard({
         }}
       >
         {timer ? (
-          <Timer />
+          <Timer
+            targetTime={todayRemaining}
+            startTime={timer.startTime}
+            todayTime={todayTime}
+            todayRemaining={todayRemaining}
+          />
         ) : (
           <>
             <Typography>
@@ -61,7 +77,12 @@ export function TodayCard({
           </>
         )}
 
-        <PlayButton playing={!!timer} onPress={togglePlay} />
+        <PlayButton
+          playing={running}
+          onPress={() =>
+            running ? endTimer(id, timer.startTime, done) : startTimer(id)
+          }
+        />
       </View>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Typography style={{ textTransform: "capitalize" }}>

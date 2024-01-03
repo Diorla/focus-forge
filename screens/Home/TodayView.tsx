@@ -11,12 +11,14 @@ export default function TodayView() {
   const { schedule } = useActivity();
   const today = schedule.filter((item) => {
     const todo = item.todayRemaining + item.additionalTime;
-    return todo > 0;
+    return todo > 0 || item.timer;
   });
 
   if (today.length) {
-    const first = today[0];
-    const rest = today.slice(1);
+    const runningActivity = today.find((item) => item.timer?.startTime);
+    const notRunning = today.filter((item) => item.id !== runningActivity?.id);
+    const first = runningActivity ?? today[0];
+    const rest = runningActivity ? notRunning : today.slice(1);
     return (
       <View style={{ marginVertical: 16 }}>
         <View
@@ -37,7 +39,6 @@ export default function TodayView() {
         <View>
           <TodayCard
             showList={() => console.log("show check list")}
-            togglePlay={() => console.log("play pause")}
             schedule={first}
           />
           {expanded ? (
@@ -46,7 +47,6 @@ export default function TodayView() {
                 <TodayCard
                   key={item.id}
                   showList={() => console.log("show check list")}
-                  togglePlay={() => console.log("play pause")}
                   schedule={item}
                 />
               ))}

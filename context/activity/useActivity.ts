@@ -29,6 +29,9 @@ export default function useActivity() {
       leftover: number;
       todayTime: number;
       upcomingTime: number;
+      todoTime: number;
+      taskDone: number;
+      taskLeft: number;
     };
     schedule: Schedule[];
   }
