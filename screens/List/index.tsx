@@ -9,11 +9,29 @@ import ActivityCard from "./ActivityCard";
 import Sort from "./Sort";
 import Filter from "./Filter";
 import SortFilter from "./SortFilter";
+import useActivity from "../../context/activity/useActivity";
+import { Schedule } from "../../context/activity/getSchedule";
 
 export default function ListScreen() {
   const [filter, setFilter] = useState<Filter>("all");
   const [sort, setSort] = useState<Sort>("alphabetical");
   const [visible, setVisible] = useState(false);
+  const { schedule } = useActivity();
+
+  const filterFn = (schedule: Schedule) => {
+    if (filter === "archived") return schedule.archived;
+    if (filter === "completed")
+      return schedule.weeklyTarget < schedule.doneThisWeek + schedule.doneToday;
+    if (filter === "ongoing") return !schedule.overflowTime;
+    if (filter === "overflow") return schedule.overflowTime;
+    return true;
+  };
+  const sortFn = (a: Schedule, b: Schedule) => {
+    if (sort === "alphabetical") return a.name > b.name ? 1 : -1;
+    if (sort === "created") return a.createdAt - b.createdAt;
+    if (sort === "updated") return a.updatedAt - b.updatedAt;
+    return -1;
+  };
 
   return (
     <View>
@@ -33,17 +51,12 @@ export default function ListScreen() {
       </View>
       <ScrollView>
         <Divider style={{ marginVertical: 10 }} />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
-        <ActivityCard />
+        {schedule
+          .filter(filterFn)
+          .sort(sortFn)
+          .map((item) => (
+            <ActivityCard key={item.id} activity={item} />
+          ))}
         <View style={{ height: 240 }} />
       </ScrollView>
       <SortFilter

@@ -38,12 +38,18 @@ export default function SortFilter({
             <Picker.Item label="Alphabetical" value="alphabetical" />
             <Picker.Item label="Created" value="created" />
             <Picker.Item label="Updated" value="updated" />
-            <Picker.Item label="Status" value="status" />
             <Picker.Item label="Last done" value="done" />
           </Picker>
         </View>
         <Typography type="big">Filter</Typography>
         <View>
+          <CheckBox
+            checked={filter === "archived"}
+            onPress={() => setFilter("archived")}
+            checkedIcon="dot-circle-o"
+            uncheckedIcon="circle-o"
+            title="Archived"
+          />
           <CheckBox
             checked={filter === "completed"}
             onPress={() => setFilter("completed")}
@@ -59,11 +65,11 @@ export default function SortFilter({
             title="Ongoing"
           />
           <CheckBox
-            checked={filter === "archived"}
-            onPress={() => setFilter("archived")}
+            checked={filter === "overflow"}
+            onPress={() => setFilter("overflow")}
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
-            title="Archived"
+            title="Overflow"
           />
           <CheckBox
             checked={filter === "all"}
