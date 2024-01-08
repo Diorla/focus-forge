@@ -7,12 +7,12 @@ import ProfileScreen from "../../screens/Profile";
 import ActivityScreen from "../../screens/Activity";
 import RootStackParamList from "./RootStackParamList";
 import ViewStatScreen from "../../screens/ViewStat";
-import { Button, Typography } from "../../components";
+import { Typography } from "../../components";
 import useActivity from "../../context/activity/useActivity";
 import { getContrastColor } from "../../services/color";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import MenuModal from "./MenuModal";
 import EditScreen from "../../screens/Edit";
+import { useTheme } from "@rneui/themed";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,6 +21,7 @@ const PlaceholderScreen = () => {
 };
 function Nav() {
   const { schedule } = useActivity();
+  const { theme } = useTheme();
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -45,11 +46,13 @@ function Nav() {
           options={(props) => {
             const { id } = props.route.params || { id: "" };
             const activity = schedule.find((item) => item.id === id);
-            const color = getContrastColor(activity.color);
+            const color = getContrastColor(
+              activity?.color || theme.colors.white
+            );
             return {
-              headerTitle: activity.name,
+              headerTitle: activity?.name,
               headerStyle: {
-                backgroundColor: activity.color,
+                backgroundColor: activity?.color || theme.colors.white,
               },
               headerTintColor: color,
               headerRight: () => (
