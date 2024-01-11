@@ -22,13 +22,14 @@ const baseForm: Activity = {
   category: "",
   description: "",
   id: "",
-  archived: false,
+  archived: 0,
   createdAt: Date.now(),
   updatedAt: Date.now(),
   userId: "",
   done: {},
   tasks: [],
   lastDone: 0,
+  doneComment: {},
 };
 export default function AddScreen() {
   const { theme } = useTheme();

@@ -16,12 +16,7 @@ export default function RecentView() {
         <SectionHeader title="Recent" />
         <ScrollView horizontal>
           {completed.map((item) => (
-            <ActivityCard
-              key={item.id}
-              showList={() => console.log("show check list")}
-              schedule={item}
-              type="completed"
-            />
+            <ActivityCard key={item.id} schedule={item} type="completed" />
           ))}
         </ScrollView>
       </>

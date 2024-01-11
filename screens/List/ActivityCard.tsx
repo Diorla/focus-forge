@@ -15,7 +15,7 @@ const getProgress = ({
   totalDone,
 }: {
   overflowTime: number;
-  archived: boolean;
+  archived: number;
   weeklyTarget: number;
   totalDone: number;
 }) => {
@@ -23,7 +23,7 @@ const getProgress = ({
    * completed => weekly target > done
    * ongoing => weekly target < done && "no overflow"
    * ongoing => overflow
-   * archived => archived = true
+   * archived => archived = truthy
    */
   if (archived) return "Archived";
   if (overflowTime) return "Overflow";

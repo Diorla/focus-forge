@@ -1,9 +1,15 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Typography } from "../../components";
-import { ScrollView } from "react-native";
+import { ScrollView, View } from "react-native";
 import useActivity from "../../context/activity/useActivity";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { useEffect } from "react";
+import { getContrastColor } from "../../services/color";
+import Time from "./Time";
+import { Divider } from "@rneui/themed";
+import Range from "./Range";
+import Task from "./Task";
+import dayjs from "dayjs";
+import Done from "./Done";
 
 export default function ActivityScreen() {
   const { params } = useRoute();
@@ -17,13 +23,19 @@ export default function ActivityScreen() {
   }, [activity?.id]);
 
   if (activity) {
-    const [hh, mm, ss] = secondsToHrMm(activity.weeklyTarget);
+    const color = getContrastColor(activity.color);
+
     return (
-      <ScrollView style={{ flex: 1, backgroundColor: activity.color }}>
-        <Typography>This is activity</Typography>
-        <Typography>
-          {hh}:{mm}:{ss}
-        </Typography>
+      <ScrollView
+        style={{ flex: 1, backgroundColor: activity.color, padding: 2 }}
+      >
+        <Time activity={activity} color={color} />
+        <Range activity={activity} color={color} />
+        <Divider style={{ marginVertical: 8 }} />
+        <Typography color={color}>{activity.description}</Typography>
+        <Task activity={activity} />
+        <Done activity={activity} />
+        <View style={{ height: 50 }} />
       </ScrollView>
     );
   }

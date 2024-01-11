@@ -12,12 +12,7 @@ export default function OverflowView() {
         <SectionHeader title="Overflow" />
         <ScrollView horizontal>
           {overflow.map((item) => (
-            <ActivityCard
-              key={item.id}
-              showList={() => console.log("show check list")}
-              schedule={item}
-              type="overflow"
-            />
+            <ActivityCard key={item.id} schedule={item} type="overflow" />
           ))}
         </ScrollView>
       </>

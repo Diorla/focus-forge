@@ -37,18 +37,11 @@ export default function TodayView() {
           ) : null}
         </View>
         <View>
-          <TodayCard
-            showList={() => console.log("show check list")}
-            schedule={first}
-          />
+          <TodayCard schedule={first} />
           {expanded ? (
             <>
               {rest.map((item) => (
-                <TodayCard
-                  key={item.id}
-                  showList={() => console.log("show check list")}
-                  schedule={item}
-                />
+                <TodayCard key={item.id} schedule={item} />
               ))}
             </>
           ) : null}

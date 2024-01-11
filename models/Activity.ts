@@ -10,16 +10,19 @@ export default interface Activity {
   description: string;
   color: string;
   category: string;
-  archived: boolean;
+  archived: number;
   updatedAt: number;
   createdAt: number;
   userId: string;
   done: {
     [key: string]: number;
   };
+  doneComment: {
+    [key: string]: string;
+  };
   timer?: {
     startTime: number;
   };
-  tasks: { title: string; checked: number }[];
+  tasks: { title: string; checked: number; created: number }[];
   lastDone: number;
 }

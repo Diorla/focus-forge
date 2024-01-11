@@ -2,7 +2,6 @@ import DateTimePicker, {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { useState } from "react";
 import { useTheme } from "@rneui/themed";
 import { Platform, View } from "react-native";
 import { Button, Typography } from ".";
@@ -15,10 +14,12 @@ export default function DatePicker({
   date,
   setDate,
   label,
+  mode = "date",
 }: {
   date: number;
   setDate: (date: number) => void;
   label: string;
+  mode?: "date" | "time" | "datetime";
 }) {
   const { theme } = useTheme();
 
@@ -27,7 +28,15 @@ export default function DatePicker({
     setDate(dayjs(currentDate).valueOf());
   };
 
-  const showMode = () => {
+  const showTime = () => {
+    DateTimePickerAndroid.open({
+      value: new Date(date),
+      onChange,
+      mode: "time",
+    });
+  };
+
+  const showDate = () => {
     DateTimePickerAndroid.open({
       value: new Date(date),
       onChange,
@@ -50,13 +59,10 @@ export default function DatePicker({
           {label}
         </Typography>
         <DateTimePicker
-          testID="dateTimePicker"
           value={new Date(date)}
-          mode="date"
-          is24Hour={true}
+          mode={mode}
           onChange={onChange}
           style={{ marginLeft: 24 }}
-          minimumDate={new Date()}
         />
       </View>
     );
@@ -73,12 +79,21 @@ export default function DatePicker({
       >
         {label}
       </Typography>
-      <View style={{ marginLeft: 24 }}>
-        <Button
-          type="outline"
-          onPress={showMode}
-          title={format(date, "date")}
-        />
+      <View style={{ marginLeft: 24, flexDirection: "row" }}>
+        {mode.includes("date") && (
+          <Button
+            type="outline"
+            onPress={showDate}
+            title={format(date, "date")}
+          />
+        )}
+        {mode.includes("time") && (
+          <Button
+            type="outline"
+            onPress={showTime}
+            title={format(date, "time")}
+          />
+        )}
       </View>
     </View>
   );

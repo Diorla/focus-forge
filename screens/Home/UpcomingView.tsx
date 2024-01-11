@@ -12,12 +12,7 @@ export default function UpcomingView() {
         <SectionHeader title="Upcoming" />
         <ScrollView horizontal>
           {upcoming.map((item) => (
-            <ActivityCard
-              key={item.id}
-              showList={() => console.log("show check list")}
-              schedule={item}
-              type="upcoming"
-            />
+            <ActivityCard key={item.id} schedule={item} type="upcoming" />
           ))}
         </ScrollView>
       </>
