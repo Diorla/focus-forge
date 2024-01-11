@@ -8,8 +8,8 @@ import Time from "./Time";
 import { Divider } from "@rneui/themed";
 import Range from "./Range";
 import Task from "./Task";
-import dayjs from "dayjs";
 import Done from "./Done";
+import PriorityLabel from "./PriorityLabel";
 
 export default function ActivityScreen() {
   const { params } = useRoute();
@@ -31,6 +31,7 @@ export default function ActivityScreen() {
       >
         <Time activity={activity} color={color} />
         <Range activity={activity} color={color} />
+        <PriorityLabel priority={activity?.priority} />
         <Divider style={{ marginVertical: 8 }} />
         <Typography color={color}>{activity.description}</Typography>
         <Task activity={activity} />

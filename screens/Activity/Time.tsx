@@ -53,7 +53,7 @@ export default function Time({
             {h}h {String(m).padStart(2, "0")}
           </Typography>
           <Typography type="big" color={color}>
-            {weekPercent}% Complete
+            {weekPercent.toFixed(2)}% Complete
           </Typography>
         </View>
         <View>
@@ -62,7 +62,7 @@ export default function Time({
             {hh}h {String(mm).padStart(2, "0")}
           </Typography>
           <Typography type="big" color={color}>
-            {dayPercent}% Complete
+            {dayPercent.toFixed(2)}% Complete
           </Typography>
         </View>
       </View>
