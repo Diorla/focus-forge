@@ -18,15 +18,48 @@ import User from "../../models/User";
 
 export default function getTime(activities: Activity[], user: User) {
   const { weeklyQuota: WQ, useWeeklyQuota, dailyQuota } = user;
+  /**
+   * Total time set aside for the week
+   */
   let weeklyQuota = 0;
+  /**
+   * the time already spent on task excluding today
+   */
   let doneThisWeek = 0;
+  /**
+   * the time already spent on task today
+   */
   let doneToday = 0;
+  /**
+   * How long remaining, by subtracting the time already spent on task from weeklyQuota
+   * If it is less than 0, then it should be 0 of course
+   */
   let thisWeekRemaining = 0;
-  let daysRemaining = dayjs().day() + 1;
+  /**
+   * The number of days remaining for doing task, including today, so the
+   * minimum is 1 and the max is 7
+   */
+  const daysRemaining = 7 - dayjs().day();
+  /**
+   * The time that should be set aside for today
+   */
   let todayQuota = 0;
-  let leftover = 0;
+  /**
+   * The total number of time that is set aside for today, this happens when user
+   * exceed what they have today
+   */
   let todayTime = 0;
+  /**
+   * The cumulative time from previous days that was unused
+   */
+  let leftover = 0;
+  /**
+   * All the time left for future time, would be 0 if the days remaining is 1 (no tomorrow)
+   */
   let upcomingTime = 0;
+  /**
+   * today time minus done today. Indicates how much time left for today
+   */
   let todayRemaining = 0;
 
   if (useWeeklyQuota) {
@@ -45,6 +78,7 @@ export default function getTime(activities: Activity[], user: User) {
     timeThisWeek.forEach((date) => (doneThisWeek += item.done[date]));
   });
   thisWeekRemaining = weeklyQuota - doneThisWeek;
+  if (thisWeekRemaining < 0) thisWeekRemaining = 0;
 
   if (useWeeklyQuota) {
     todayQuota = weeklyQuota / daysRemaining;

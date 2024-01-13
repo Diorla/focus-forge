@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import Activity from "../../models/Activity";
-import User from "../../models/User";
 
 export type Schedule = Activity & {
   doneToday: number;
@@ -38,7 +37,6 @@ export default function formatTime(
   const list: Schedule[] = [];
 
   let userTodayRemaining = initialTodayRemaining;
-  let userUpcomingTime = initialUpcomingTime;
 
   activities.forEach((item) => {
     // time already done for today
@@ -97,12 +95,13 @@ export default function formatTime(
     if (unaccountedTime < 0) unaccountedTime = 0;
     futureTime += unaccountedTime;
 
-    if (userUpcomingTime > futureTime) {
+    if (initialUpcomingTime > futureTime) {
       upcomingTime = futureTime;
       userTodayRemaining -= futureTime;
     } else {
-      let tempOverflow = futureTime - userTodayRemaining;
-      upcomingTime = userTodayRemaining;
+      let tempOverflow = futureTime - initialUpcomingTime;
+      if (tempOverflow < 0) tempOverflow = 0;
+      upcomingTime = initialUpcomingTime;
       userTodayRemaining = 0;
       if (userTodayRemaining > tempOverflow) {
         additionalTime = tempOverflow;
