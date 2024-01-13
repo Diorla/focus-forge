@@ -1,3 +1,4 @@
+import addTime from "./addTime";
 import archiveActivity from "./archiveActivity";
 import checkTask from "./checkTask";
 import createActivity from "./createActivity";
@@ -38,4 +39,5 @@ export {
   watchActivity,
   deleteDoneTime,
   createTask,
+  addTime,
 };

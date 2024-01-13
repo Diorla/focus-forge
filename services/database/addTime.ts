@@ -1,29 +1,29 @@
 import Activity from "../../models/Activity";
+import { getDateTimeKey } from "../datetime";
 import updateActivity from "./updateActivity";
 
 export default function updateDoneInfo(
   activity: Activity,
-  prevDateTime: string,
   doneInfo: {
     comment: string;
     length: number;
-    datetime: string;
+    datetime: number;
   }
 ) {
   const { done, doneComment } = activity;
-  const { comment = "", length = 0, datetime = "" } = doneInfo;
-  delete done[prevDateTime];
-  delete doneComment[prevDateTime];
+  const { comment = "", length = 0, datetime = 0 } = doneInfo;
+
+  const datetimeKey = getDateTimeKey(datetime);
 
   const newActivity = {
     ...activity,
     done: {
       ...done,
-      [datetime]: length,
+      [datetimeKey]: length,
     },
     doneComment: {
       ...doneComment,
-      [datetime]: comment,
+      [datetimeKey]: comment,
     },
   };
 

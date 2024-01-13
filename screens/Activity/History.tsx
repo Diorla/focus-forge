@@ -1,5 +1,5 @@
 import { Button, DatePicker, TimeInput, Typography } from "../../components";
-import { TouchableOpacity, View } from "react-native";
+import { Modal, TouchableOpacity, View } from "react-native";
 import { Card, Input, useTheme } from "@rneui/themed";
 import { Schedule } from "../../context/activity/getSchedule";
 import {
@@ -11,8 +11,11 @@ import {
 import { useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { deleteDoneTime, updateDoneInfo } from "../../services/database";
+import {
+  addTime,
+  deleteDoneTime,
+  updateDoneInfo,
+} from "../../services/database";
 
 type History = {
   time: string;
@@ -22,7 +25,19 @@ type History = {
   length: number;
 };
 
-export default function Done({ activity }: { activity: Schedule }) {
+function Comment({
+  showComment,
+  comment,
+}: {
+  showComment: boolean;
+  comment: string;
+}) {
+  if (showComment && comment)
+    return <Typography type="small">{comment}</Typography>;
+  return null;
+}
+
+export default function History({ activity }: { activity: Schedule }) {
   const { theme } = useTheme();
   const { done, doneComment = {} } = activity;
   const doneList = Object.keys(done);
@@ -34,6 +49,13 @@ export default function Done({ activity }: { activity: Schedule }) {
   });
   const [editingComment, setEditingComment] = useState(true);
 
+  const [newTime, setNewTime] = useState({
+    comment: "",
+    datetime: Date.now(),
+    length: 0,
+  });
+
+  const [showAddTime, setShowAddTime] = useState(false);
   const history: { [key: string]: History[] } = {};
   doneList.forEach((datetime) => {
     const date = getDateKey(datetime);
@@ -62,9 +84,54 @@ export default function Done({ activity }: { activity: Schedule }) {
 
   return (
     <Card>
-      <Typography type="big" style={{ textAlign: "center", marginBottom: 4 }}>
-        History
-      </Typography>
+      <Modal visible={showAddTime}>
+        <View style={{ justifyContent: "center", flex: 1 }}>
+          <TimeInput
+            value={newTime.length}
+            onChange={(length) => setNewTime({ ...newTime, length })}
+          />
+          <Input
+            label="Note"
+            value={newTime.comment}
+            onChangeText={(comment) => setNewTime({ ...newTime, comment })}
+            multiline
+          />
+          <DatePicker
+            date={newTime.datetime}
+            setDate={(datetime) => setNewTime({ ...newTime, datetime })}
+            label="Date time"
+            mode="datetime"
+          />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button
+              onPress={() => {
+                if (newTime.length)
+                  addTime(activity, newTime).then(() => setShowAddTime(false));
+              }}
+            >
+              Save
+            </Button>
+            <Button onPress={() => setShowAddTime(false)}>Cancel</Button>
+          </View>
+        </View>
+      </Modal>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography type="big" style={{ textAlign: "center", marginBottom: 4 }}>
+          History
+        </Typography>
+        <Button onPress={() => setShowAddTime(true)}>Add time</Button>
+      </View>
       {Object.keys(history)
         .sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
         .map((item) => {
@@ -123,12 +190,10 @@ export default function Done({ activity }: { activity: Schedule }) {
                           <Typography>{time.description}</Typography>
                         </View>
                       </TouchableOpacity>
-                      {doneComment[time.datetime] &&
-                      expandIdx !== time.datetime ? (
-                        <Typography type="small">
-                          {doneComment[time.datetime]}
-                        </Typography>
-                      ) : null}
+                      <Comment
+                        showComment={expandIdx !== time.datetime}
+                        comment={doneComment[time.datetime]}
+                      />
                       {expandIdx === time.datetime ? (
                         <View>
                           <View>
@@ -172,14 +237,7 @@ export default function Done({ activity }: { activity: Schedule }) {
                               color="black"
                               onPress={() => setEditingComment(!editingComment)}
                             />
-                            <MaterialIcons
-                              name="delete"
-                              size={24}
-                              color="black"
-                              onPress={() =>
-                                deleteDoneTime(activity, time.datetime)
-                              }
-                            />
+
                             <View
                               style={{
                                 flexDirection: "row",
@@ -216,6 +274,16 @@ export default function Done({ activity }: { activity: Schedule }) {
                                 Cancel
                               </Button>
                             </View>
+                          </View>
+                          <View>
+                            <Button
+                              color="error"
+                              onPress={() =>
+                                deleteDoneTime(activity, time.datetime)
+                              }
+                            >
+                              Delete
+                            </Button>
                           </View>
                         </View>
                       ) : null}

@@ -8,7 +8,7 @@ import Time from "./Time";
 import { Divider } from "@rneui/themed";
 import Range from "./Range";
 import Task from "./Task";
-import Done from "./Done";
+import History from "./History";
 import PriorityLabel from "./PriorityLabel";
 
 export default function ActivityScreen() {
@@ -35,7 +35,7 @@ export default function ActivityScreen() {
         <Divider style={{ marginVertical: 8 }} />
         <Typography color={color}>{activity.description}</Typography>
         <Task activity={activity} />
-        <Done activity={activity} />
+        <History activity={activity} />
         <View style={{ height: 50 }} />
       </ScrollView>
     );
