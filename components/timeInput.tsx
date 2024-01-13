@@ -1,8 +1,7 @@
 import { Input } from "@rneui/themed";
 import { View } from "react-native";
 import Typography from "./typography";
-import secondsToHrMm from "../services/date/minutesToHrMm";
-import hrMmToSeconds from "../services/date/hrMmToSeconds";
+import { hrMmToSeconds, secondsToHrMm } from "../services/datetime";
 
 export default function TimeInput({
   value,

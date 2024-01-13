@@ -2,10 +2,8 @@ import { Button, Typography } from "../../components";
 import { View } from "react-native";
 import { useState } from "react";
 import { Card, CheckBox, Input } from "@rneui/themed";
-import uncheckTask from "../../services/database/uncheckTask";
-import checkTask from "../../services/database/checkTask";
-import createTask from "../../services/database/createTask";
 import { Schedule } from "../../context/activity/getSchedule";
+import { uncheckTask, checkTask, createTask } from "../../services/database";
 
 export default function Task({ activity }: { activity: Schedule }) {
   const { tasks } = activity;

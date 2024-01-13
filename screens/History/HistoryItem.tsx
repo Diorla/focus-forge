@@ -3,7 +3,7 @@ import { View } from "react-native";
 import Timeline from "react-native-timeline-flatlist";
 import { useTheme } from "@rneui/themed";
 import { Typography } from "../../components";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
+import { secondsToHrMm } from "../../services/datetime";
 
 export default function HistoryItem({
   data,

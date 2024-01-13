@@ -1,7 +1,7 @@
 import { Typography } from "../../components";
 import { View } from "react-native";
 import { Schedule } from "../../context/activity/getSchedule";
-import { format } from "../../services/date";
+import { format } from "../../services/datetime";
 
 export default function Range({
   activity,

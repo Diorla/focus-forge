@@ -3,7 +3,7 @@ import { Typography } from "../../components";
 import { Card, Divider, useTheme } from "@rneui/themed";
 import * as Progress from "react-native-progress";
 import useActivity from "../../context/activity/useActivity";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
+import { secondsToHrMm } from "../../services/datetime";
 
 export default function ProgressCard() {
   const {

@@ -1,8 +1,7 @@
-import { useTheme } from "@rneui/themed";
 import * as React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { Typography } from "../../components";
-import { format } from "../../services/date";
+import { format } from "../../services/datetime";
 import useUser from "../../context/user/useUser";
 import useNavigate from "../../container/Nav/useNavigate";
 
@@ -11,8 +10,6 @@ export default function Header() {
   const {
     user: { name },
   } = useUser();
-
-  const { theme } = useTheme();
 
   return (
     <TouchableOpacity

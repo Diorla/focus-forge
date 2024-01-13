@@ -1,4 +1,4 @@
-import getDateTimeKey from "../date/getDateTimeKey";
+import getDateTimeKey from "../datetime/getDateTimeKey";
 import updateActivity from "./updateActivity";
 
 export default function endTimer(

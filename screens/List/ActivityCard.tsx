@@ -5,8 +5,8 @@ import { Card } from "@rneui/themed";
 import { MaterialIcons } from "@expo/vector-icons";
 import { getContrastColor } from "../../services/color";
 import useNavigate from "../../container/Nav/useNavigate";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { Schedule } from "../../context/activity/getSchedule";
+import { secondsToHrMm } from "../../services/datetime";
 
 const getProgress = ({
   overflowTime,

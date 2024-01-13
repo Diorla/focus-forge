@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Typography } from "../../components";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
+import { secondsToHrMm } from "../../services/datetime";
 
 export default function Clock({
   time,

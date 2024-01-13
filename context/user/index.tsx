@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   onAuthStateChanged,
   Unsubscribe,
@@ -6,14 +6,12 @@ import {
   getReactNativePersistence,
 } from "firebase/auth";
 import UserContext from "./userContext";
-// import * as SplashScreen from "expo-splash-screen";
-import { useCallback } from "react";
 import { View } from "react-native";
-
 import app from "../../constants/firebaseConfig";
 import { logError, watchUser } from "../../services/database";
+import * as SplashScreen from "expo-splash-screen";
 
-// SplashScreen.preventAutoHideAsync();
+SplashScreen.preventAutoHideAsync();
 
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -66,18 +64,15 @@ export default function UserProvider({
     };
   }, [user?.id]);
 
-  // const onLayoutRootView = useCallback(async () => {
-  //   if (!loading) {
-  //     await SplashScreen.hideAsync();
-  //   }
-  // }, [loading]);
+  const onLayoutRootView = useCallback(async () => {
+    if (!loading) {
+      await SplashScreen.hideAsync();
+    }
+  }, [loading]);
 
   if (loading) return null;
   return (
-    <View
-      style={{ flex: 1 }}
-      // onLayout={onLayoutRootView}
-    >
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <UserContext.Provider
         value={{
           user,

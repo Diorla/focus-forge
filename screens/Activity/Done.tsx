@@ -1,18 +1,18 @@
-import { Button, TimeInput, Typography } from "../../components";
+import { Button, DatePicker, TimeInput, Typography } from "../../components";
 import { TouchableOpacity, View } from "react-native";
 import { Card, Input, useTheme } from "@rneui/themed";
 import { Schedule } from "../../context/activity/getSchedule";
-import { format } from "../../services/date";
-import getDateKey from "../../services/date/getDateKey";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
+import {
+  format,
+  getDateKey,
+  getDateTimeKey,
+  secondsToHrMm,
+} from "../../services/datetime";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import DatePicker from "../../components/datePicker";
-import updateDoneInfo from "../../services/database/updateDoneInfo";
-import getDateTimeKey from "../../services/date/getDateTimeKey";
 import { MaterialIcons } from "@expo/vector-icons";
-import deleteDoneTime from "../../services/database/deleteDoneTime";
+import { deleteDoneTime, updateDoneInfo } from "../../services/database";
 
 type History = {
   time: string;

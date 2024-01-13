@@ -1,11 +1,10 @@
 import { TouchableOpacity, View } from "react-native";
 import { Typography } from "../../components";
-import { format } from "../../services/date";
+import { format, secondsToHrMm } from "../../services/datetime";
 import { Card, Divider, useTheme } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
 import { Schedule } from "../../context/activity/getSchedule";
 import dayjs from "dayjs";
 import ChecklistModal from "../../container/ChecklistModal";

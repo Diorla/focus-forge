@@ -6,10 +6,8 @@ import { useTheme } from "@rneui/themed";
 import HistoryItem from "./HistoryItem";
 import useActivity from "../../context/activity/useActivity";
 import { useEffect, useState } from "react";
-import getDateKey from "../../services/date/getDateKey";
-import { format } from "../../services/date";
+import { format, getDateKey, secondsToHrMm } from "../../services/datetime";
 import dayjs from "dayjs";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
 
 export default function HistoryScreen() {
   const { theme } = useTheme();

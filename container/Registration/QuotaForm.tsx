@@ -6,7 +6,7 @@ import { useTheme } from "@rneui/themed";
 import Button from "../../components/button";
 import { DailyQuota } from "../../models/User";
 import { TimeInput } from "../../components";
-import secondsToHrMm from "../../services/date/minutesToHrMm";
+import { secondsToHrMm } from "../../services/datetime";
 import { updateUser } from "../../services/database";
 import useUser from "../../context/user/useUser";
 

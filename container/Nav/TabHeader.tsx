@@ -1,7 +1,7 @@
 import { View, Image, TouchableOpacity } from "react-native";
 import { Typography } from "../../components";
 import useUser from "../../context/user/useUser";
-import { format } from "../../services/date";
+import { format } from "../../services/datetime";
 import useNavigate from "./useNavigate";
 
 export default function TabHeader() {
