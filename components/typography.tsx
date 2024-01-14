@@ -7,20 +7,44 @@ export default function Typography({
   color,
   style,
 }: {
-  type?: "bigHeader" | "header" | "big" | "body" | "small" | "caption";
+  type?:
+    | "bigHeader"
+    | "header"
+    | "big"
+    | "body"
+    | "small"
+    | "caption"
+    | "label";
   children: (string | number)[] | string | number;
   color?: string;
   style?: TextStyle;
 }) {
+  const {
+    theme: { colors },
+  } = useTheme();
+  const clr = color || colors.black;
   let size = 16;
   if (type === "bigHeader") size = 30;
   if (type === "header") size = 24;
   if (type === "big") size = 20;
   if (type === "small" || type === "caption") size = 14;
-  const {
-    theme: { colors },
-  } = useTheme();
-  const clr = color || colors.black;
+
+  if (type === "label")
+    return (
+      <Text
+        style={[
+          {
+            fontSize: size,
+            marginLeft: 8,
+            color: color ?? colors.grey3,
+            fontWeight: "bold",
+          },
+          { ...style },
+        ]}
+      >
+        {children}
+      </Text>
+    );
   return (
     <Text
       style={[
