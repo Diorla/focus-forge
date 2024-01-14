@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { format, getDateKey, secondsToHrMm } from "../../services/datetime";
 import dayjs from "dayjs";
 
+const timeFormat = (value: number) => String(value).padStart(2, "0");
+// TODO: Use sectionList
 export default function HistoryScreen() {
   const { theme } = useTheme();
   const { schedule } = useActivity();
@@ -17,30 +19,33 @@ export default function HistoryScreen() {
   useEffect(() => {
     const history = {};
     schedule.forEach((item) => {
-      const doneList = Object.keys(item.done);
+      const { done, doneComment = {} } = item;
+      const doneList = Object.keys(done);
       doneList.forEach((datetime) => {
         const date = getDateKey(datetime);
         const length = item.done[datetime];
         const [hr, mm, ss] = secondsToHrMm(length);
+        const comment = doneComment[datetime];
+        const description = comment
+          ? `${doneComment[datetime] || ""}
+          ${timeFormat(hr)}:${timeFormat(mm)}:${timeFormat(ss)}`
+          : `\t  ${timeFormat(hr)}:${timeFormat(mm)}:${timeFormat(ss)}`;
         if (history[date]) {
           history[date].push({
             time: format(datetime, "time"),
             title: item.name,
-            description: `${String(hr).padStart(2, "0")}:${String(mm).padStart(
-              2,
-              "0"
-            )}:${String(ss).padStart(2, "0")}`,
+            description,
             length,
+            datetime,
           });
         } else {
           history[date] = [
             {
               time: format(datetime, "time"),
               title: item.name,
-              description: `${String(hr).padStart(2, "0")}:${String(
-                mm
-              ).padStart(2, "0")}:${String(ss).padStart(2, "0")}`,
+              description,
               length,
+              datetime,
             },
           ];
         }
@@ -59,7 +64,10 @@ export default function HistoryScreen() {
           .sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
           .map((item) => (
             <HistoryItem
-              data={history[item]}
+              data={history[item].sort(
+                (a: { datetime: string }, b: { datetime: string }) =>
+                  dayjs(b.datetime).valueOf() - dayjs(a.datetime).valueOf()
+              )}
               key={item}
               date={format(item, "date")}
             />

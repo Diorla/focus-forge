@@ -16,7 +16,11 @@ export default function HistoryItem({
   const total = data.reduce((prev, curr) => prev + curr.length, 0);
   const [hr, mm] = secondsToHrMm(total);
   return (
-    <>
+    <View
+      style={{
+        margin: 4,
+      }}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -32,19 +36,28 @@ export default function HistoryItem({
         </Typography>
       </View>
       <Timeline
-        style={{ marginTop: 20, flex: 1 }}
+        innerCircle="dot"
+        isUsingFlatlist={false}
+        style={{
+          flex: 1,
+          marginTop: 20,
+        }}
         data={data}
+        separator={true}
         circleSize={20}
         circleColor={theme.colors.primary}
-        lineColor={theme.colors.secondary}
-        descriptionStyle={{
-          color: "gray",
-          paddingBottom: 4,
-          borderBottomColor: "silver",
-          borderBottomWidth: 1,
+        lineColor={theme.colors.grey3}
+        timeContainerStyle={{ minWidth: 52, marginTop: -5 }}
+        timeStyle={{
+          textAlign: "center",
+          backgroundColor: theme.colors.secondary,
+          color: theme.colors.white,
+          padding: 5,
+          borderRadius: 13,
+          overflow: "hidden",
         }}
-        innerCircle="dot"
+        descriptionStyle={{ color: theme.colors.grey2 }}
       />
-    </>
+    </View>
   );
 }
