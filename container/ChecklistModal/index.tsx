@@ -93,9 +93,10 @@ export default function ChecklistModal({
                 <Button
                   disabled={!task}
                   onPress={() =>
-                    createTask(activity, task).then(() =>
-                      setShowAddNewTask(!showAddNewTask)
-                    )
+                    createTask(activity, task).then(() => {
+                      setShowAddNewTask(!showAddNewTask);
+                      setTask("");
+                    })
                   }
                 >
                   Save
