@@ -3,7 +3,13 @@ import { View } from "react-native";
 import { useState } from "react";
 import { Card, CheckBox, Input } from "@rneui/themed";
 import { Schedule } from "../../context/activity/getSchedule";
-import { uncheckTask, checkTask, createTask } from "../../services/database";
+import {
+  uncheckTask,
+  checkTask,
+  createTask,
+  deleteTask,
+} from "../../services/database";
+import { MaterialIcons } from "@expo/vector-icons";
 
 export default function Task({ activity }: { activity: Schedule }) {
   const { tasks } = activity;
@@ -32,19 +38,33 @@ export default function Task({ activity }: { activity: Schedule }) {
         .sort((a, b) => a.created - b.created)
         .map((item) => {
           return (
-            <CheckBox
+            <View
               key={item.created}
-              checked={!!item.checked}
-              onPress={() =>
-                item.checked
-                  ? uncheckTask(activity, item.created)
-                  : checkTask(activity, item.created)
-              }
-              iconType="material-community"
-              checkedIcon="checkbox-marked"
-              uncheckedIcon="checkbox-blank-outline"
-              title={item.title}
-            />
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <CheckBox
+                checked={!!item.checked}
+                onPress={() =>
+                  item.checked
+                    ? uncheckTask(activity, item.created)
+                    : checkTask(activity, item.created)
+                }
+                iconType="material-community"
+                checkedIcon="checkbox-marked"
+                uncheckedIcon="checkbox-blank-outline"
+                title={item.title}
+              />
+              <MaterialIcons
+                name="delete"
+                size={28}
+                color="black"
+                onPress={() => deleteTask(activity, item.created)}
+              />
+            </View>
           );
         })}
       {showAddNewTask ? (
