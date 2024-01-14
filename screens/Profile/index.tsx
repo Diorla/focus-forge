@@ -37,6 +37,12 @@ export default function ProfileScreen() {
         <Item title="Privacy policy" onPress={() => navigate("PrivacyPolicy")}>
           <AntDesign name="eye" size={24} color={theme.colors.black} />
         </Item>
+        <Item
+          title="Change password"
+          onPress={() => navigate("ChangePassword")}
+        >
+          <Ionicons name="keypad-sharp" size={24} color={theme.colors.black} />
+        </Item>
         <Item title="Settings" onPress={() => navigate("Settings")}>
           <Ionicons name="settings" size={24} color={theme.colors.black} />
         </Item>

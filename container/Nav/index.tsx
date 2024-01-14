@@ -13,6 +13,8 @@ import { getContrastColor } from "../../services/color";
 import MenuModal from "./MenuModal";
 import EditScreen from "../../screens/Edit";
 import { useTheme } from "@rneui/themed";
+import EditProfileScreen from "../../screens/EditProfile";
+import useUser from "../../context/user/useUser";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -22,6 +24,7 @@ const PlaceholderScreen = () => {
 function Nav() {
   const { schedule } = useActivity();
   const { theme } = useTheme();
+  const { user } = useUser();
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -44,7 +47,7 @@ function Nav() {
           name="Activity"
           component={ActivityScreen}
           options={(props) => {
-            const { id } = props.route.params || { id: "" };
+            const { id } = props?.route?.params || { id: "" };
             const activity = schedule.find((item) => item.id === id);
             const color = getContrastColor(
               activity?.color || theme.colors.white
@@ -67,12 +70,19 @@ function Nav() {
         <Stack.Screen name="PrivacyPolicy" component={PlaceholderScreen} />
         <Stack.Screen name="Settings" component={PlaceholderScreen} />
         <Stack.Screen name="RateUs" component={PlaceholderScreen} />
-        <Stack.Screen name="EditProfile" component={PlaceholderScreen} />
+        <Stack.Screen name="ChangePassword" component={PlaceholderScreen} />
+        <Stack.Screen
+          name="EditProfile"
+          options={{
+            headerTitle: user.name,
+          }}
+          component={EditProfileScreen}
+        />
         <Stack.Screen
           name="EditActivity"
           component={EditScreen}
           options={(props) => {
-            const { id } = props.route.params || { id: "" };
+            const { id } = props?.route?.params || { id: "" };
             const activity = schedule.find((item) => item.id === id);
             const color = getContrastColor(activity.color);
             return {

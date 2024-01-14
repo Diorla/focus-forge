@@ -11,5 +11,6 @@ type RootStackParamList = {
   RateUs: undefined;
   EditProfile: undefined;
   EditActivity: undefined;
+  ChangePassword: undefined;
 };
 export default RootStackParamList;
