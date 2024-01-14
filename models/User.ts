@@ -42,6 +42,7 @@ interface User {
    */
   updatedAt: number;
   startTime: number;
+  createdAt: number;
 }
 
 export default User;

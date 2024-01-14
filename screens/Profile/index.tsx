@@ -8,26 +8,8 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
 import { signOut } from "../../services/auth";
+import Item from "./Item";
 
-const Item = ({
-  title,
-  children,
-  onPress,
-}: {
-  title: string;
-  children: React.ReactNode;
-  onPress: () => void;
-}) => {
-  return (
-    <ListItem onPress={onPress}>
-      {children}
-      <ListItem.Content>
-        <ListItem.Title>{title}</ListItem.Title>
-      </ListItem.Content>
-      <ListItem.Chevron />
-    </ListItem>
-  );
-};
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
@@ -35,7 +17,7 @@ export default function ProfileScreen() {
     <ScrollView>
       <Header />
       <View style={{ padding: 8 }}>
-        <Button onPress={() => navigate("EditProfile")}>Edit Profile</Button>
+        <Button onPress={() => navigate("EditProfile")}>Edit</Button>
       </View>
       <View style={{ marginVertical: 20 }}>
         <ListItem onPress={() => navigate("Subscription")}>
