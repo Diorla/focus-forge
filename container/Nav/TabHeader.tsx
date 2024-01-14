@@ -5,7 +5,7 @@ import { format } from "../../services/datetime";
 import useNavigate from "./useNavigate";
 import { FontAwesome5 } from "@expo/vector-icons";
 import StopWatch from "../Timer/StopWatch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import Picker from "./Picker";
 import { startStopWatch } from "../../services/database";
@@ -13,10 +13,14 @@ import endStopWatch from "../../services/database/endStopWatch";
 
 const ShowStopWatch = () => {
   const { user } = useUser();
-  const { activities } = useActivity();
+  const { activities = [] } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
   const [target, setTarget] = useState(activities[0]?.id);
+
+  useEffect(() => {
+    if (!target) setTarget(activities[0]?.id);
+  }, [activities.length]);
 
   return (
     <>

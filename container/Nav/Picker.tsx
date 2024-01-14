@@ -36,7 +36,7 @@ export default function Picker({
       </View>
     );
 
-  const labelValue = list.find((item) => item.value === value).label;
+  const labelValue = list.find((item) => item.value === value)?.label;
   return (
     <View>
       <Typography
