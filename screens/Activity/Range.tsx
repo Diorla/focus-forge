@@ -1,7 +1,7 @@
 import { Typography } from "../../components";
 import { View } from "react-native";
 import { Schedule } from "../../context/activity/getSchedule";
-import { format } from "../../services/datetime";
+import { format, secondsToHrMm } from "../../services/datetime";
 
 export default function Range({
   activity,
@@ -10,9 +10,10 @@ export default function Range({
   activity: Schedule;
   color: string;
 }) {
-  const { startDate, archived } = activity;
+  const { startDate, archived, weeklyTarget } = activity;
 
   const endDate = archived ? format(archived, "date") : "Forever";
+  const [hh, mm] = secondsToHrMm(weeklyTarget);
 
   return (
     <View
@@ -26,6 +27,20 @@ export default function Range({
       >
         {format(startDate, "date")} - {endDate}
       </Typography>
+      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+        <Typography
+          color={color}
+          style={{ textAlign: "center", marginBottom: 8 }}
+        >
+          Weekly target:{" "}
+        </Typography>
+        <Typography
+          color={color}
+          style={{ textAlign: "center", marginBottom: 8 }}
+        >
+          {hh}h {mm}m
+        </Typography>
+      </View>
     </View>
   );
 }

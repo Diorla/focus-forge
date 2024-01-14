@@ -36,7 +36,8 @@ export default function formatTime(
 ) {
   const list: Schedule[] = [];
 
-  let userTodayRemaining = initialTodayRemaining;
+  let currentTodayRemaining = initialTodayRemaining;
+  let currentUpcomingTime = initialUpcomingTime;
 
   activities.forEach((item) => {
     // time already done for today
@@ -68,47 +69,64 @@ export default function formatTime(
     timeToday.forEach((date) => (doneToday += item.done[date]));
     timeThisWeek.forEach((date) => (doneThisWeek += item.done[date]));
 
+    // this week remaining should be greater or equal to 0
     const tempTWR = item.weeklyTarget - doneThisWeek;
     const thisWeekRemaining = tempTWR > 0 ? tempTWR : 0;
 
+    // If the time remaining this week is less than dailyLimit
+    // then we need to lower today quota to the time remaining
     if (thisWeekRemaining > item.dailyLimit) todayQuota = item.dailyLimit;
     else todayQuota = thisWeekRemaining;
 
+    // If the time used is greater than today quota, then we need to increase
+    // today quota to match
     if (todayQuota > doneToday) todayTime = todayQuota;
     else todayTime = doneToday;
 
+    // the task time left to do today, it should be ge to 0
     const tempTR = todayTime - doneToday;
 
-    if (userTodayRemaining > tempTR) {
-      userTodayRemaining -= tempTR;
+    // Ensure that there is enough time to do task today
+    if (currentTodayRemaining > tempTR) {
+      // remove it from the cumulative today remaining
+      currentTodayRemaining -= tempTR;
       todayRemaining = tempTR;
     } else {
-      const extra = todayRemaining - userTodayRemaining;
-      todayRemaining = userTodayRemaining;
-      userTodayRemaining = 0;
+      const extra = todayRemaining - currentTodayRemaining;
+      todayRemaining = currentTodayRemaining;
+      currentTodayRemaining = 0;
       futureTime += extra;
     }
 
+    // all the time till today
     const accountedTime = doneThisWeek + doneToday + todayRemaining;
+    // Remaining time for the rest of the week
     let unaccountedTime = item.weeklyTarget - accountedTime;
 
+    // if the time for task already exceed weekly target
     if (unaccountedTime < 0) unaccountedTime = 0;
     futureTime += unaccountedTime;
 
-    if (initialUpcomingTime > futureTime) {
+    // Now to ensure that there is enough time in the future to complete the task
+    if (currentUpcomingTime > futureTime) {
+      //  We have enough time in the future
       upcomingTime = futureTime;
-      userTodayRemaining -= futureTime;
+      currentUpcomingTime -= futureTime;
     } else {
-      let tempOverflow = futureTime - initialUpcomingTime;
-      if (tempOverflow < 0) tempOverflow = 0;
-      upcomingTime = initialUpcomingTime;
-      userTodayRemaining = 0;
-      if (userTodayRemaining > tempOverflow) {
+      // Find the overflow time
+      const tempOverflow = futureTime - currentUpcomingTime;
+      upcomingTime = currentTodayRemaining;
+      currentUpcomingTime = 0;
+      // Assign the overflow time
+      if (currentTodayRemaining > tempOverflow) {
+        // if there is enough time today to cover overflow
         additionalTime = tempOverflow;
       } else {
-        additionalTime = userTodayRemaining;
+        // currentTodayRemaining for user is less than overflow of the task
+        additionalTime = currentTodayRemaining;
+        // set overflow to the time not covered
         overflowTime = tempOverflow - additionalTime;
-        userTodayRemaining = 0;
+        currentTodayRemaining = 0;
       }
     }
 
