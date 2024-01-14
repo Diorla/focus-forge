@@ -5,7 +5,8 @@ import { Subscription } from "expo-notifications";
 
 export default function useNotification() {
   const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState<any>(false);
+  const [notification, setNotification] =
+    useState<Notifications.Notification>(null);
   const notificationListener = useRef<Subscription>();
   const responseListener = useRef<Subscription>();
 

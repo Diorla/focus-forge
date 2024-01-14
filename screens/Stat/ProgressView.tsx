@@ -21,17 +21,14 @@ export default function ProgressView() {
     const done = item.doneThisWeek + item.doneToday;
     const total = item.weeklyTarget < done ? done : item.weeklyTarget;
     if (item.priority === "low") {
-      console.log("low:", item.name);
       lowTop += done;
       lowBottom += total;
     }
     if (item.priority === "medium") {
-      console.log("medium:", item.name);
       mediumTop += done;
       mediumBottom += total;
     }
     if (item.priority === "high") {
-      console.log("high", item.name);
       highTop += done;
       highBottom += total;
     }
