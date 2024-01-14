@@ -41,6 +41,7 @@ interface User {
    * metadata
    */
   updatedAt: number;
+  startTime: number;
 }
 
 export default User;

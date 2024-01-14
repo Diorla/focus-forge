@@ -1,21 +1,18 @@
-import { Card, useTheme } from "@rneui/themed";
+import { useTheme } from "@rneui/themed";
 import * as React from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import TopSpace from "../../components/topSpace";
 import ProgressView from "./ProgressView";
 import Header from "./Header";
-import useNavigate from "../../container/Nav/useNavigate";
 import CardButton from "./CardButton";
 
 export default function StatScreen() {
   const { theme } = useTheme();
-  const navigate = useNavigate();
 
   return (
     <View>
       <View style={{ backgroundColor: theme.colors.primary }}>
         <TopSpace />
-        <Header />
       </View>
       <ScrollView
         style={{
@@ -23,6 +20,7 @@ export default function StatScreen() {
         }}
       >
         <ProgressView />
+        <Header />
         <View
           style={{
             backgroundColor: theme.colors.white,

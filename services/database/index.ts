@@ -9,6 +9,7 @@ import deleteTask from "./deleteTask";
 import endTimer from "./endTimer";
 import { collection, doc, where } from "./firestore";
 import logError from "./logError";
+import startStopWatch from "./startStopWatch";
 import startTimer from "./startTimer";
 import unarchiveActivity from "./unarchiveActivity";
 import uncheckTask from "./uncheckTask";
@@ -40,4 +41,5 @@ export {
   deleteDoneTime,
   createTask,
   addTime,
+  startStopWatch,
 };

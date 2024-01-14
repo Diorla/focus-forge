@@ -3,10 +3,9 @@ import { doc } from "../database/firestore";
 import logError from "./logError";
 import User from "../../models/User";
 
-type Exclude = "createdAt" | "updatedAt";
-export type CreateUser = Omit<User, Exclude>;
+export type CreateUser = Partial<User> & { id: string };
 export default async function createUser(data: CreateUser) {
-  const formattedData: User = {
+  const formattedData = {
     ...data,
     updatedAt: Date.now(),
   };
