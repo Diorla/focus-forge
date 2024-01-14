@@ -3,7 +3,6 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
 import { Input, useTheme } from "@rneui/themed";
 import { useState } from "react";
-import DatePicker from "../../components/datePicker";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
@@ -21,6 +20,8 @@ export default function EditScreen() {
   const [form, setForm] = useState<Activity>(
     schedule.find((item) => item.id === id)
   );
+  const { activities } = useActivity();
+  const list = Array.from(new Set(activities.map((item) => item.category)));
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -132,16 +133,6 @@ export default function EditScreen() {
               {Math.ceil(daysToFinish)} days per week
             </Typography>
           ) : null}
-          <DatePicker
-            date={form.startDate}
-            setDate={(startDate) =>
-              setForm({
-                ...form,
-                startDate,
-              })
-            }
-            label="Start date"
-          />
           <Picker
             value={form.priority}
             onValueChange={(priority) =>
@@ -184,7 +175,7 @@ export default function EditScreen() {
           <SelectCategory
             value={form.category || "None"}
             setValue={(category) => setForm({ ...form, category })}
-            list={["None"]}
+            list={["None", ...list]}
           />
           <View style={{ marginBottom: 16, alignItems: "center" }}>
             <Button onPress={saveActivity}>Save</Button>

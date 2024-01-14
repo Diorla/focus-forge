@@ -3,7 +3,6 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
 import { Input, useTheme } from "@rneui/themed";
 import { useState } from "react";
-import DatePicker from "../../components/datePicker";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import { random } from "../../services/color";
@@ -11,6 +10,7 @@ import SelectCategory from "../../components/selectCategory";
 import Activity, { Priority } from "../../models/Activity";
 import { createActivity } from "../../services/database";
 import useUser from "../../context/user/useUser";
+import useActivity from "../../context/activity/useActivity";
 
 const baseForm: Activity = {
   name: "",
@@ -37,6 +37,8 @@ export default function AddScreen() {
     user: { id },
   } = useUser();
   const [form, setForm] = useState<Activity>({ ...baseForm, userId: id });
+  const { activities } = useActivity();
+  const list = Array.from(new Set(activities.map((item) => item.category)));
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -143,20 +145,10 @@ export default function AddScreen() {
             }
           />
           {daysToFinish ? (
-            <Typography style={{ paddingLeft: 8 }}>
+            <Typography style={{ paddingLeft: 8, marginBottom: 8 }}>
               {Math.ceil(daysToFinish)} days per week
             </Typography>
           ) : null}
-          <DatePicker
-            date={form.startDate}
-            setDate={(startDate) =>
-              setForm({
-                ...form,
-                startDate,
-              })
-            }
-            label="Start date"
-          />
           <Picker
             value={form.priority}
             onValueChange={(priority) =>
@@ -199,7 +191,7 @@ export default function AddScreen() {
           <SelectCategory
             value={form.category || "None"}
             setValue={(category) => setForm({ ...form, category })}
-            list={["None"]}
+            list={["None", ...list]}
           />
           <View style={{ marginBottom: 16, alignItems: "center" }}>
             <Button onPress={saveActivity}>Add</Button>

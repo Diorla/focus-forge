@@ -48,21 +48,33 @@ export default function Time({
         }}
       >
         <View>
-          <Typography color={color}>This week</Typography>
-          <Typography type="bigHeader" color={color}>
+          <Typography color={color} style={{ textAlign: "center" }}>
+            This week
+          </Typography>
+          <Typography
+            type="bigHeader"
+            color={color}
+            style={{ textAlign: "center" }}
+          >
             {h}h {String(m).padStart(2, "0")}
           </Typography>
-          <Typography type="big" color={color}>
-            {weekPercent.toFixed(2)}% Complete
+          <Typography type="big" color={color} style={{ textAlign: "center" }}>
+            {weekPercent.toFixed(2)}%
           </Typography>
         </View>
         <View>
-          <Typography color={color}>Today</Typography>
-          <Typography type="bigHeader" color={color}>
+          <Typography color={color} style={{ textAlign: "center" }}>
+            Today
+          </Typography>
+          <Typography
+            type="bigHeader"
+            color={color}
+            style={{ textAlign: "center" }}
+          >
             {hh}h {String(mm).padStart(2, "0")}
           </Typography>
-          <Typography type="big" color={color}>
-            {dayPercent.toFixed(2)}% Complete
+          <Typography type="big" color={color} style={{ textAlign: "center" }}>
+            {dayPercent.toFixed(2)}%
           </Typography>
         </View>
       </View>

@@ -10,7 +10,7 @@ export default function Range({
   activity: Schedule;
   color: string;
 }) {
-  const { startDate, archived, weeklyTarget } = activity;
+  const { startDate, archived, weeklyTarget, category } = activity;
 
   const endDate = archived ? format(archived, "date") : "Forever";
   const [hh, mm] = secondsToHrMm(weeklyTarget);
@@ -21,6 +21,9 @@ export default function Range({
         marginTop: 20,
       }}
     >
+      <Typography style={{ textAlign: "center" }} color={color} type="caption">
+        {category}
+      </Typography>
       <Typography
         color={color}
         style={{ textAlign: "center", marginBottom: 8 }}
