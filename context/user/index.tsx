@@ -10,10 +10,12 @@ import { View } from "react-native";
 import app from "../../constants/firebaseConfig";
 import { logError, watchUser } from "../../services/database";
 import * as SplashScreen from "expo-splash-screen";
+import { ToastProvider } from "react-native-toast-notifications";
 
 SplashScreen.preventAutoHideAsync();
 
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { useTheme } from "@rneui/themed";
 
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
@@ -27,6 +29,16 @@ export default function UserProvider({
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {
+    theme: {
+      colors: {
+        success: successColor,
+        error: dangerColor,
+        warning: warningColor,
+        secondary: normalColor,
+      },
+    },
+  } = useTheme();
 
   const signOut = () => {
     signOut();
@@ -81,16 +93,23 @@ export default function UserProvider({
   if (loading) return null;
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <UserContext.Provider
-        value={{
-          user,
-          loading,
-          signOut,
-          error,
-        }}
+      <ToastProvider
+        successColor={successColor}
+        dangerColor={dangerColor}
+        warningColor={warningColor}
+        normalColor={normalColor}
       >
-        {children}
-      </UserContext.Provider>
+        <UserContext.Provider
+          value={{
+            user,
+            loading,
+            signOut,
+            error,
+          }}
+        >
+          {children}
+        </UserContext.Provider>
+      </ToastProvider>
     </View>
   );
 }

@@ -13,11 +13,14 @@ import endTimer from "../../services/database/endTimer";
 import ChecklistModal from "../../container/ChecklistModal";
 import { useState } from "react";
 import { secondsToHrMm } from "../../services/datetime";
+import { useToast } from "react-native-toast-notifications";
 
 export function TodayCard({ schedule }: { schedule: Schedule }) {
   const {
     theme: { colors },
   } = useTheme();
+
+  const toast = useToast();
   const navigate = useNavigate<{ id: string }>();
   const [visible, setVisible] = useState(false);
   const {
@@ -85,9 +88,13 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
 
           <PlayButton
             playing={running}
-            onPress={() =>
-              running ? endTimer(id, timer.startTime, done) : startTimer(id)
-            }
+            onPress={() => {
+              if (running)
+                endTimer(id, timer.startTime, done).then(() =>
+                  toast.show("Timer paused")
+                );
+              else startTimer(id).then(() => toast.show("Timer started"));
+            }}
           />
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
