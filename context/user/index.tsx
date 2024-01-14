@@ -41,9 +41,17 @@ export default function UserProvider({
           watchUser(currentUser.uid, (dbUser) => {
             const email = dbUser?.email || currentUser.email;
             const name = dbUser?.name || currentUser.displayName;
+            const { createdAt: authCreated = 0 } = {
+              createdAt: 0,
+              ...currentUser,
+            };
+            const createdAt =
+              dbUser?.createdAt || Number(authCreated) || Date.now();
+
             setUser({
               email,
               name,
+              createdAt,
               id: currentUser.uid,
               ...dbUser,
             });
