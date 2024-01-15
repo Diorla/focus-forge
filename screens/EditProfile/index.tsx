@@ -33,7 +33,7 @@ export default function EditProfileScreen() {
           />
           <Button
             onPress={() =>
-              updateUser(user).then(() =>
+              updateUser({ ...user, ...form }).then(() =>
                 toast.show("Profile updated", { type: "success" })
               )
             }

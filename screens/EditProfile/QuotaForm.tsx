@@ -38,115 +38,19 @@ export function QuotaForm({
             backgroundColor: "transparent",
           }}
         >
+          <View style={{ alignItems: "center" }}></View>
           <View>
             <View>
-              <Typography type="label">Daily quota</Typography>
-              <Typography
-                type="big"
-                style={{ textAlign: "center", marginBottom: 40 }}
-              >
-                {hh}h {String(mm).padStart(2, "0")}
-              </Typography>
-              <View>
-                <Typography>Sunday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[0]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        0,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-                <Typography>Monday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[1]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        1,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-                <Typography>Tuesday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[2]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        2,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-                <Typography>Wednesday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[3]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        3,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-                <Typography>Thursday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[4]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        4,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-                <Typography>Friday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[5]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        5,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-                <Typography>Saturday</Typography>
-                <TimeInput
-                  value={form.dailyQuota[6]}
-                  onChange={(value) =>
-                    setForm({
-                      ...form,
-                      dailyQuota: insertArray(
-                        form.dailyQuota,
-                        6,
-                        value
-                      ) as DailyQuota,
-                    })
-                  }
-                />
-              </View>
+              <Typography type="label">Weekly quota</Typography>
+              <TimeInput
+                value={form.weeklyQuota}
+                onChange={(weeklyQuota) =>
+                  setForm({
+                    ...form,
+                    weeklyQuota,
+                  })
+                }
+              />
             </View>
             <View
               style={{
@@ -164,7 +68,7 @@ export function QuotaForm({
                   })
                 }
               >
-                Use weekly quota
+                Use daily quota
               </Button>
             </View>
           </View>
@@ -185,19 +89,115 @@ export function QuotaForm({
           backgroundColor: "transparent",
         }}
       >
-        <View style={{ alignItems: "center" }}></View>
         <View>
           <View>
-            <Typography type="label">Weekly quota</Typography>
-            <TimeInput
-              value={form.weeklyQuota}
-              onChange={(weeklyQuota) =>
-                setForm({
-                  ...form,
-                  weeklyQuota,
-                })
-              }
-            />
+            <Typography type="label">Daily quota</Typography>
+            <Typography
+              type="big"
+              style={{ textAlign: "center", marginBottom: 40 }}
+            >
+              {hh}h {String(mm).padStart(2, "0")}
+            </Typography>
+            <View>
+              <Typography>Sunday</Typography>
+              <TimeInput
+                value={form.dailyQuota[0]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      0,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+              <Typography>Monday</Typography>
+              <TimeInput
+                value={form.dailyQuota[1]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      1,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+              <Typography>Tuesday</Typography>
+              <TimeInput
+                value={form.dailyQuota[2]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      2,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+              <Typography>Wednesday</Typography>
+              <TimeInput
+                value={form.dailyQuota[3]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      3,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+              <Typography>Thursday</Typography>
+              <TimeInput
+                value={form.dailyQuota[4]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      4,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+              <Typography>Friday</Typography>
+              <TimeInput
+                value={form.dailyQuota[5]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      5,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+              <Typography>Saturday</Typography>
+              <TimeInput
+                value={form.dailyQuota[6]}
+                onChange={(value) =>
+                  setForm({
+                    ...form,
+                    dailyQuota: insertArray(
+                      form.dailyQuota,
+                      6,
+                      value
+                    ) as DailyQuota,
+                  })
+                }
+              />
+            </View>
           </View>
           <View
             style={{
@@ -215,7 +215,7 @@ export function QuotaForm({
                 })
               }
             >
-              Use daily quota
+              Use weekly quota
             </Button>
           </View>
         </View>
