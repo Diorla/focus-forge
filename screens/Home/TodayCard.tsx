@@ -32,7 +32,8 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
     done = {},
   } = schedule;
 
-  const [hh, mm, ss] = secondsToHrMm(todayRemaining + additionalTime);
+  const targetTime = todayRemaining + additionalTime;
+  const [hh, mm, ss] = secondsToHrMm(targetTime);
   const running = !!timer;
   const borderStyle = running
     ? { borderSize: 1, borderColor: colors.primary }
@@ -63,7 +64,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
         >
           {timer ? (
             <Timer
-              targetTime={todayRemaining}
+              targetTime={targetTime}
               startTime={timer.startTime}
               todayTime={todayTime}
               todayRemaining={todayRemaining}

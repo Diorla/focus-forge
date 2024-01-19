@@ -29,7 +29,7 @@ export type Schedule = Activity & {
  * Upcoming time (UT) => FT that is covered
  * Overflow time (OT) => FT that is not covered by AT or UT
  */
-export default function formatTime(
+export default function getSchedule(
   activities: Activity[],
   initialTodayRemaining: number,
   initialUpcomingTime: number
@@ -115,7 +115,7 @@ export default function formatTime(
     } else {
       // Find the overflow time
       const tempOverflow = futureTime - currentUpcomingTime;
-      upcomingTime = currentTodayRemaining;
+      upcomingTime = currentUpcomingTime;
       currentUpcomingTime = 0;
       // Assign the overflow time
       if (currentTodayRemaining > tempOverflow) {
