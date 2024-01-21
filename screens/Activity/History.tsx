@@ -47,7 +47,7 @@ export default function History({ activity }: { activity: Schedule }) {
     datetime: 0,
     length: 0,
   });
-  const [editingComment, setEditingComment] = useState(true);
+  const [editingComment, setEditingComment] = useState(false);
 
   const [newTime, setNewTime] = useState({
     comment: "",
