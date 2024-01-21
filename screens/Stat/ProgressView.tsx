@@ -1,7 +1,7 @@
 import { useTheme } from "@rneui/themed";
 import * as React from "react";
 import { View } from "react-native";
-import { Typography } from "../../components";
+import { TimeFormat, Typography } from "../../components";
 import * as Progress from "react-native-progress";
 import useActivity from "../../context/activity/useActivity";
 
@@ -44,15 +44,24 @@ export default function ProgressView() {
         paddingBottom: 8,
       }}
     >
+      <Typography
+        style={{ textAlign: "center", marginTop: 24 }}
+        color={theme.colors.white}
+        type="big"
+      >
+        Weekly target
+      </Typography>
       <View
         style={{
           backgroundColor: theme.colors.primary,
           flexDirection: "row",
           justifyContent: "space-evenly",
-          marginTop: 24,
         }}
       >
         <View style={{ alignItems: "center" }}>
+          <Typography color={theme.colors.white} style={{ marginVertical: 8 }}>
+            High
+          </Typography>
           <Progress.Circle
             size={100}
             progress={high}
@@ -67,9 +76,12 @@ export default function ProgressView() {
               </Typography>
             )}
           />
-          <Typography color={theme.colors.white}>High</Typography>
+          <TimeFormat color={theme.colors.white} value={highBottom - highTop} />
         </View>
         <View style={{ alignItems: "center" }}>
+          <Typography color={theme.colors.white} style={{ marginVertical: 8 }}>
+            Medium
+          </Typography>
           <Progress.Circle
             size={100}
             progress={medium}
@@ -84,9 +96,15 @@ export default function ProgressView() {
               </Typography>
             )}
           />
-          <Typography color={theme.colors.white}>Medium</Typography>
+          <TimeFormat
+            color={theme.colors.white}
+            value={mediumBottom - mediumTop}
+          />
         </View>
         <View style={{ alignItems: "center" }}>
+          <Typography color={theme.colors.white} style={{ marginVertical: 8 }}>
+            Low
+          </Typography>
           <Progress.Circle
             size={100}
             progress={low}
@@ -101,15 +119,11 @@ export default function ProgressView() {
               </Typography>
             )}
           />
-          <Typography color={theme.colors.white}>Low</Typography>
+          <TimeFormat color={theme.colors.white} value={lowBottom - lowTop} />
         </View>
       </View>
-      <Typography
-        style={{ textAlign: "center" }}
-        color={theme.colors.white}
-        type="big"
-      >
-        Weekly target
+      <Typography style={{ textAlign: "center" }} color={theme.colors.white}>
+        Time left
       </Typography>
     </View>
   );

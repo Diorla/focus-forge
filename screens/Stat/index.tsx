@@ -3,7 +3,6 @@ import * as React from "react";
 import { ScrollView, View } from "react-native";
 import TopSpace from "../../components/topSpace";
 import ProgressView from "./ProgressView";
-import Header from "./Header";
 import CardButton from "./CardButton";
 
 export default function StatScreen() {
@@ -20,7 +19,6 @@ export default function StatScreen() {
         }}
       >
         <ProgressView />
-        <Header />
         <View
           style={{
             backgroundColor: theme.colors.white,

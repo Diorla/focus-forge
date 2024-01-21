@@ -1,3 +1,4 @@
+import TimeFormat from "./TimeFormat";
 import Button from "./button";
 import ColorPicker from "./colorPicker";
 import DatePicker from "./datePicker";
@@ -18,4 +19,5 @@ export {
   TopSpace,
   TxtButton,
   ColorPicker,
+  TimeFormat,
 };
