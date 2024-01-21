@@ -1,16 +1,19 @@
 import { useTheme } from "@rneui/themed";
 import { View, Image, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import Button from "./components/button";
-import AnimatedBackground from "./AnimatedBackground";
-import Typography from "./components/typography";
+import Button from "../../components/button";
+import AnimatedBackground from "../../AnimatedBackground";
+import Typography from "../../components/typography";
+import Dots from "./Dots";
 
 export default function Onboarding({ getStarted }: { getStarted: () => void }) {
   const [index, setIndex] = useState(0);
   const {
     theme: { colors },
   } = useTheme();
-  const [prevColor, setPrevColor] = useState(colors.white);
+  const [prevColor, setPrevColor] = useState(colors.black);
+
+  const colorList = [colors.primary, colors.secondary, colors.accent];
 
   if (index === 0)
     return (
@@ -30,7 +33,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
         >
           <View style={{ alignItems: "center" }}>
             <Image
-              source={require("./assets/puzzle.jpg")}
+              source={require("../../assets/puzzle.jpg")}
               style={{
                 height: 200,
                 width: 200,
@@ -40,8 +43,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
           </View>
           <View style={{ padding: 8 }}>
             <Typography color={colors.white} type="header">
-              Break your task into small manageable chunks and reduce their
-              difficulty
+              Break your task into chunks to reduce their difficulty
             </Typography>
             <View style={{ alignItems: "flex-end", marginTop: 8 }}>
               <TouchableOpacity
@@ -54,33 +56,13 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{
-                height: 20,
-                width: 20,
-                backgroundColor: colors.grey0,
-                borderRadius: 20,
-              }}
-            />
-            <View
-              style={{
-                height: 20,
-                width: 20,
-                backgroundColor: colors.grey4,
-                borderRadius: 20,
-                marginHorizontal: 20,
-              }}
-            />
-            <View
-              style={{
-                height: 20,
-                width: 20,
-                backgroundColor: colors.grey4,
-                borderRadius: 20,
-              }}
-            />
-          </View>
+          <Dots
+            activeIndex={index}
+            setIndex={(idx) => {
+              setPrevColor(colorList[index]);
+              setIndex(idx);
+            }}
+          />
           <Button block onPress={getStarted}>
             Get Started
           </Button>
@@ -105,7 +87,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
         >
           <View style={{ alignItems: "center" }}>
             <Image
-              source={require("./assets/hourglass.jpg")}
+              source={require("../../assets/hourglass.jpg")}
               style={{
                 height: 200,
                 width: 200,
@@ -115,7 +97,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
           </View>
           <View style={{ padding: 8 }}>
             <Typography color={colors.white} type="header">
-              Manage your time more effectively and get the best out of your day
+              Manage your time more effectively to get the best out of your day
             </Typography>
             <View
               style={{
@@ -143,33 +125,13 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
               </TouchableOpacity>
             </View>
           </View>
-          <View style={{ flexDirection: "row" }}>
-            <View
-              style={{
-                height: 20,
-                width: 20,
-                backgroundColor: colors.grey4,
-                borderRadius: 20,
-              }}
-            />
-            <View
-              style={{
-                height: 20,
-                width: 20,
-                backgroundColor: colors.grey0,
-                borderRadius: 20,
-                marginHorizontal: 20,
-              }}
-            />
-            <View
-              style={{
-                height: 20,
-                width: 20,
-                backgroundColor: colors.grey4,
-                borderRadius: 20,
-              }}
-            />
-          </View>
+          <Dots
+            activeIndex={index}
+            setIndex={(idx) => {
+              setPrevColor(colorList[index]);
+              setIndex(idx);
+            }}
+          />
           <Button block onPress={getStarted}>
             Get Started
           </Button>
@@ -194,7 +156,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
       >
         <View style={{ alignItems: "center" }}>
           <Image
-            source={require("./assets/deadline.jpg")}
+            source={require("../../assets/deadline.jpg")}
             style={{
               height: 200,
               width: 200,
@@ -223,33 +185,13 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ flexDirection: "row" }}>
-          <View
-            style={{
-              height: 20,
-              width: 20,
-              backgroundColor: colors.grey4,
-              borderRadius: 20,
-            }}
-          />
-          <View
-            style={{
-              height: 20,
-              width: 20,
-              backgroundColor: colors.grey4,
-              borderRadius: 20,
-              marginHorizontal: 20,
-            }}
-          />
-          <View
-            style={{
-              height: 20,
-              width: 20,
-              backgroundColor: colors.grey0,
-              borderRadius: 20,
-            }}
-          />
-        </View>
+        <Dots
+          activeIndex={index}
+          setIndex={(idx) => {
+            setPrevColor(colorList[index]);
+            setIndex(idx);
+          }}
+        />
         <Button block onPress={getStarted}>
           Get Started
         </Button>

@@ -1,6 +1,6 @@
 import useUser from "./context/user/useUser";
 import { useState } from "react";
-import Onboarding from "./Onboarding";
+import Onboarding from "./container/Onboarding";
 import Form from "./container/Form";
 import Registration from "./container/Registration";
 import Nav from "./container/Nav";
