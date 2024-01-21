@@ -50,7 +50,7 @@ export function QuotaForm({ name }: { name: string }) {
       email,
     });
   };
-  if (quota.useWeeklyQuota)
+  if (!quota.useWeeklyQuota)
     return (
       <View
         style={{
