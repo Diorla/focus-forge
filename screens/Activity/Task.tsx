@@ -78,6 +78,9 @@ export default function Task({ activity }: { activity: Schedule }) {
                   setShowAddNewTask(!showAddNewTask)
                 )
               }
+              containerStyle={{
+                marginRight: 8,
+              }}
             >
               Save
             </Button>
