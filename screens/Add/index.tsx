@@ -11,6 +11,7 @@ import Activity, { Priority } from "../../models/Activity";
 import { createActivity } from "../../services/database";
 import useUser from "../../context/user/useUser";
 import useActivity from "../../context/activity/useActivity";
+import { useToast } from "react-native-toast-notifications";
 
 const baseForm: Activity = {
   name: "",
@@ -39,6 +40,7 @@ export default function AddScreen() {
   const [form, setForm] = useState<Activity>({ ...baseForm, userId: id });
   const { activities } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));
+  const toast = useToast();
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -69,9 +71,12 @@ export default function AddScreen() {
     }
     createActivity({
       ...form,
-    }).then(() => {
-      setForm({ ...baseForm, userId: id });
-    });
+    })
+      .then(() => {
+        setForm({ ...baseForm, userId: id });
+      })
+      .then(() => toast.show("New activity added"))
+      .catch((err) => toast.show("Adding new activity failed: " + err.message));
   };
 
   const daysToFinish = form.dailyLimit
