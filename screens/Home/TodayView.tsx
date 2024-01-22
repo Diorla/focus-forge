@@ -6,19 +6,26 @@ import { TodayCard } from "./TodayCard";
 import { useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 
+const priority = ["high", "medium", "low", "none"];
+
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useActivity();
-  const today = schedule.filter((item) => {
-    const todo = item.todayRemaining + item.additionalTime;
-    return todo > 0 || item.timer;
-  });
+  const today = schedule
+    .filter((item) => {
+      const todo = item.todayRemaining + item.additionalTime;
+      return todo > 0 || item.timer;
+    })
+    .sort(
+      (a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority)
+    );
 
   if (today.length) {
     const runningActivity = today.find((item) => item.timer?.startTime);
     const notRunning = today.filter((item) => item.id !== runningActivity?.id);
     const first = runningActivity ?? today[0];
     const rest = runningActivity ? notRunning : today.slice(1);
+
     return (
       <View style={{ marginVertical: 16 }}>
         <View
@@ -40,9 +47,15 @@ export default function TodayView() {
           <TodayCard schedule={first} />
           {expanded ? (
             <>
-              {rest.map((item) => (
-                <TodayCard key={item.id} schedule={item} />
-              ))}
+              {rest
+                .sort((a, b) => {
+                  if (b.timer) return 1;
+                  if (a.timer) return -1;
+                  return 0;
+                })
+                .map((item) => (
+                  <TodayCard key={item.id} schedule={item} />
+                ))}
             </>
           ) : null}
         </View>
