@@ -6,6 +6,7 @@ import { signIn, signUp } from "../../services/auth";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Typography from "../../components/typography";
 import ForgetPassword from "./ForgetPassword";
+import { logError } from "../../services/database";
 
 export default function Form() {
   const [value, setValue] = useState({
@@ -13,6 +14,13 @@ export default function Form() {
     password: "",
     repassword: "",
   });
+
+  const [error, setError] = useState({
+    email: "",
+    password: "",
+    repassword: "",
+  });
+
   const [isNew, setIsNew] = useState(true);
   const { email, password } = value;
   const [hidePassword, setHidePassword] = useState({
@@ -20,12 +28,69 @@ export default function Form() {
     repassword: true,
   });
 
+  const [loading, setLoading] = useState(false);
   const message = isNew ? "sign up" : "sign in";
   const {
     theme: { colors },
   } = useTheme();
 
   const [forgetPassword, setForgetPassword] = useState(false);
+
+  const onSignUp = async () => {
+    setLoading(true);
+    if (!value.email) {
+      return setError({ ...error, email: "Please provide an email" });
+    }
+    if (!value.password) {
+      return setError({ ...error, password: "Please provide a password" });
+    }
+    if (value.password !== value.repassword) {
+      return setError({ ...error, repassword: "Passwords do not match" });
+    }
+    try {
+      await signUp(value.email, value.password);
+      setLoading(false);
+    } catch (error) {
+      if (error.message.includes("invalid-email"))
+        return setError({
+          ...error,
+          email: "Please provide a valid email",
+        });
+      setLoading(false);
+    }
+  };
+
+  const onSignIn = async () => {
+    setLoading(true);
+    if (!value.email) {
+      return setError({ ...error, email: "Please provide an email" });
+    }
+    if (!value.password) {
+      return setError({ ...error, password: "Please provide password" });
+    }
+    try {
+      await signIn(value.email, value.password);
+      setLoading(false);
+    } catch (error) {
+      if (error.message.includes("user-not-found"))
+        return setError({ ...error, email: "User not found" });
+      else if (error.message.includes("invalid-email"))
+        return setError({ ...error, email: "Please provide a valid email" });
+      else if (error.message.includes("invalid-credential"))
+        return setError({
+          ...error,
+          password: "Password and email doesn't match",
+        });
+      else if (error.message.includes("too-many-requests"))
+        return setError({
+          ...error,
+          repassword:
+            "Account disabled due to many failed login. Please reset your password",
+        });
+      else logError(value.email, "signing in", error);
+      setLoading(false);
+    }
+  };
 
   if (forgetPassword)
     return <ForgetPassword closePassword={() => setForgetPassword(false)} />;
@@ -143,14 +208,16 @@ export default function Form() {
           {isNew ? (
             <Button
               title="Sign up"
-              onPress={() => signUp(email, password)}
+              onPress={onSignUp}
               disabled={!(email && password)}
+              loading={loading}
             />
           ) : (
             <Button
               title="Sign in"
-              onPress={() => signIn(email, password)}
+              onPress={onSignIn}
               disabled={!(email && password)}
+              loading={loading}
             />
           )}
         </View>
