@@ -62,11 +62,16 @@ export default function getSchedule(
       let upcomingTime = 0;
       // No more time to do anything this week
       let overflowTime = 0;
+      // The last time the timer was paused
 
       const doneList = Object.keys(item.done || {});
+      const lastDone = Math.max(
+        ...doneList.map((item) => dayjs(item).valueOf())
+      );
       const timeToday = doneList.filter((datetime) =>
         dayjs(datetime).isToday()
       );
+
       const timeThisWeek = doneList.filter(
         (datetime) =>
           dayjs().isSame(datetime, "week") && !dayjs(datetime).isToday()
@@ -148,6 +153,7 @@ export default function getSchedule(
         additionalTime,
         upcomingTime,
         overflowTime,
+        lastDone: Number.isFinite(lastDone) ? lastDone : 0,
       });
     });
   return list;

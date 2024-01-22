@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from "react-native";
-import { Typography } from "../../components";
-import { format, secondsToHrMm } from "../../services/datetime";
+import { TimeFormat, Typography } from "../../components";
+import { format } from "../../services/datetime";
 import { Card, Divider, useTheme } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -50,7 +50,6 @@ export default function ActivityCard({
     theme: { colors },
   } = useTheme();
   const navigate = useNavigate<{ id: string }>();
-  const [hr, mm] = secondsToHrMm(generateTime(type, schedule));
   const { done } = schedule;
   const [visible, setVisible] = useState(false);
   const tasks = schedule.tasks.filter((item) => !item.checked);
@@ -78,9 +77,7 @@ export default function ActivityCard({
             marginVertical: 10,
           }}
         >
-          <Typography>
-            {hr}h {mm}
-          </Typography>
+          <TimeFormat value={generateTime(type, schedule)} />
           <Divider
             color={colors.grey3}
             style={{ width: "50%", marginVertical: 4 }}
