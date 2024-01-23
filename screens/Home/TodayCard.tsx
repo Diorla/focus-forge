@@ -11,9 +11,11 @@ import Timer from "../../container/Timer";
 import startTimer from "../../services/database/startTimer";
 import endTimer from "../../services/database/endTimer";
 import ChecklistModal from "../../container/ChecklistModal";
-import { useState } from "react";
-import { secondsToHrMm } from "../../services/datetime";
+import { useEffect, useState } from "react";
+import { format, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
+import { schedulePushNotification } from "../../services/notification";
+import { cancelScheduledNotificationAsync } from "expo-notifications";
 
 export function TodayCard({ schedule }: { schedule: Schedule }) {
   const {
@@ -30,6 +32,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
     todayRemaining,
     id,
     done = {},
+    name,
   } = schedule;
 
   const targetTime = todayRemaining + additionalTime;
@@ -39,6 +42,20 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
     ? { borderSize: 1, borderColor: colors.primary }
     : {};
   const tasks = schedule.tasks.filter((item) => !item.checked);
+  const [notificationId, setNotificationId] = useState("");
+
+  useEffect(() => {
+    if (timer && !notificationId)
+      schedulePushNotification(
+        {
+          title: `${name}`,
+          body: `Ended at ${format(Date.now() + targetTime * 1000)}`,
+          data: {},
+        },
+        targetTime
+      ).then((notificationId) => setNotificationId(notificationId));
+  }, []);
+
   return (
     <>
       <ChecklistModal
@@ -90,11 +107,22 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
           <PlayButton
             playing={running}
             onPress={() => {
-              if (running)
+              if (running) {
                 endTimer(id, timer.startTime, done).then(() =>
                   toast.show("Timer paused")
                 );
-              else startTimer(id).then(() => toast.show("Timer started"));
+                cancelScheduledNotificationAsync(notificationId);
+              } else {
+                startTimer(id).then(() => toast.show("Timer started"));
+                schedulePushNotification(
+                  {
+                    title: `${name}`,
+                    body: `Ended at ${format(Date.now() + targetTime * 1000)}`,
+                    data: null,
+                  },
+                  targetTime
+                ).then((notificationId) => setNotificationId(notificationId));
+              }
             }}
           />
         </View>
