@@ -94,10 +94,13 @@ export default function getSchedule(
       if (todayQuota > doneToday) todayTime = todayQuota;
       else todayTime = doneToday;
 
+      // Making sure there is enough time for todayTime
+      if (currentTodayRemaining < todayTime) todayTime = currentTodayRemaining;
+
       // the task time left to do today, it should be ge to 0
       const tempTR = todayTime - doneToday;
 
-      // Ensure that there is enough time to do task today
+      // Ensure that there is enough time to do task in the future as well
       if (currentTodayRemaining > tempTR) {
         // remove it from the cumulative today remaining
         currentTodayRemaining -= tempTR;
