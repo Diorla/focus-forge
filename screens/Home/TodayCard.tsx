@@ -27,15 +27,15 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
   const [visible, setVisible] = useState(false);
   const {
     timer,
-    todayTime,
     additionalTime,
-    todayRemaining,
+    todayTime,
     id,
     done = {},
     name,
+    doneToday = 0,
   } = schedule;
 
-  const targetTime = todayRemaining + additionalTime;
+  const targetTime = todayTime + additionalTime;
   const [hh, mm, ss] = secondsToHrMm(targetTime);
   const running = !!timer;
   const borderStyle = running
@@ -83,10 +83,9 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
             <Timer
               targetTime={targetTime}
               startTime={timer.startTime}
-              todayTime={todayTime}
-              todayRemaining={todayRemaining}
               id={id}
               done={done}
+              doneToday={doneToday}
             />
           ) : (
             <>
@@ -95,7 +94,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                 {String(ss).padStart(2, "0")}
               </Typography>
               <Progress.Bar
-                progress={(todayTime - todayRemaining) / todayTime}
+                progress={doneToday / targetTime}
                 color={colors.primary}
                 unfilledColor={colors.grey5}
                 borderColor={colors.grey0}

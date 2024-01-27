@@ -31,6 +31,13 @@ export type Schedule = Activity & {
  */
 const priority = ["high", "medium", "low", "none"];
 
+/**
+ * Used to generate schedule for each task
+ * @param activities list of activities that has been added
+ * @param initialTodayRemaining total time remaining, minus done today
+ * @param initialUpcomingTime all future time available
+ * @returns
+ */
 export default function getSchedule(
   activities: Activity[],
   initialTodayRemaining: number,

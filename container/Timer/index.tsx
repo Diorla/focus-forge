@@ -10,19 +10,17 @@ import { useToast } from "react-native-toast-notifications";
 export default function Timer({
   startTime,
   targetTime,
-  todayTime,
-  todayRemaining,
   id,
   done,
   type = "today",
+  doneToday = 0,
 }: {
   startTime: number;
   targetTime: number;
-  todayTime: number;
-  todayRemaining: number;
   id: string;
   done: { [key: string]: number };
   type?: "today" | "task";
+  doneToday: number;
 }) {
   const {
     theme: { colors },
@@ -44,7 +42,7 @@ export default function Timer({
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />
       <Progress.Bar
-        progress={(todayTime - todayRemaining + count) / todayTime}
+        progress={doneToday / targetTime}
         color={colors.primary}
         unfilledColor={colors.grey5}
         borderColor={colors.grey0}
