@@ -1,12 +1,7 @@
 import { useTheme } from "@rneui/themed";
 import { Text, TextStyle } from "react-native";
 
-export default function Typography({
-  type,
-  children,
-  color,
-  style,
-}: {
+export interface TypographyProps {
   type?:
     | "bigHeader"
     | "header"
@@ -18,7 +13,14 @@ export default function Typography({
   children: (string | number)[] | string | number;
   color?: string;
   style?: TextStyle;
-}) {
+}
+
+export default function Typography({
+  type,
+  children,
+  color,
+  style,
+}: TypographyProps) {
   const {
     theme: { colors },
   } = useTheme();

@@ -1,4 +1,4 @@
-import { Typography } from "../../components";
+import { TimeFormat, Typography } from "../../components";
 import { View } from "react-native";
 import { Schedule } from "../../context/activity/getSchedule";
 import { secondsToHrMm } from "../../services/datetime";
@@ -10,19 +10,17 @@ export default function Time({
   activity: Schedule;
   color: string;
 }) {
-  const {
-    doneThisWeek,
-    weeklyTarget,
-    doneToday,
-    todayRemaining,
-    additionalTime,
-  } = activity;
+  const { doneThisWeek, weeklyTarget, doneToday, todayTime, additionalTime } =
+    activity;
 
-  const allDoneThisWeek = doneThisWeek + doneToday;
-  const allTodoToday = todayRemaining + additionalTime + doneToday;
+  const allDoneThisWeek =
+    doneThisWeek + doneToday + 0.00000000000000000000000001;
+  const allTodoToday =
+    todayTime + additionalTime + doneToday + 0.00000000000000000000000001;
 
-  const [h, m] = secondsToHrMm(allDoneThisWeek);
-  const [hh, mm] = secondsToHrMm(doneToday);
+  const timeLeftThisWeek = weeklyTarget - allDoneThisWeek;
+  const [h, m] = secondsToHrMm(timeLeftThisWeek <= 0 ? 0 : timeLeftThisWeek);
+  const [hh, mm] = secondsToHrMm(allTodoToday - doneToday);
 
   const weekPercent = (allDoneThisWeek / weeklyTarget) * 100;
   const dayPercent = (doneToday / allTodoToday) * 100;
@@ -38,7 +36,7 @@ export default function Time({
         color={color}
         style={{ textAlign: "center", marginBottom: 8 }}
       >
-        Progress
+        Time left
       </Typography>
       <View
         style={{
@@ -58,6 +56,11 @@ export default function Time({
           >
             {h}h {String(m).padStart(2, "0")}
           </Typography>
+          <TimeFormat
+            color={color}
+            value={weeklyTarget}
+            style={{ textAlign: "center" }}
+          />
           <Typography type="big" color={color} style={{ textAlign: "center" }}>
             {weekPercent.toFixed(2)}%
           </Typography>
@@ -73,6 +76,11 @@ export default function Time({
           >
             {hh}h {String(mm).padStart(2, "0")}
           </Typography>
+          <TimeFormat
+            color={color}
+            value={allTodoToday}
+            style={{ textAlign: "center" }}
+          />
           <Typography type="big" color={color} style={{ textAlign: "center" }}>
             {dayPercent.toFixed(2)}%
           </Typography>
