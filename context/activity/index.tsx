@@ -53,10 +53,11 @@ export default function ActivityProvider({
         let taskLeft = 0;
 
         scheduleList.forEach((item) => {
-          const { additionalTime, todayTime } = item;
-          todoTime += additionalTime + todayTime;
-          if (additionalTime + todayTime > 0) taskLeft++;
-          if (additionalTime + todayTime <= 0) taskDone++;
+          const { additionalTime, todayTime, doneToday } = item;
+          todoTime += additionalTime + todayTime - doneToday;
+          const timeLeft = additionalTime + todayTime - doneToday;
+          if (todayTime && timeLeft > 0) taskLeft++;
+          if (todayTime && timeLeft <= 0) taskDone++;
         });
 
         setActivities(activities);
