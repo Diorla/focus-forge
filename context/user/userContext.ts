@@ -5,6 +5,7 @@ const userContext = createContext({
   loading: true,
   signOut: null,
   error: null,
+  time: Date.now(),
 });
 
 export default userContext;

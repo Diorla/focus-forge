@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
  * This code was adapted for react-native from
  * https://overreacted.io/making-setinterval-declarative-with-react-hooks/
  */
-export default function useInterval(callback: () => void, delay) {
+export default function useInterval(callback: () => void, delay: number) {
   const savedCallback = useRef<() => void>();
 
   useEffect(() => {

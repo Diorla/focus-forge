@@ -16,6 +16,7 @@ SplashScreen.preventAutoHideAsync();
 
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@rneui/themed";
+import useInterval from "../../container/Timer/useInterval";
 
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
@@ -29,6 +30,7 @@ export default function UserProvider({
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [time, setTime] = useState(Date.now());
   const {
     theme: {
       colors: {
@@ -90,6 +92,10 @@ export default function UserProvider({
     }
   }, [loading]);
 
+  useInterval(() => {
+    setTime(Date.now());
+  }, 15000);
+
   if (loading) return null;
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
@@ -105,6 +111,7 @@ export default function UserProvider({
             loading,
             signOut,
             error,
+            time,
           }}
         >
           {children}

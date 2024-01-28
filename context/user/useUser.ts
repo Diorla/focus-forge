@@ -22,8 +22,9 @@ export default function useUser() {
      */
     error: Error;
     /**
-     * Still retrieving the tasks
+     * The current time to the milliseconds, to keep track of the day
      */
+    time: number;
   }
 
   return useContext<UserContext>(userContext);
