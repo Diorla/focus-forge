@@ -33,7 +33,7 @@ export default function Timer({
     setCount(count + 1);
   }, 1000);
 
-  const value = targetTime - count;
+  const value = targetTime - doneToday - count;
   if (targetTime <= count && type === "today")
     endTimer(id, startTime, done, startTime + targetTime * 1000).then(() =>
       toast.show("Timer completed")

@@ -9,7 +9,9 @@ export default function RecentView() {
 
   const completed = schedule
     .filter((item) => {
-      return item.todayRemaining <= 0 && dayjs(item.lastDone).isToday();
+      return (
+        item.todayTime - item.doneToday <= 0 && dayjs(item.lastDone).isToday()
+      );
     })
     .sort((a, b) => a.lastDone - b.lastDone);
 

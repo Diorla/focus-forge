@@ -36,7 +36,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
   } = schedule;
 
   const targetTime = todayTime + additionalTime;
-  const [hh, mm, ss] = secondsToHrMm(targetTime);
+  const [hh, mm, ss] = secondsToHrMm(targetTime - doneToday);
   const running = !!timer;
   const borderStyle = running
     ? { borderSize: 1, borderColor: colors.primary }
