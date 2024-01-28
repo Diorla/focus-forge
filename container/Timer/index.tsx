@@ -42,7 +42,7 @@ export default function Timer({
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />
       <Progress.Bar
-        progress={doneToday / targetTime}
+        progress={(doneToday + count) / targetTime}
         color={colors.primary}
         unfilledColor={colors.grey5}
         borderColor={colors.grey0}

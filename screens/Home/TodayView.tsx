@@ -13,7 +13,7 @@ export default function TodayView() {
   const { schedule } = useActivity();
   const today = schedule
     .filter((item) => {
-      const todo = item.todayRemaining + item.additionalTime;
+      const todo = item.todayTime + item.additionalTime;
       return todo > 0 || item.timer;
     })
     .sort(
