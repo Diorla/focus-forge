@@ -44,20 +44,24 @@ export default function Task({ activity }: { activity: Schedule }) {
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "space-between",
+                flex: 1,
               }}
             >
-              <CheckBox
-                checked={!!item.checked}
-                onPress={() =>
-                  item.checked
-                    ? uncheckTask(activity, item.created)
-                    : checkTask(activity, item.created)
-                }
-                iconType="material-community"
-                checkedIcon="checkbox-marked"
-                uncheckedIcon="checkbox-blank-outline"
-                title={item.title}
-              />
+              <View style={{ flex: 1 }}>
+                <CheckBox
+                  checked={!!item.checked}
+                  onPress={() =>
+                    item.checked
+                      ? uncheckTask(activity, item.created)
+                      : checkTask(activity, item.created)
+                  }
+                  iconType="material-community"
+                  checkedIcon="checkbox-marked"
+                  uncheckedIcon="checkbox-blank-outline"
+                  title={item.title}
+                  textStyle={{ flexWrap: "wrap" }}
+                />
+              </View>
               <MaterialIcons
                 name="delete"
                 size={28}
