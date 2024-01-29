@@ -2,7 +2,7 @@ import * as React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Typography } from "../../components";
 import { Card } from "@rneui/themed";
-import { MaterialIcons } from "@expo/vector-icons";
+// import { MaterialIcons } from "@expo/vector-icons";
 import { getContrastColor } from "../../services/color";
 import useNavigate from "../../container/Nav/useNavigate";
 import { Schedule } from "../../context/activity/getSchedule";
@@ -45,7 +45,9 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
     <TouchableOpacity onPress={() => navigate("Activity", { id })}>
       <Card containerStyle={{ backgroundColor: bgColor, borderRadius: 4 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Typography color={color}>{activity.name}</Typography>
+          <Typography color={color} type="big">
+            {activity.name}
+          </Typography>
           <Typography color={color}>
             {hr}h {String(mm).padStart(2, "0")}
           </Typography>
@@ -75,8 +77,11 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
               alignItems: "center",
             }}
           >
-            <MaterialIcons name="list" size={24} color={color} />
-            <Typography color={color}>{activity.tasks?.length ?? 0}</Typography>
+            {/* <MaterialIcons name="list" size={24} color={color} /> */}
+            {/* <Typography color={color}>{activity.tasks?.length ?? 0}</Typography> */}
+            <Typography style={{ textTransform: "capitalize" }} color={color}>
+              {activity.priority}
+            </Typography>
           </View>
         </View>
       </Card>
