@@ -1,6 +1,6 @@
 export type Priority = "high" | "medium" | "low" | "none";
 
-export default interface Activity {
+interface Activity {
   id: string;
   name: string;
   weeklyTarget: number;
@@ -22,7 +22,10 @@ export default interface Activity {
   };
   timer?: {
     startTime: number;
+    length: number;
   };
   tasks: { title: string; checked: number; created: number }[];
   lastDone: number;
 }
+
+export default Activity;

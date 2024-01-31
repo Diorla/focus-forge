@@ -14,6 +14,7 @@ export default function Timer({
   done,
   type = "today",
   doneToday = 0,
+  length,
 }: {
   startTime: number;
   targetTime: number;
@@ -21,6 +22,7 @@ export default function Timer({
   done: { [key: string]: number };
   type?: "today" | "task";
   doneToday: number;
+  length: number;
 }) {
   const {
     theme: { colors },
@@ -34,8 +36,8 @@ export default function Timer({
   }, 1000);
 
   const value = targetTime - doneToday - count;
-  if (targetTime <= count && type === "today")
-    endTimer(id, startTime, done, startTime + targetTime * 1000).then(() =>
+  if (length <= count && type === "today")
+    endTimer(id, startTime, done, startTime + length * 1000).then(() =>
       toast.show("Timer completed")
     );
   return (

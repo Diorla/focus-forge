@@ -86,6 +86,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
               id={id}
               done={done}
               doneToday={doneToday}
+              length={timer.length}
             />
           ) : (
             <>
@@ -112,7 +113,9 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                 );
                 cancelScheduledNotificationAsync(notificationId);
               } else {
-                startTimer(id).then(() => toast.show("Timer started"));
+                startTimer(id, targetTime - doneToday).then(() =>
+                  toast.show("Timer started")
+                );
                 schedulePushNotification(
                   {
                     title: `${name}`,
