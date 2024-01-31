@@ -16,7 +16,7 @@ export default function Time({
   const allDoneThisWeek =
     doneThisWeek + doneToday + 0.00000000000000000000000001;
   const allTodoToday =
-    todayTime + additionalTime + doneToday + 0.00000000000000000000000001;
+    todayTime + additionalTime + 0.00000000000000000000000001;
 
   const timeLeftThisWeek = weeklyTarget - allDoneThisWeek;
   const [h, m] = secondsToHrMm(timeLeftThisWeek <= 0 ? 0 : timeLeftThisWeek);
@@ -58,7 +58,7 @@ export default function Time({
           </Typography>
           <TimeFormat
             color={color}
-            value={weeklyTarget}
+            value={allDoneThisWeek}
             style={{ textAlign: "center" }}
           />
           <Typography type="big" color={color} style={{ textAlign: "center" }}>
@@ -78,7 +78,7 @@ export default function Time({
           </Typography>
           <TimeFormat
             color={color}
-            value={allTodoToday}
+            value={doneToday}
             style={{ textAlign: "center" }}
           />
           <Typography type="big" color={color} style={{ textAlign: "center" }}>
