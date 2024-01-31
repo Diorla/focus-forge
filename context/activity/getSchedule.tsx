@@ -99,6 +99,24 @@ export default function getSchedule(
       if (todayQuota > doneToday) todayTime = todayQuota;
       else todayTime = doneToday;
 
+      // Remove archived
+      if (item.archived) {
+        list.push({
+          ...item,
+          doneThisWeek,
+          doneToday,
+          thisWeekRemaining: 0,
+          todayQuota: 0,
+          todayTime: 0,
+          futureTime: 0,
+          additionalTime: 0,
+          upcomingTime: 0,
+          overflowTime: 0,
+          lastDone: Number.isFinite(lastDone) ? lastDone : 0,
+        });
+        return null;
+      }
+
       // the task time left to do today, it should be ge to 0
       // done today is already subtracted, so we need to remove doneToday
       const tempTR = todayTime - doneToday;
