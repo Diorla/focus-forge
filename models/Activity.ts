@@ -23,6 +23,7 @@ interface Activity {
   timer?: {
     startTime: number;
     length: number;
+    notificationId: string;
   };
   tasks: { title: string; checked: number; created: number }[];
   lastDone: number;

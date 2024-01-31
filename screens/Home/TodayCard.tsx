@@ -11,7 +11,7 @@ import Timer from "../../container/Timer";
 import startTimer from "../../services/database/startTimer";
 import endTimer from "../../services/database/endTimer";
 import ChecklistModal from "../../container/ChecklistModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { format, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import { schedulePushNotification } from "../../services/notification";
@@ -42,19 +42,6 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
     ? { borderSize: 1, borderColor: colors.primary }
     : {};
   const tasks = schedule.tasks.filter((item) => !item.checked);
-  const [notificationId, setNotificationId] = useState("");
-
-  useEffect(() => {
-    if (timer && !notificationId)
-      schedulePushNotification(
-        {
-          title: `${name}`,
-          body: `Ended at ${format(Date.now() + targetTime * 1000)}`,
-          data: {},
-        },
-        targetTime
-      ).then((notificationId) => setNotificationId(notificationId));
-  }, []);
 
   return (
     <>
@@ -111,11 +98,8 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                 endTimer(id, timer.startTime, done).then(() =>
                   toast.show("Timer paused")
                 );
-                cancelScheduledNotificationAsync(notificationId);
+                cancelScheduledNotificationAsync(timer.notificationId);
               } else {
-                startTimer(id, targetTime - doneToday).then(() =>
-                  toast.show("Timer started")
-                );
                 schedulePushNotification(
                   {
                     title: `${name}`,
@@ -123,7 +107,11 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                     data: null,
                   },
                   targetTime - doneToday + 5
-                ).then((notificationId) => setNotificationId(notificationId));
+                ).then((notificationId) =>
+                  startTimer(id, targetTime - doneToday, notificationId).then(
+                    () => toast.show("Timer started")
+                  )
+                );
               }
             }}
           />
