@@ -122,7 +122,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                     body: `Ended at ${format(Date.now() + targetTime * 1000)}`,
                     data: null,
                   },
-                  targetTime
+                  targetTime - doneToday + 5
                 ).then((notificationId) => setNotificationId(notificationId));
               }
             }}
