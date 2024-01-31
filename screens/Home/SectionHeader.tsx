@@ -1,7 +1,13 @@
 import { View } from "react-native";
 import { Typography } from "../../components";
 
-export default function SectionHeader({ title }: { title: string }) {
+export default function SectionHeader({
+  title,
+  extra,
+}: {
+  title: string;
+  extra?: React.ReactNode;
+}) {
   return (
     <View
       style={{
@@ -13,6 +19,7 @@ export default function SectionHeader({ title }: { title: string }) {
       }}
     >
       <Typography type="header">{title}</Typography>
+      {extra}
     </View>
   );
 }

@@ -2,14 +2,19 @@ import { ScrollView } from "react-native";
 import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
 import useActivity from "../../context/activity/useActivity";
+import { TimeFormat } from "../../components";
 
 export default function UpcomingView() {
   const { schedule } = useActivity();
   const upcoming = schedule.filter((item) => item.upcomingTime);
+  const time = upcoming
+    .map((item) => item.upcomingTime)
+    .reduce((prev, curr) => prev + curr, 0);
+
   if (upcoming.length)
     return (
       <>
-        <SectionHeader title="Upcoming" />
+        <SectionHeader title="Upcoming" extra={<TimeFormat value={time} />} />
         <ScrollView horizontal>
           {upcoming.map((item) => (
             <ActivityCard key={item.id} schedule={item} type="upcoming" />
