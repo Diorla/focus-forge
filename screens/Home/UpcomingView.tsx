@@ -16,9 +16,11 @@ export default function UpcomingView() {
       <>
         <SectionHeader title="Upcoming" extra={<TimeFormat value={time} />} />
         <ScrollView horizontal>
-          {upcoming.map((item) => (
-            <ActivityCard key={item.id} schedule={item} type="upcoming" />
-          ))}
+          {upcoming
+            .sort((prev, next) => next.upcomingTime - prev.upcomingTime)
+            .map((item) => (
+              <ActivityCard key={item.id} schedule={item} type="upcoming" />
+            ))}
         </ScrollView>
       </>
     );

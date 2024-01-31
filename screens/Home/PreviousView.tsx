@@ -11,9 +11,11 @@ export default function PreviousView() {
       <>
         <SectionHeader title="Past activities" />
         <ScrollView horizontal>
-          {previous.map((item) => (
-            <ActivityCard key={item.id} schedule={item} type="previous" />
-          ))}
+          {previous
+            .sort((prev, next) => prev.lastDone - next.lastDone)
+            .map((item) => (
+              <ActivityCard key={item.id} schedule={item} type="previous" />
+            ))}
         </ScrollView>
       </>
     );

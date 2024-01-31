@@ -20,9 +20,11 @@ export default function RecentView() {
       <>
         <SectionHeader title="Recent" />
         <ScrollView horizontal>
-          {completed.map((item) => (
-            <ActivityCard key={item.id} schedule={item} type="completed" />
-          ))}
+          {completed
+            .sort((prev, next) => next.lastDone - prev.lastDone)
+            .map((item) => (
+              <ActivityCard key={item.id} schedule={item} type="completed" />
+            ))}
         </ScrollView>
       </>
     );
