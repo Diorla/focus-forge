@@ -11,7 +11,10 @@ export default async function schedulePushNotification(
   seconds: number
 ) {
   return await Notifications.scheduleNotificationAsync({
-    content,
+    content: {
+      ...content,
+      sound: "tone.wav",
+    },
     trigger: { seconds },
   });
 }

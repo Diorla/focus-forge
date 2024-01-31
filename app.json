@@ -11,9 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.diorla.focusforge"
@@ -33,6 +31,14 @@
         "projectId": "e0e861f3-9a98-45cb-84de-6076162cbe29"
       }
     },
-    "owner": "diorla"
+    "owner": "diorla",
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "sounds": ["./local/assets/tone.wav"]
+        }
+      ]
+    ]
   }
 }

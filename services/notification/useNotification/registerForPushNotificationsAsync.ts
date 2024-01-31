@@ -3,6 +3,11 @@ import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
 
+// TODO: Use tone.wav instead
+/**
+ * For some reason, it's not using the provided audio file, just the basic
+ * app tone
+ */
 export default async function registerForPushNotificationsAsync() {
   let token;
 
@@ -12,6 +17,7 @@ export default async function registerForPushNotificationsAsync() {
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 250, 250],
       lightColor: "#7880FF7c",
+      sound: "tone.wav",
     });
   }
 
