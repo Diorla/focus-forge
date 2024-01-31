@@ -1,11 +1,12 @@
 import * as React from "react";
-import { View } from "react-native";
+import { AppState, View } from "react-native";
 import useInterval from "./useInterval";
 import Clock from "./Clock";
 import * as Progress from "react-native-progress";
 import { useTheme } from "@rneui/themed";
 import endTimer from "../../services/database/endTimer";
 import { useToast } from "react-native-toast-notifications";
+import { useEffect, useState } from "react";
 
 export default function Timer({
   startTime,
@@ -29,11 +30,20 @@ export default function Timer({
   } = useTheme();
 
   const toast = useToast();
-  const [count, setCount] = React.useState((Date.now() - startTime) / 1000);
+  const [count, setCount] = useState((Date.now() - startTime) / 1000);
 
   useInterval(() => {
     setCount(count + 1);
   }, 1000);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        setCount((Date.now() - startTime) / 1000);
+      }
+    });
+    return () => subscription.remove();
+  }, [startTime]);
 
   const value = targetTime - doneToday - count;
   if (length <= count && type === "today")
