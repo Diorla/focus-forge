@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import activityContext from "./activityContext";
 import Activity from "../../models/Activity";
-import { Schedule } from "./getSchedule";
+import Schedule from "./Schedule";
 
 export default function useActivity() {
   interface TaskContext {

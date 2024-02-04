@@ -1,18 +1,6 @@
 import dayjs from "dayjs";
 import Activity from "../../models/Activity";
-
-export type Schedule = Activity & {
-  doneToday: number;
-  doneThisWeek: number;
-  thisWeekRemaining: number;
-  todayQuota: number;
-  futureTime: number;
-  todayTime: number;
-  additionalTime: number;
-  upcomingTime: number;
-  overflowTime: number;
-  // todayRemaining: number;
-};
+import Schedule from "./Schedule";
 
 /**
  * => Activity
@@ -121,7 +109,8 @@ export default function getSchedule(
       // done today is already subtracted, so we need to remove doneToday
       const tempTR = todayTime - doneToday;
 
-      // Ensure that there is enough time to do task in the future as well
+      // Ensure that there is enough time today to do the task
+      // If not, any extra is moved to the future
       if (currentTodayRemaining > tempTR) {
         // remove it from the cumulative today remaining
         currentTodayRemaining -= tempTR;
@@ -133,7 +122,7 @@ export default function getSchedule(
       }
 
       // all the time till today
-      const accountedTime = doneThisWeek + todayTime;
+      const accountedTime = doneThisWeek + todayTime + futureTime;
       // Remaining time for the rest of the week
       let unaccountedTime = item.weeklyTarget - accountedTime;
 

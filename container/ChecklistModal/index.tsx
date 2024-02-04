@@ -5,7 +5,7 @@ import { CheckBox, Divider, Input } from "@rneui/themed";
 import uncheckTask from "../../services/database/uncheckTask";
 import checkTask from "../../services/database/checkTask";
 import createTask from "../../services/database/createTask";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 import TopSpace from "../../components/topSpace";
 import { MaterialIcons } from "@expo/vector-icons";
 import { deleteTask } from "../../services/database";

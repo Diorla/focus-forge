@@ -1,7 +1,7 @@
 import { Button, DatePicker, TimeInput, Typography } from "../../components";
 import { Modal, TouchableOpacity, View } from "react-native";
 import { Card, Input, useTheme } from "@rneui/themed";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 import {
   format,
   getDateKey,

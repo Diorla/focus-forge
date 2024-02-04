@@ -1,6 +1,6 @@
 import { TimeFormat, Typography } from "../../components";
 import { View } from "react-native";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 import { secondsToHrMm } from "../../services/datetime";
 
 export default function Time({

@@ -10,7 +10,7 @@ import Sort from "./Sort";
 import Filter from "./Filter";
 import SortFilter from "./SortFilter";
 import useActivity from "../../context/activity/useActivity";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 
 export default function ListScreen() {
   const [filter, setFilter] = useState<Filter>("all");

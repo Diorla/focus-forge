@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import PlayButton from "./PlayButton";
 import useNavigate from "../../container/Nav/useNavigate";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 import Timer from "../../container/Timer";
 import startTimer from "../../services/database/startTimer";
 import endTimer from "../../services/database/endTimer";

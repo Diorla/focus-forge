@@ -2,7 +2,7 @@ import { Button, Typography } from "../../components";
 import { View } from "react-native";
 import { useState } from "react";
 import { Card, CheckBox, Input } from "@rneui/themed";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 import {
   uncheckTask,
   checkTask,

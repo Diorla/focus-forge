@@ -5,7 +5,7 @@ import { Card, Divider, useTheme } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
-import { Schedule } from "../../context/activity/getSchedule";
+import Schedule from "../../context/activity/Schedule";
 import dayjs from "dayjs";
 import ChecklistModal from "../../container/ChecklistModal";
 import { useState } from "react";
