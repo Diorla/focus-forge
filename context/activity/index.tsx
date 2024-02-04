@@ -7,6 +7,7 @@ import isToday from "dayjs/plugin/isToday";
 import watchActivities from "../../services/database/watchActivity";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
+import Activity from "../../models/Activity";
 
 dayjs.extend(isToday);
 
@@ -15,7 +16,8 @@ export default function ActivityProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useUser();
+  const { user, time: userTime } = useUser();
+  const [prevTime, setPrevTime] = useState(userTime);
   const [activities, setActivities] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [error, setError] = useState(null);
@@ -36,34 +38,46 @@ export default function ActivityProvider({
     taskLeft: 0,
   });
 
+  function loadActivity(activities: Activity[]) {
+    const time = getTime(activities, user);
+
+    const scheduleList = getSchedule(
+      activities,
+      time.todayRemaining,
+      time.upcomingTime
+    );
+
+    let todoTime = 0;
+    let taskDone = 0;
+    let taskLeft = 0;
+
+    scheduleList.forEach((item) => {
+      const { additionalTime, todayTime, doneToday } = item;
+      todoTime += additionalTime + todayTime - doneToday;
+      const timeLeft = additionalTime + todayTime - doneToday;
+      if (todayTime && timeLeft > 0) taskLeft++;
+      if (todayTime && timeLeft <= 0) taskDone++;
+    });
+
+    setActivities(activities);
+    setSchedule(scheduleList);
+    setTime({ ...time, todoTime, taskDone, taskLeft });
+    setPrevTime(userTime);
+    setLoading(false);
+  }
+
+  // Check if it's a new day since last update
+  useEffect(() => {
+    if (!dayjs(prevTime).isSame(userTime, "date")) {
+      loadActivity(activities);
+    }
+  }, [userTime]);
+
   useEffect(() => {
     let unsubscribe: Unsubscribe;
     try {
       unsubscribe = watchActivities(user?.id, (activities) => {
-        const time = getTime(activities, user);
-
-        const scheduleList = getSchedule(
-          activities,
-          time.todayRemaining,
-          time.upcomingTime
-        );
-
-        let todoTime = 0;
-        let taskDone = 0;
-        let taskLeft = 0;
-
-        scheduleList.forEach((item) => {
-          const { additionalTime, todayTime, doneToday } = item;
-          todoTime += additionalTime + todayTime - doneToday;
-          const timeLeft = additionalTime + todayTime - doneToday;
-          if (todayTime && timeLeft > 0) taskLeft++;
-          if (todayTime && timeLeft <= 0) taskDone++;
-        });
-
-        setActivities(activities);
-        setSchedule(scheduleList);
-        setTime({ ...time, todoTime, taskDone, taskLeft });
-        setLoading(false);
+        loadActivity(activities);
       });
     } catch (error) {
       setLoading(false);
