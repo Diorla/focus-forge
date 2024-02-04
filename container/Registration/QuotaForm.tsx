@@ -26,7 +26,7 @@ export function QuotaForm({ name }: { name: string }) {
   const [quota, setQuota] = useState<QuotaFormState>({
     weeklyQuota: 0,
     dailyQuota: [0, 0, 0, 0, 0, 0, 0],
-    useWeeklyQuota: false,
+    useWeeklyQuota: true,
   });
 
   const [hh, mm] = secondsToHrMm(
