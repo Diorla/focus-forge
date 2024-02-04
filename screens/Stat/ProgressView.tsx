@@ -20,15 +20,15 @@ export default function ProgressView() {
   schedule.forEach((item) => {
     const done = item.doneThisWeek + item.doneToday;
     const total = item.weeklyTarget < done ? done : item.weeklyTarget;
-    if (item.priority === "low") {
+    if (item.archived) {
+      // do nothing
+    } else if (item.priority === "low") {
       lowTop += done;
       lowBottom += total;
-    }
-    if (item.priority === "medium") {
+    } else if (item.priority === "medium") {
       mediumTop += done;
       mediumBottom += total;
-    }
-    if (item.priority === "high") {
+    } else if (item.priority === "high") {
       highTop += done;
       highBottom += total;
     }
