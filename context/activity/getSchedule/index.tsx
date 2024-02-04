@@ -1,6 +1,10 @@
 import dayjs from "dayjs";
-import Activity from "../../models/Activity";
-import Schedule from "./Schedule";
+import Activity from "../../../models/Activity";
+import Schedule from "../Schedule";
+import getDoneToday from "./getDoneToday";
+import getDoneThisWeek from "./getDoneThisWeek";
+import getTodayQuota from "./getTodayQuota";
+import getTodayTime from "./getTodayTime";
 
 /**
  * => Activity
@@ -39,53 +43,18 @@ export default function getSchedule(
   activities
     .sort((a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority))
     .forEach((item) => {
-      // time already done for today
-      let doneToday = 0;
-      // time already for this week, excluding today
-      let doneThisWeek = 0;
-      // today quota based on user's ideal timing
-      let todayQuota = 0;
-      // the time to spend or already spent today
-      let todayTime = 0;
-      // all extra time left for the week
-      let futureTime = 0;
-      // extra time added to today because insufficient time in the following days
-      let additionalTime = 0;
-      // time available for the following week
-      let upcomingTime = 0;
-      // No more time to do anything this week
-      let overflowTime = 0;
-      // The last time the timer was paused
-
       const doneList = Object.keys(item.done || {});
+      const doneToday = getDoneToday(doneList, item.done);
+      const doneThisWeek = getDoneThisWeek(doneList, item.done);
       const lastDone = Math.max(
         ...doneList.map((item) => dayjs(item).valueOf())
       );
-      const timeToday = doneList.filter((datetime) =>
-        dayjs(datetime).isToday()
-      );
-
-      const timeThisWeek = doneList.filter(
-        (datetime) =>
-          dayjs().isSame(datetime, "week") && !dayjs(datetime).isToday()
-      );
-
-      timeToday.forEach((date) => (doneToday += item.done[date]));
-      timeThisWeek.forEach((date) => (doneThisWeek += item.done[date]));
 
       // this week remaining should be greater or equal to 0
       const tempTWR = item.weeklyTarget - doneThisWeek;
       const thisWeekRemaining = tempTWR > 0 ? tempTWR : 0;
-
-      // If the time remaining this week is less than dailyLimit
-      // then we need to lower today quota to the time remaining
-      if (thisWeekRemaining > item.dailyLimit) todayQuota = item.dailyLimit;
-      else todayQuota = thisWeekRemaining;
-
-      // If the time used is greater than today quota, then we need to increase
-      // today quota to match
-      if (todayQuota > doneToday) todayTime = todayQuota;
-      else todayTime = doneToday;
+      const todayQuota = getTodayQuota(thisWeekRemaining, item.dailyLimit);
+      let todayTime = getTodayTime(todayQuota, doneToday);
 
       // Remove archived
       if (item.archived) {
@@ -104,6 +73,15 @@ export default function getSchedule(
         });
         return null;
       }
+
+      // all extra time left for the week
+      let futureTime = 0;
+      // extra time added to today because insufficient time in the following days
+      let additionalTime = 0;
+      // time available for the following week
+      let upcomingTime = 0;
+      // No more time to do anything this week
+      let overflowTime = 0;
 
       // the task time left to do today, it should be ge to 0
       // done today is already subtracted, so we need to remove doneToday
