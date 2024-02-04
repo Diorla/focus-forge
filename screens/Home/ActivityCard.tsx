@@ -9,30 +9,34 @@ import { Schedule } from "../../context/activity/getSchedule";
 import dayjs from "dayjs";
 import ChecklistModal from "../../container/ChecklistModal";
 import { useState } from "react";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const generateTime = (
-  type: "completed" | "overflow" | "upcoming" | "previous",
+  type: "completed" | "overflow" | "upcoming" | "previous" | "recent",
   schedule: Schedule
 ) => {
-  if (type === "completed") return schedule.doneToday;
+  if (type === "overflow") return schedule.overflowTime;
   if (type === "upcoming") return schedule.upcomingTime;
   if (type === "previous") return schedule.doneThisWeek;
-  return schedule.overflowTime;
+  return schedule.doneToday;
 };
 
 const Info = ({
   type,
   done,
 }: {
-  type: "completed" | "overflow" | "upcoming" | "previous";
+  type: "completed" | "overflow" | "upcoming" | "previous" | "recent";
   done: { [key: string]: number };
 }) => {
-  if (type === "completed") {
+  if (type === "completed" || type === "recent") {
     const doneList = Object.keys(done);
     const lastDone = doneList.sort(
       (a, b) => dayjs(b).valueOf() - dayjs(a).valueOf()
     )[0];
-    return <Typography>{format(lastDone)}</Typography>;
+    if (type === "completed")
+      return <Typography>{format(lastDone)}</Typography>;
+    return <Typography>{dayjs(lastDone).fromNow()}</Typography>;
   }
   if (type === "overflow") return <Typography>Over the limit</Typography>;
   if (type === "upcoming") return <Typography>Todo this week</Typography>;
@@ -44,7 +48,7 @@ export default function ActivityCard({
   type,
 }: {
   schedule: Schedule;
-  type: "completed" | "overflow" | "upcoming" | "previous";
+  type: "completed" | "overflow" | "upcoming" | "previous" | "recent";
 }) {
   const {
     theme: { colors },

@@ -28,7 +28,7 @@ export default function RecentView() {
           {completed
             .sort((prev, next) => next.lastDone - prev.lastDone)
             .map((item) => (
-              <ActivityCard key={item.id} schedule={item} type="completed" />
+              <ActivityCard key={item.id} schedule={item} type="recent" />
             ))}
         </ScrollView>
       </>
