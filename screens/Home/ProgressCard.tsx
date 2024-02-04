@@ -16,7 +16,9 @@ export default function ProgressCard() {
   const ratio = doneToday / (doneToday + todoTime);
   const progress = Number.isNaN(ratio) ? 0 : ratio;
 
-  const [hr, mm] = secondsToHrMm(todoTime);
+  const isCompleted = todoTime <= 0.0001;
+  const value = isCompleted ? doneToday : todoTime;
+  const [hr, mm] = secondsToHrMm(value);
   return (
     <Card
       containerStyle={{
@@ -44,7 +46,8 @@ export default function ProgressCard() {
             {taskDone}/{taskDone + taskLeft} activities completed
           </Typography>
           <Typography color={colors.white}>
-            {hr}h {String(mm).padStart(2, "0")} remaining
+            {hr}h {String(mm).padStart(2, "0")}{" "}
+            {isCompleted ? "done" : "remaining"}
           </Typography>
         </View>
       </View>
