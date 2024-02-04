@@ -7,10 +7,15 @@ import dayjs from "dayjs";
 export default function RecentView() {
   const { schedule = [] } = useActivity();
 
+  // I used 0.001 instead of 0 because of precision error from floating point
+  // that results in stuff like 0.00000000000006 instead of 0
+  // 0.001 is 1 millisecond in seconds
+  // I could use decimal.js https://mikemcl.github.io/decimal.js/ if need be
   const completed = schedule
     .filter((item) => {
       return (
-        item.todayTime - item.doneToday <= 0 && dayjs(item.lastDone).isToday()
+        item.todayTime - item.doneToday <= 0.001 &&
+        dayjs(item.lastDone).isToday()
       );
     })
     .sort((a, b) => a.lastDone - b.lastDone);

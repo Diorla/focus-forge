@@ -14,7 +14,7 @@ export default function TodayView() {
   const today = schedule
     .filter((item) => {
       const todo = item.todayTime + item.additionalTime - item.doneToday;
-      return todo > 0 || item.timer;
+      return todo > 0.001 || item.timer;
     })
     .sort(
       (a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority)
