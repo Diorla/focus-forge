@@ -52,9 +52,9 @@ export default function ActivityProvider({
     let taskLeft = 0;
 
     scheduleList.forEach((item) => {
-      const { additionalTime, todayTime, doneToday } = item;
-      todoTime += additionalTime + todayTime - doneToday;
-      const timeLeft = additionalTime + todayTime - doneToday;
+      const { todayTime, doneToday } = item;
+      todoTime += todayTime - doneToday;
+      const timeLeft = todayTime - doneToday;
       // TODO: Fix precision floating calculation with decimal.js
       if (todayTime && timeLeft > 0.0001) taskLeft++;
       if (todayTime && timeLeft <= 0.0001) taskDone++;

@@ -10,13 +10,11 @@ export default function Time({
   activity: Schedule;
   color: string;
 }) {
-  const { doneThisWeek, weeklyTarget, doneToday, todayTime, additionalTime } =
-    activity;
+  const { doneThisWeek, weeklyTarget, doneToday, todayTime } = activity;
 
   const allDoneThisWeek =
     doneThisWeek + doneToday + 0.00000000000000000000000001;
-  const allTodoToday =
-    todayTime + additionalTime + 0.00000000000000000000000001;
+  const allTodoToday = todayTime + 0.00000000000000000000000001;
 
   const timeLeftThisWeek = weeklyTarget - allDoneThisWeek;
   const [h, m] = secondsToHrMm(timeLeftThisWeek <= 0 ? 0 : timeLeftThisWeek);

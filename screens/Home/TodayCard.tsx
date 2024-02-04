@@ -25,18 +25,9 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
   const toast = useToast();
   const navigate = useNavigate<{ id: string }>();
   const [visible, setVisible] = useState(false);
-  const {
-    timer,
-    additionalTime,
-    todayTime,
-    id,
-    done = {},
-    name,
-    doneToday = 0,
-  } = schedule;
+  const { timer, todayTime, id, done = {}, name, doneToday = 0 } = schedule;
 
-  const targetTime = todayTime + additionalTime;
-  const [hh, mm, ss] = secondsToHrMm(targetTime - doneToday);
+  const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
   const running = !!timer;
   const borderStyle = running
     ? { borderSize: 1, borderColor: colors.primary }
@@ -68,7 +59,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
         >
           {timer ? (
             <Timer
-              targetTime={targetTime}
+              targetTime={todayTime}
               startTime={timer.startTime}
               id={id}
               done={done}
@@ -82,7 +73,7 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                 {String(ss).padStart(2, "0")}
               </Typography>
               <Progress.Bar
-                progress={doneToday / targetTime}
+                progress={doneToday / todayTime}
                 color={colors.primary}
                 unfilledColor={colors.grey5}
                 borderColor={colors.grey0}
@@ -103,12 +94,12 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                 schedulePushNotification(
                   {
                     title: `${name}`,
-                    body: `Ended at ${format(Date.now() + targetTime * 1000)}`,
+                    body: `Ended at ${format(Date.now() + todayTime * 1000)}`,
                     data: null,
                   },
-                  targetTime - doneToday + 5
+                  todayTime - doneToday + 5
                 ).then((notificationId) =>
-                  startTimer(id, targetTime - doneToday, notificationId).then(
+                  startTimer(id, todayTime - doneToday, notificationId).then(
                     () => toast.show("Timer started")
                   )
                 );
