@@ -55,8 +55,9 @@ export default function ActivityProvider({
       const { additionalTime, todayTime, doneToday } = item;
       todoTime += additionalTime + todayTime - doneToday;
       const timeLeft = additionalTime + todayTime - doneToday;
-      if (todayTime && timeLeft > 0) taskLeft++;
-      if (todayTime && timeLeft <= 0) taskDone++;
+      // TODO: Fix precision floating calculation with decimal.js
+      if (todayTime && timeLeft > 0.0001) taskLeft++;
+      if (todayTime && timeLeft <= 0.0001) taskDone++;
     });
 
     setActivities(activities);
