@@ -22,7 +22,7 @@ export default function Form() {
     repassword: "",
   });
 
-  const [isNew, setIsNew] = useState(true);
+  const [isNew, setIsNew] = useState(false);
   const { email, password } = value;
   const [hidePassword, setHidePassword] = useState({
     password: true,
