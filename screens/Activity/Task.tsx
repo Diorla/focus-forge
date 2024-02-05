@@ -78,9 +78,9 @@ export default function Task({ activity }: { activity: Schedule }) {
             <Button
               disabled={!task}
               onPress={() =>
-                createTask(activity, task).then(() =>
-                  setShowAddNewTask(!showAddNewTask)
-                )
+                createTask(activity, task)
+                  .then(() => setTask(""))
+                  .then(() => setShowAddNewTask(!showAddNewTask))
               }
               containerStyle={{
                 marginRight: 8,
