@@ -2,12 +2,43 @@ import * as React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Typography } from "../../components";
 import { Card } from "@rneui/themed";
-// import { MaterialIcons } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 import { getContrastColor } from "../../services/color";
 import useNavigate from "../../container/Nav/useNavigate";
 import Schedule from "../../context/activity/Schedule";
 import { secondsToHrMm } from "../../services/datetime";
 
+// <Octicons name="dash" size={24} color="black" />
+// <Entypo name="arrow-bold-up" size={24} color="black" />
+const PriorityRender = ({
+  priority,
+  category,
+  color,
+}: {
+  priority: "high" | "medium" | "low" | "none";
+  category: string;
+  color: string;
+}) => {
+  let icon = null;
+  if (priority === "high") icon = "chevron-up";
+  if (priority === "low") icon = "chevron-down";
+  if (priority === "medium") icon = "dash";
+  return (
+    <View
+      style={{
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      {icon && <Octicons name={icon} size={24} color={color} />}
+      <Typography style={{ textTransform: "capitalize" }} color={color}>
+        {" "}
+        {category || "None"}
+      </Typography>
+    </View>
+  );
+};
 const getProgress = ({
   overflowTime,
   archived,
@@ -77,11 +108,11 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
               alignItems: "center",
             }}
           >
-            {/* <MaterialIcons name="list" size={24} color={color} /> */}
-            {/* <Typography color={color}>{activity.tasks?.length ?? 0}</Typography> */}
-            <Typography style={{ textTransform: "capitalize" }} color={color}>
-              {activity.priority}
-            </Typography>
+            <PriorityRender
+              priority={activity.priority}
+              category={activity.category}
+              color={color}
+            />
           </View>
         </View>
       </Card>
