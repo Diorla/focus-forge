@@ -41,7 +41,9 @@ export function QuotaForm({
           <View style={{ alignItems: "center" }}></View>
           <View>
             <View>
-              <Typography type="label">Weekly quota</Typography>
+              <Typography style={{ marginLeft: 8 }} type="label">
+                Weekly quota
+              </Typography>
               <TimeInput
                 value={form.weeklyQuota}
                 onChange={(weeklyQuota) =>
@@ -91,7 +93,9 @@ export function QuotaForm({
       >
         <View>
           <View>
-            <Typography type="label">Daily quota</Typography>
+            <Typography style={{ marginLeft: 8 }} type="label">
+              Daily quota
+            </Typography>
             <Typography
               type="big"
               style={{ textAlign: "center", marginBottom: 40 }}

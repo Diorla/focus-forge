@@ -37,7 +37,6 @@ export default function Typography({
         style={[
           {
             fontSize: size,
-            marginLeft: 8,
             color: color ?? colors.grey3,
             fontWeight: "bold",
           },
