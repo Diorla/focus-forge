@@ -34,7 +34,7 @@ export default function Time({
         color={color}
         style={{ textAlign: "center", marginBottom: 8 }}
       >
-        Time left
+        Todo
       </Typography>
       <View
         style={{
