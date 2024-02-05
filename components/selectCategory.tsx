@@ -1,4 +1,4 @@
-import { useTheme } from "@rneui/themed";
+import { Input, useTheme } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import { View, TextInput } from "react-native";
 import ModalSelector from "react-native-modal-selector";
@@ -20,19 +20,17 @@ export default function SelectCategory({
   const { theme } = useTheme();
   useEffect(() => {
     const uniqueList = [...new Set([...list, value])];
-    setData(uniqueList.map((item) => ({ label: item, key: item })));
+    setData(
+      uniqueList.map((item) => ({
+        label: item,
+        key: item,
+      }))
+    );
   }, [list, value]);
 
   return (
     <View style={{ padding: 8 }}>
-      <Typography
-        style={{
-          color: theme.colors.grey3,
-          fontWeight: "bold",
-        }}
-      >
-        Select category
-      </Typography>
+      <Typography type="label">Select category</Typography>
       <ModalSelector
         data={data.sort((a, b) => (a.label > b.label ? 1 : -1))}
         initValue={value}
@@ -74,7 +72,9 @@ export default function SelectCategory({
             </View>
           </View>
         }
-      />
+      >
+        <Input value={value} />
+      </ModalSelector>
     </View>
   );
 }
