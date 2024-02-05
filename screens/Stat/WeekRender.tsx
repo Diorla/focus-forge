@@ -167,9 +167,9 @@ export default function WeekRender() {
             </Typography>
           </View>
         </View>
-        <View>
+        {/* <View>
           <Typography>Daily stacked chart based on priority</Typography>
-        </View>
+        </View> */}
       </Card>
       <Card>
         <View

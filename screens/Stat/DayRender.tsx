@@ -87,10 +87,6 @@ export default function DayRender() {
       }
     });
 
-    // const days = dayjs().isSame(target, "day") ? dayjs().day() + 1 : 7;
-    // const prevDays = dayjs().isSame(dayjs(target).subtract(1, "day"), "day")
-    // ? dayjs().day() + 1
-    // : 7;
     const categoryList: Stat[] = Object.keys(category).map((item) => {
       return {
         id: item,
@@ -167,9 +163,10 @@ export default function DayRender() {
             </Typography>
           </View>
         </View>
-        <View>
+        {/* <View>
           <Typography>Daily stacked chart based on priority</Typography>
-        </View>
+          It will show each hour of the day?
+        </View> */}
       </Card>
       <Card>
         <View
