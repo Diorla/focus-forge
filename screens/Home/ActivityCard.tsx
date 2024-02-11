@@ -34,9 +34,9 @@ const Info = ({
     const lastDone = doneList.sort(
       (a, b) => dayjs(b).valueOf() - dayjs(a).valueOf()
     )[0];
-    if (type === "completed")
-      return <Typography>{format(lastDone)}</Typography>;
-    return <Typography>{dayjs(lastDone).fromNow()}</Typography>;
+    const endTime = dayjs(lastDone).add(done[lastDone], "second");
+    if (type === "completed") return <Typography>{format(endTime)}</Typography>;
+    return <Typography>{dayjs(endTime).fromNow()}</Typography>;
   }
   if (type === "overflow") return <Typography>Over the limit</Typography>;
   if (type === "upcoming") return <Typography>Todo this week</Typography>;
