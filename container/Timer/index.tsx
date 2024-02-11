@@ -5,7 +5,6 @@ import Clock from "./Clock";
 import * as Progress from "react-native-progress";
 import { useTheme } from "@rneui/themed";
 import endTimer from "../../services/database/endTimer";
-import { useToast } from "react-native-toast-notifications";
 import { useEffect, useState } from "react";
 
 export default function Timer({
@@ -29,7 +28,6 @@ export default function Timer({
     theme: { colors },
   } = useTheme();
 
-  const toast = useToast();
   const [count, setCount] = useState((Date.now() - startTime) / 1000);
 
   useInterval(() => {
@@ -47,9 +45,7 @@ export default function Timer({
 
   const value = targetTime - doneToday - count;
   if (length <= count && type === "today")
-    endTimer(id, startTime, done, startTime + length * 1000).then(() =>
-      toast.show("Timer completed")
-    );
+    endTimer(id, startTime, done, startTime + length * 1000);
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />
