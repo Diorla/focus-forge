@@ -1,20 +1,11 @@
 import { View } from "react-native";
 import useUser from "../../context/user/useUser";
-
 import React from "react";
-import { Platform } from "react-native";
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
+import getAdsId from "../../services/utils/getAdsId";
+import dayjs from "dayjs";
 
-const code =
-  Platform.OS === "ios"
-    ? "ca-app-pub-6242148548602613~9209243748"
-    : "ca-app-pub-6242148548602613~2751646601";
-
-const adUnitId = __DEV__ ? TestIds.ADAPTIVE_BANNER : code;
+const adUnitId = getAdsId();
 
 function Banner() {
   return (
@@ -24,8 +15,11 @@ function Banner() {
 
 export default function AdsView() {
   const { user } = useUser();
-  // Premium members will not see ads
-  const isPremium = user.email === "adedotster";
+  const diff = dayjs().diff(user.createdAt, "day");
+
+  // Premium and new members (length to be decided) will not see ads
+  // I chose 21 because my oldest account is 21 as of the time of this coding
+  const isPremium = user.email === "adedotster" || diff < 21;
   if (isPremium) return null;
   return (
     <View style={{ marginTop: 8 }}>

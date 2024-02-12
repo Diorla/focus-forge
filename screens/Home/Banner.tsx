@@ -1,17 +1,8 @@
 import React from "react";
-import { Platform } from "react-native";
-import {
-  BannerAd,
-  BannerAdSize,
-  TestIds,
-} from "react-native-google-mobile-ads";
+import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
+import getAdsId from "../../services/utils/getAdsId";
 
-const code =
-  Platform.OS === "ios"
-    ? "ca-app-pub-6242148548602613~9209243748"
-    : "ca-app-pub-6242148548602613~2751646601";
-
-const adUnitId = __DEV__ ? TestIds.ADAPTIVE_BANNER : code;
+const adUnitId = getAdsId();
 
 export default function Banner() {
   return (

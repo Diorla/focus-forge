@@ -17,6 +17,7 @@ SplashScreen.preventAutoHideAsync();
 import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@rneui/themed";
 import useInterval from "../../container/Timer/useInterval";
+import dayjs from "dayjs";
 
 const auth = initializeAuth(app, {
   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
@@ -55,12 +56,11 @@ export default function UserProvider({
           watchUser(currentUser.uid, (dbUser) => {
             const email = dbUser?.email || currentUser.email;
             const name = dbUser?.name || currentUser.displayName;
-            const { createdAt: authCreated = 0 } = {
-              createdAt: 0,
-              ...currentUser,
-            };
+
             const createdAt =
-              dbUser?.createdAt || Number(authCreated) || Date.now();
+              dayjs(auth.currentUser.metadata.creationTime).valueOf() ||
+              dbUser?.createdAt ||
+              Date.now();
 
             setUser({
               email,
