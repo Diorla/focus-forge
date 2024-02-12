@@ -4,6 +4,7 @@ import theme from "./constants/theme";
 import { StatusBar } from "expo-status-bar";
 import UserProvider from "./context/user";
 import Root from "./Root";
+import "expo-dev-client";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

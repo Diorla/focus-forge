@@ -3,6 +3,7 @@ import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
 import useActivity from "../../context/activity/useActivity";
 import { TimeFormat } from "../../components";
+import AdsView from "./AdsView";
 
 export default function UpcomingView() {
   const { schedule } = useActivity();
@@ -22,6 +23,7 @@ export default function UpcomingView() {
               <ActivityCard key={item.id} schedule={item} type="upcoming" />
             ))}
         </ScrollView>
+        <AdsView />
       </>
     );
   return null;

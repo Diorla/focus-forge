@@ -1,6 +1,3 @@
-import { View } from "react-native";
-import useUser from "../../context/user/useUser";
-
 import React from "react";
 import { Platform } from "react-native";
 import {
@@ -16,20 +13,8 @@ const code =
 
 const adUnitId = __DEV__ ? TestIds.ADAPTIVE_BANNER : code;
 
-function Banner() {
+export default function Banner() {
   return (
     <BannerAd unitId={adUnitId} size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER} />
-  );
-}
-
-export default function AdsView() {
-  const { user } = useUser();
-  // Premium members will not see ads
-  const isPremium = user.email === "adedotster";
-  if (isPremium) return null;
-  return (
-    <View style={{ marginTop: 8 }}>
-      <Banner />
-    </View>
   );
 }
