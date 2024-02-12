@@ -18,7 +18,9 @@ export default function Time({
 
   const timeLeftThisWeek = weeklyTarget - allDoneThisWeek;
   const [h, m] = secondsToHrMm(timeLeftThisWeek <= 0 ? 0 : timeLeftThisWeek);
-  const [hh, mm] = secondsToHrMm(allTodoToday - doneToday);
+  // TODO: Use decimal formatting and eliminate this less than 0.0001
+  const todayRemaining = allTodoToday - doneToday;
+  const [hh, mm] = secondsToHrMm(todayRemaining < 0.0001 ? 0 : todayRemaining);
 
   const weekPercent = (allDoneThisWeek / weeklyTarget) * 100;
   const dayPercent = (doneToday / allTodoToday) * 100;

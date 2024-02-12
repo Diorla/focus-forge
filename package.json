@@ -12,7 +12,8 @@
     "build": "npm run pkg_upgrade && eas build",
     "doctor": "npx expo-doctor",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest",
+    "dev": "npx expo start --dev-client"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
