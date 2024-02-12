@@ -7,6 +7,7 @@ import TodayView from "./TodayView";
 import UpcomingView from "./UpcomingView";
 import OverflowView from "./OverflowView";
 import PreviousView from "./PreviousView";
+import AdsView from "./AdsView";
 
 /**
  * This will be based on "done this week" to indicate the total number of activity
@@ -25,6 +26,7 @@ export default function HomeScreen() {
         <OverflowView />
         <RecentView />
         <PreviousView />
+        <AdsView />
         <View style={{ height: 200 }} />
       </ScrollView>
     </View>
