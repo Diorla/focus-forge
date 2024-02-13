@@ -1,5 +1,4 @@
 import Activity from "../../models/Activity";
-import updateActivity from "./updateActivity";
 
 export default function updateDoneInfo(
   activity: Activity,
@@ -27,5 +26,5 @@ export default function updateDoneInfo(
     },
   };
 
-  return updateActivity({ ...newActivity }, false);
+  return newActivity;
 }

@@ -3,7 +3,6 @@ import archiveActivity from "./archiveActivity";
 import checkTask from "./checkTask";
 import createActivity from "./createActivity";
 import createTask from "./createTask";
-import deleteActivity from "./deleteActivity";
 import deleteDoneTime from "./deleteDoneTime";
 import deleteTask from "./deleteTask";
 import endTimer from "./endTimer";
@@ -13,7 +12,6 @@ import startStopWatch from "./startStopWatch";
 import startTimer from "./startTimer";
 import unarchiveActivity from "./unarchiveActivity";
 import uncheckTask from "./uncheckTask";
-import updateActivity from "./updateActivity";
 import updateDoneInfo from "./updateDoneInfo";
 import updateUser from "./updateUser";
 import watchActivity from "./watchActivity";
@@ -27,10 +25,8 @@ export {
   watchUser,
   updateUser,
   createActivity,
-  updateActivity,
   archiveActivity,
   checkTask,
-  deleteActivity,
   deleteTask,
   endTimer,
   startTimer,

@@ -1,5 +1,4 @@
 import getDateTimeKey from "../datetime/getDateTimeKey";
-import updateActivity from "./updateActivity";
 
 export default function endTimer(
   id: string,
@@ -12,12 +11,12 @@ export default function endTimer(
   const now = endTime ?? Date.now();
   const length = (now - startTime) / 1000;
   const key = getDateTimeKey(startTime);
-  return updateActivity({
+  return {
     id,
     timer: null,
     done: {
       ...done,
       [key]: length,
     },
-  });
+  };
 }

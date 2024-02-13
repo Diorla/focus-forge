@@ -1,8 +1,7 @@
 import Activity from "../../models/Activity";
 import { getDateTimeKey } from "../datetime";
-import updateActivity from "./updateActivity";
 
-export default function updateDoneInfo(
+export default function addTime(
   activity: Activity,
   doneInfo: {
     comment: string;
@@ -27,5 +26,5 @@ export default function updateDoneInfo(
     },
   };
 
-  return updateActivity({ ...newActivity }, false);
+  return newActivity;
 }

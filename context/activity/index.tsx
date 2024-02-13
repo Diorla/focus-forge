@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import ActivityContext from "./activityContext";
-import { Unsubscribe } from "firebase/firestore";
 import dayjs from "dayjs";
 import useUser from "../user/useUser";
 import isToday from "dayjs/plugin/isToday";
-import watchActivities from "../../services/database/watchActivity";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import Activity from "../../models/Activity";
+import { getActivity, logError, storeActivity } from "../../services/storage";
+import deleteAct from "./deleteActivity";
 
 dayjs.extend(isToday);
 
@@ -75,19 +75,30 @@ export default function ActivityProvider({
   }, [userTime]);
 
   useEffect(() => {
-    let unsubscribe: Unsubscribe;
     try {
-      unsubscribe = watchActivities(user?.id, (activities) => {
-        loadActivity(activities);
-      });
+      getActivity().then((activities) => loadActivity(activities));
     } catch (error) {
-      setLoading(false);
+      logError("loading activity in context", error);
       setError(error);
     }
-    return () => {
-      unsubscribe && unsubscribe();
-    };
   }, [user?.id]);
+
+  const updateActivity = (activityId: string, value: Partial<Activity>) => {
+    try {
+      const activity = activities.find((item) => item.id);
+      return storeActivity(activityId, { ...activity, ...value }).then(
+        (activities) => loadActivity(activities)
+      );
+    } catch (error) {
+      logError("updating activity in context", error);
+    }
+  };
+
+  const deleteActivity = async (id: string) => {
+    await deleteAct(id);
+    const activities = await getActivity();
+    return loadActivity(activities);
+  };
 
   return (
     <ActivityContext.Provider
@@ -97,6 +108,8 @@ export default function ActivityProvider({
         loading,
         time,
         schedule,
+        updateActivity,
+        deleteActivity,
       }}
     >
       {children}

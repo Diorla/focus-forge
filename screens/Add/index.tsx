@@ -38,7 +38,7 @@ export default function AddScreen() {
     user: { id },
   } = useUser();
   const [form, setForm] = useState<Activity>({ ...baseForm, userId: id });
-  const { activities } = useActivity();
+  const { activities, updateActivity } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));
   const toast = useToast();
 
@@ -69,9 +69,10 @@ export default function AddScreen() {
       });
       return;
     }
-    createActivity({
+    const newActivity = createActivity({
       ...form,
-    })
+    });
+    updateActivity(newActivity.id, newActivity)
       .then(() => {
         setForm({ ...baseForm, userId: id });
       })

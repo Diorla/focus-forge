@@ -10,8 +10,10 @@ import {
   deleteTask,
 } from "../../services/database";
 import { MaterialIcons } from "@expo/vector-icons";
+import useActivity from "../../context/activity/useActivity";
 
 export default function Task({ activity }: { activity: Schedule }) {
+  const { updateActivity } = useActivity();
   const { tasks } = activity;
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [task, setTask] = useState("");
@@ -51,9 +53,12 @@ export default function Task({ activity }: { activity: Schedule }) {
                 <CheckBox
                   checked={!!item.checked}
                   onPress={() =>
-                    item.checked
-                      ? uncheckTask(activity, item.created)
-                      : checkTask(activity, item.created)
+                    updateActivity(
+                      activity.id,
+                      item.checked
+                        ? uncheckTask(activity, item.created)
+                        : checkTask(activity, item.created)
+                    )
                   }
                   iconType="material-community"
                   checkedIcon="checkbox-marked"
@@ -66,7 +71,12 @@ export default function Task({ activity }: { activity: Schedule }) {
                 name="delete"
                 size={28}
                 color="black"
-                onPress={() => deleteTask(activity, item.created)}
+                onPress={() =>
+                  updateActivity(
+                    activity.id,
+                    deleteTask(activity, item.created)
+                  )
+                }
               />
             </View>
           );
@@ -78,7 +88,7 @@ export default function Task({ activity }: { activity: Schedule }) {
             <Button
               disabled={!task}
               onPress={() =>
-                createTask(activity, task)
+                updateActivity(activity.id, createTask(activity, task))
                   .then(() => setTask(""))
                   .then(() => setShowAddNewTask(!showAddNewTask))
               }

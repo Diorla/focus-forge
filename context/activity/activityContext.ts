@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { deleteActivity } from "../../services/storage";
 
 const activityContext = createContext({
   activities: [],
@@ -20,6 +21,8 @@ const activityContext = createContext({
     taskLeft: 0,
   },
   schedule: [],
+  updateActivity: null,
+  deleteActivity,
 });
 
 export default activityContext;

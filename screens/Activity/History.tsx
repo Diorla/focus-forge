@@ -16,6 +16,7 @@ import {
   deleteDoneTime,
   updateDoneInfo,
 } from "../../services/database";
+import useActivity from "../../context/activity/useActivity";
 
 type History = {
   time: string;
@@ -38,6 +39,7 @@ function Comment({
 }
 
 export default function History({ activity }: { activity: Schedule }) {
+  const { updateActivity } = useActivity();
   const { theme } = useTheme();
   const { done, doneComment = {} } = activity;
   const doneList = Object.keys(done);
@@ -111,7 +113,9 @@ export default function History({ activity }: { activity: Schedule }) {
             <Button
               onPress={() => {
                 if (newTime.length)
-                  addTime(activity, newTime).then(() => setShowAddTime(false));
+                  updateActivity(activity.id, addTime(activity, newTime)).then(
+                    () => setShowAddTime(false)
+                  );
               }}
             >
               Save
@@ -246,10 +250,13 @@ export default function History({ activity }: { activity: Schedule }) {
                             >
                               <Button
                                 onPress={() =>
-                                  updateDoneInfo(activity, time.datetime, {
-                                    ...form,
-                                    datetime: getDateTimeKey(form.datetime),
-                                  }).then(() => {
+                                  updateActivity(
+                                    activity.id,
+                                    updateDoneInfo(activity, time.datetime, {
+                                      ...form,
+                                      datetime: getDateTimeKey(form.datetime),
+                                    })
+                                  ).then(() => {
                                     setForm({
                                       comment: "",
                                       length: 0,
@@ -279,7 +286,10 @@ export default function History({ activity }: { activity: Schedule }) {
                             <Button
                               color="error"
                               onPress={() =>
-                                deleteDoneTime(activity, time.datetime)
+                                updateActivity(
+                                  activity.id,
+                                  deleteDoneTime(activity, time.datetime)
+                                )
                               }
                             >
                               Delete

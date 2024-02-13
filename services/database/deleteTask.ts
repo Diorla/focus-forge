@@ -1,5 +1,4 @@
 import Activity from "../../models/Activity";
-import updateActivity from "./updateActivity";
 
 export default function deleteTask(activity: Activity, created: number) {
   const rest = activity.tasks.filter((item) => item.created !== created);
@@ -9,5 +8,5 @@ export default function deleteTask(activity: Activity, created: number) {
     tasks: rest,
   };
 
-  return updateActivity({ ...newActivity });
+  return newActivity;
 }

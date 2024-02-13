@@ -1,5 +1,4 @@
 import Activity from "../../models/Activity";
-import updateActivity from "./updateActivity";
 
 export default function uncheckTask(activity: Activity, created: number) {
   const task = activity.tasks.find((item) => item.created === created);
@@ -9,5 +8,5 @@ export default function uncheckTask(activity: Activity, created: number) {
     ...activity,
     tasks: rest,
   };
-  return updateActivity({ ...newActivity });
+  return newActivity;
 }

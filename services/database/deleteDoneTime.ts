@@ -1,5 +1,4 @@
 import Activity from "../../models/Activity";
-import updateActivity from "./updateActivity";
 
 export default function deleteDoneTime(activity: Activity, datetime: string) {
   const { done, doneComment } = activity;
@@ -12,5 +11,5 @@ export default function deleteDoneTime(activity: Activity, datetime: string) {
     doneComment,
   };
 
-  return updateActivity({ ...newActivity }, false);
+  return newActivity;
 }

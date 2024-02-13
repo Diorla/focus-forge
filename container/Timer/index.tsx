@@ -6,6 +6,7 @@ import * as Progress from "react-native-progress";
 import { useTheme } from "@rneui/themed";
 import endTimer from "../../services/database/endTimer";
 import { useEffect, useState } from "react";
+import useActivity from "../../context/activity/useActivity";
 
 export default function Timer({
   startTime,
@@ -24,6 +25,7 @@ export default function Timer({
   doneToday: number;
   length: number;
 }) {
+  const { updateActivity } = useActivity();
   const {
     theme: { colors },
   } = useTheme();
@@ -45,7 +47,10 @@ export default function Timer({
 
   const value = targetTime - doneToday - count;
   if (length <= count && type === "today")
-    endTimer(id, startTime, done, startTime + length * 1000);
+    updateActivity(
+      id,
+      endTimer(id, startTime, done, startTime + length * 1000)
+    );
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />

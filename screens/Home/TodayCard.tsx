@@ -16,8 +16,10 @@ import { format, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import { schedulePushNotification } from "../../services/notification";
 import { cancelScheduledNotificationAsync } from "expo-notifications";
+import useActivity from "../../context/activity/useActivity";
 
 export function TodayCard({ schedule }: { schedule: Schedule }) {
+  const { updateActivity } = useActivity();
   const {
     theme: { colors },
   } = useTheme();
@@ -86,8 +88,8 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
             playing={running}
             onPress={() => {
               if (running) {
-                endTimer(id, timer.startTime, done).then(() =>
-                  toast.show("Timer paused")
+                updateActivity(id, endTimer(id, timer.startTime, done)).then(
+                  () => toast.show("Timer paused")
                 );
                 cancelScheduledNotificationAsync(timer.notificationId);
               } else {
@@ -99,9 +101,10 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
                   },
                   todayTime - doneToday + 5
                 ).then((notificationId) =>
-                  startTimer(id, todayTime - doneToday, notificationId).then(
-                    () => toast.show("Timer started")
-                  )
+                  updateActivity(
+                    id,
+                    startTimer(id, todayTime - doneToday, notificationId)
+                  ).then(() => toast.show("Timer started"))
                 );
               }
             }}
