@@ -3,14 +3,24 @@ import { Typography } from "../../components";
 import TxtButton from "../../components/txtButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TodayCard } from "./TodayCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
+import { useInterstitialAd } from "react-native-google-mobile-ads";
+import getAdsId from "../../services/utils/getAdsId";
 
 const priority = ["high", "medium", "low", "none"];
 
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useActivity();
+
+  const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
+    keywords: schedule.map((item) => item.name),
+  });
+
+  useEffect(() => {
+    load();
+  }, [load]);
   const today = schedule
     .filter((item) => {
       const todo = item.todayTime - item.doneToday;
@@ -44,7 +54,7 @@ export default function TodayView() {
           ) : null}
         </View>
         <View>
-          <TodayCard schedule={first} />
+          <TodayCard schedule={first} isLoadedAd={isLoaded} showAd={show} />
           {expanded ? (
             <>
               {rest
@@ -54,7 +64,12 @@ export default function TodayView() {
                   return 0;
                 })
                 .map((item) => (
-                  <TodayCard key={item.id} schedule={item} />
+                  <TodayCard
+                    key={item.id}
+                    schedule={item}
+                    isLoadedAd={isLoaded}
+                    showAd={show}
+                  />
                 ))}
             </>
           ) : null}

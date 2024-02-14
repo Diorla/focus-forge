@@ -2,7 +2,7 @@ import * as React from "react";
 import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
 import { Input, useTheme } from "@rneui/themed";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import { random } from "../../services/color";
@@ -12,6 +12,9 @@ import { createActivity } from "../../services/database";
 import useUser from "../../context/user/useUser";
 import useActivity from "../../context/activity/useActivity";
 import { useToast } from "react-native-toast-notifications";
+import { useInterstitialAd } from "react-native-google-mobile-ads";
+import getAdsId from "../../services/utils/getAdsId";
+import dayjs from "dayjs";
 
 const baseForm: Activity = {
   name: "",
@@ -35,12 +38,22 @@ const baseForm: Activity = {
 export default function AddScreen() {
   const { theme } = useTheme();
   const {
-    user: { id },
+    user: { id, createdAt },
   } = useUser();
   const [form, setForm] = useState<Activity>({ ...baseForm, userId: id });
   const { activities } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));
   const toast = useToast();
+  const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
+    keywords: activities.map((item) => item.name),
+  });
+
+  const diff = dayjs().diff(createdAt, "day");
+  const isPremium = diff < 21;
+
+  useEffect(() => {
+    load();
+  }, [load]);
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -76,6 +89,7 @@ export default function AddScreen() {
         setForm({ ...baseForm, userId: id });
       })
       .then(() => toast.show("New activity added"))
+      .then(() => isLoaded && !isPremium && show())
       .catch((err) => toast.show("Adding new activity failed: " + err.message));
   };
 

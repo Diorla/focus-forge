@@ -16,11 +16,23 @@ import { format, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import { schedulePushNotification } from "../../services/notification";
 import { cancelScheduledNotificationAsync } from "expo-notifications";
+import dayjs from "dayjs";
+import useUser from "../../context/user/useUser";
+import { AdShowOptions } from "react-native-google-mobile-ads";
 
-export function TodayCard({ schedule }: { schedule: Schedule }) {
+export function TodayCard({
+  schedule,
+  isLoadedAd,
+  showAd,
+}: {
+  schedule: Schedule;
+  isLoadedAd: boolean;
+  showAd: (arg?: AdShowOptions) => void;
+}) {
   const {
     theme: { colors },
   } = useTheme();
+  const { user } = useUser();
 
   const toast = useToast();
   const navigate = useNavigate<{ id: string }>();
@@ -33,6 +45,9 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
     ? { borderSize: 1, borderColor: colors.primary }
     : {};
   const tasks = schedule.tasks.filter((item) => !item.checked);
+  const diff = dayjs().diff(user.createdAt, "day");
+
+  const isPremium = diff < 21;
 
   return (
     <>
@@ -86,9 +101,9 @@ export function TodayCard({ schedule }: { schedule: Schedule }) {
             playing={running}
             onPress={() => {
               if (running) {
-                endTimer(id, timer.startTime, done).then(() =>
-                  toast.show("Timer paused")
-                );
+                endTimer(id, timer.startTime, done)
+                  .then(() => toast.show("Timer paused"))
+                  .then(() => isLoadedAd && !isPremium && showAd());
                 cancelScheduledNotificationAsync(timer.notificationId);
               } else {
                 schedulePushNotification(
