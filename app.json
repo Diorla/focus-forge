@@ -47,6 +47,9 @@
         {
           "ios": {
             "useFrameworks": "static"
+          },
+          "android": {
+            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }"
           }
         }
       ]
@@ -54,6 +57,7 @@
   },
   "react-native-google-mobile-ads": {
     "android_app_id": "ca-app-pub-6242148548602613~2751646601",
-    "ios_app_id": "ca-app-pub-6242148548602613~9209243748"
+    "ios_app_id": "ca-app-pub-6242148548602613~9209243748",
+    "delay_app_measurement_init": true
   }
 }
