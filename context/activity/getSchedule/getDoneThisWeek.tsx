@@ -1,16 +1,15 @@
 import dayjs from "dayjs";
+import DoneModel from "../../../services/db/schema/Done/Model";
 
 // time already for this week, excluding today
-export default function getDoneThisWeek(
-  doneList: string[],
-  done: { [x: string]: number }
-) {
+export default function getDoneThisWeek(doneList: DoneModel[]) {
   let doneThisWeek = 0;
 
   const timeThisWeek = doneList.filter(
-    (datetime) => dayjs().isSame(datetime, "week") && !dayjs(datetime).isToday()
+    (done) =>
+      dayjs().isSame(done.dateTime, "week") && !dayjs(done.dateTime).isToday()
   );
 
-  timeThisWeek.forEach((date) => (doneThisWeek += done[date]));
+  timeThisWeek.forEach((done) => (doneThisWeek += done.dateTime));
   return doneThisWeek;
 }

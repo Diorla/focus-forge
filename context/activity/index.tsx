@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ActivityContext from "./activityContext";
-import { Unsubscribe } from "firebase/firestore";
 import dayjs from "dayjs";
 import useUser from "../user/useUser";
 import isToday from "dayjs/plugin/isToday";
-import watchActivities from "../../services/database/watchActivity";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
-import Activity from "../../models/Activity";
+import selectRow from "../../services/db/selectRow";
+import { openDatabase } from "../../services/db";
+import ActivityModel from "../../services/db/schema/Activity/Model";
+import DoneModel from "../../services/db/schema/Done/Model";
+import TaskModel from "../../services/db/schema/Task/Model";
 
 dayjs.extend(isToday);
 
+const db = openDatabase();
 export default function ActivityProvider({
   children,
 }: {
@@ -19,6 +22,8 @@ export default function ActivityProvider({
   const { user, time: userTime } = useUser();
   const [prevTime, setPrevTime] = useState(userTime);
   const [activities, setActivities] = useState([]);
+  const [done, setDone] = useState([]);
+  const [tasks, setTasks] = useState([]);
   const [schedule, setSchedule] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -38,14 +43,20 @@ export default function ActivityProvider({
     taskLeft: 0,
   });
 
-  function loadActivity(activities: Activity[]) {
-    const time = getTime(activities, user);
+  function loadActivity(
+    activities: ActivityModel[],
+    done: DoneModel[],
+    tasks: TaskModel[]
+  ) {
+    const time = getTime(activities, done, user);
 
-    const scheduleList = getSchedule(
+    const scheduleList = getSchedule({
       activities,
-      time.todayRemaining,
-      time.upcomingTime
-    );
+      initialTodayRemaining: time.todayRemaining,
+      initialUpcomingTime: time.upcomingTime,
+      done,
+      tasks,
+    });
 
     let todoTime = 0;
     let taskDone = 0;
@@ -64,29 +75,48 @@ export default function ActivityProvider({
     setSchedule(scheduleList);
     setTime({ ...time, todoTime, taskDone, taskLeft });
     setPrevTime(userTime);
+    setDone(done);
+    setTasks(tasks);
     setLoading(false);
   }
 
   // Check if it's a new day since last update
   useEffect(() => {
     if (!dayjs(prevTime).isSame(userTime, "date")) {
-      loadActivity(activities);
+      loadActivity(activities, done, tasks);
     }
   }, [userTime]);
 
   useEffect(() => {
-    let unsubscribe: Unsubscribe;
     try {
-      unsubscribe = watchActivities(user?.id, (activities) => {
-        loadActivity(activities);
+      const activities = [];
+      const done = [];
+      const tasks = [];
+      selectRow({
+        db,
+        table: "activities",
+        callback: (_, result) => {
+          activities.push(...result.rows._array);
+        },
       });
+      selectRow({
+        db,
+        table: "done",
+        callback: (_, result) => {
+          done.push(...result.rows._array);
+        },
+      });
+      selectRow({
+        db,
+        table: "tasks",
+        callback: (_, result) => {
+          tasks.push(...result.rows._array);
+        },
+      });
+      loadActivity(activities, done, tasks);
     } catch (error) {
-      setLoading(false);
       setError(error);
     }
-    return () => {
-      unsubscribe && unsubscribe();
-    };
   }, [user?.id]);
 
   return (

@@ -1,7 +1,7 @@
-import Model from "./Model";
+import BaseModel from "./BaseModel";
 
 interface ModelMap {
-  [key: string]: Model;
+  [key: string]: BaseModel;
 }
 
 export default ModelMap;

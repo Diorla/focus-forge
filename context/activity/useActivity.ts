@@ -1,14 +1,14 @@
 import { useContext } from "react";
 import activityContext from "./activityContext";
-import Activity from "../../models/Activity";
 import Schedule from "./Schedule";
+import ActivityModel from "../../services/db/schema/Activity/Model";
 
 export default function useActivity() {
   interface TaskContext {
     /**
      * All the activities of the user
      */
-    activities: Activity[];
+    activities: ActivityModel[];
     /**
      * If there is an error
      */

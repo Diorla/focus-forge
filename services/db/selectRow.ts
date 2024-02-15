@@ -19,7 +19,7 @@ function selectStatement(table: string, model: Model, col?: string[]) {
 interface SelectRowProp {
   db: Database;
   table: string;
-  model: Model;
+  model?: Model;
   col?: string[];
   callback?: SQLStatementCallback;
   errorCallback?: SQLTransactionErrorCallback;
@@ -33,7 +33,7 @@ export default function selectRow({
   callback,
   errorCallback,
 }: SelectRowProp) {
-  const { statement, values } = selectStatement(table, model, col);
+  const { statement, values } = selectStatement(table, model || {}, col);
 
   db.transaction(
     (tx) => tx.executeSql(statement, values, callback),
