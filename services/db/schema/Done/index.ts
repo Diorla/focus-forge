@@ -9,9 +9,10 @@ class Done {
   static tableName = "done";
   private static init: DoneModel = {
     id: "",
-    dateTime: 0,
+    datetime: 0,
     comment: "",
     activityId: "",
+    length: 0,
   };
 
   static primaryKey = "id";

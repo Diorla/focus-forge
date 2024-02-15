@@ -61,7 +61,7 @@ export default function getSchedule({
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
       const lastDone = Math.max(
-        ...doneList.map((done) => dayjs(done.dateTime).valueOf())
+        ...doneList.map((done) => dayjs(done.datetime).valueOf())
       );
 
       // this week remaining should be greater or equal to 0

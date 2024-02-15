@@ -7,9 +7,9 @@ export default function getDoneThisWeek(doneList: DoneModel[]) {
 
   const timeThisWeek = doneList.filter(
     (done) =>
-      dayjs().isSame(done.dateTime, "week") && !dayjs(done.dateTime).isToday()
+      dayjs().isSame(done.datetime, "week") && !dayjs(done.datetime).isToday()
   );
 
-  timeThisWeek.forEach((done) => (doneThisWeek += done.dateTime));
+  timeThisWeek.forEach((done) => (doneThisWeek += done.length));
   return doneThisWeek;
 }

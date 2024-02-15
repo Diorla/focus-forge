@@ -2,9 +2,10 @@ export type Priority = "high" | "medium" | "low" | "none";
 
 interface DoneModel {
   id: string;
-  dateTime: number;
+  datetime: number;
   comment: string;
   activityId: string;
+  length: number;
 }
 
 export default DoneModel;
