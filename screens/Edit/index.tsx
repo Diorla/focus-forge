@@ -6,7 +6,6 @@ import { useState } from "react";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
-import { updateActivity } from "../../services/database";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useActivity from "../../context/activity/useActivity";
 import ActivityModel from "../../services/db/schema/Activity/Model";
@@ -17,7 +16,7 @@ export default function EditScreen() {
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { id = "" } = params as { id: string };
-  const { activities } = useActivity();
+  const { activities, updateActivity } = useActivity();
   const [form, setForm] = useState<ActivityModel>(
     activities.find((item) => item.id === id)
   );
@@ -50,11 +49,9 @@ export default function EditScreen() {
       });
       return;
     }
-    updateActivity({
-      ...form,
-    }).then(() => {
+
+    updateActivity(form.id, form).then(() => {
       goBack();
-      // setForm({ ...baseForm, userId: id });
     });
   };
 

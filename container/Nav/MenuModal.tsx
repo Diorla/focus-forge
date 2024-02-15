@@ -5,7 +5,6 @@ import { Button, Typography } from "../../components";
 import Schedule from "../../context/activity/Schedule";
 import TopSpace from "../../components/topSpace";
 import useNavigate from "./useNavigate";
-import deleteActivity from "../../services/database/deleteActivity";
 import useActivity from "../../context/activity/useActivity";
 
 export default function MenuModal({
@@ -17,7 +16,7 @@ export default function MenuModal({
 }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate<{ id: string }>();
-  const { updateActivity } = useActivity();
+  const { updateActivity, deleteActivity } = useActivity();
   if (activity) {
     const { archived = "", id = "", name = "" } = activity;
     return (
