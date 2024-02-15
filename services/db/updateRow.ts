@@ -9,7 +9,9 @@ interface Data {
 function updateRowStatement(table: string, data: Data) {
   const keys = Object.keys(data).filter((item) => item !== "id");
 
-  const text = keys.map((key) => `item = ${data[key]}`);
+  const text = keys
+    .filter((key) => (data[key] ? key !== "activityId" : false))
+    .map((key) => `${key} = ${data[key]}`);
   return `UPDATE  ${table} SET ${text.join(", ")} WHERE id = ?;`;
 }
 

@@ -1,9 +1,7 @@
-import addTime from "./addTime";
 import archiveActivity from "./archiveActivity";
 import checkTask from "./checkTask";
 import createTask from "./createTask";
 import deleteActivity from "./deleteActivity";
-import deleteDoneTime from "./deleteDoneTime";
 import deleteTask from "./deleteTask";
 import endTimer from "./endTimer";
 import { collection, doc, where } from "./firestore";
@@ -13,7 +11,6 @@ import startTimer from "./startTimer";
 import unarchiveActivity from "./unarchiveActivity";
 import uncheckTask from "./uncheckTask";
 import updateActivity from "./updateActivity";
-import updateDoneInfo from "./updateDoneInfo";
 import updateUser from "./updateUser";
 import watchActivity from "./watchActivity";
 import watchUser from "./watchUser";
@@ -34,10 +31,7 @@ export {
   startTimer,
   unarchiveActivity,
   uncheckTask,
-  updateDoneInfo,
   watchActivity,
-  deleteDoneTime,
   createTask,
-  addTime,
   startStopWatch,
 };

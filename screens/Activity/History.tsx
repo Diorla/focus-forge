@@ -11,11 +11,9 @@ import {
 import { useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {
-  addTime,
-  deleteDoneTime,
-  updateDoneInfo,
-} from "../../services/database";
+import DoneModel from "../../services/db/schema/Done/Model";
+import useActivity from "../../context/activity/useActivity";
+import uuid from "react-native-uuid";
 
 type History = {
   time: string;
@@ -23,6 +21,7 @@ type History = {
   datetime: string;
   comment: string;
   length: number;
+  id: string;
 };
 
 function Comment({
@@ -39,46 +38,43 @@ function Comment({
 
 export default function History({ activity }: { activity: Schedule }) {
   const { theme } = useTheme();
-  const { done, doneComment = {} } = activity;
-  const doneList = Object.keys(done);
+  const { deleteDone, updateDone, createDone } = useActivity();
+  const { done = [] } = activity;
   const [expandIdx, setExpandIdx] = useState("");
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<DoneModel>({
     comment: "",
-    datetime: 0,
+    datetime: Date.now(),
+    id: "",
+    activityId: activity.id,
     length: 0,
   });
   const [editingComment, setEditingComment] = useState(false);
 
-  const [newTime, setNewTime] = useState({
+  const [newTime, setNewTime] = useState<DoneModel>({
     comment: "",
     datetime: Date.now(),
+    id: String(uuid.v4()),
+    activityId: activity.id,
     length: 0,
   });
 
   const [showAddTime, setShowAddTime] = useState(false);
   const history: { [key: string]: History[] } = {};
-  doneList.forEach((datetime) => {
-    const date = getDateKey(datetime);
-    const length = done[datetime];
-    const [hr, mm] = secondsToHrMm(length);
+  done.forEach((item) => {
+    const date = getDateKey(item.datetime);
+    const [hr, mm] = secondsToHrMm(item.length);
+    const obj = {
+      time: format(item.datetime, "time"),
+      description: `${hr}h ${String(mm).padStart(2, "0")}`,
+      datetime: getDateTimeKey(item.datetime),
+      comment: item.comment,
+      length: item.length,
+      id: item.id,
+    };
     if (history[date]) {
-      history[date].push({
-        time: format(datetime, "time"),
-        description: `${hr}h ${String(mm).padStart(2, "0")}`,
-        datetime,
-        comment: doneComment[datetime] ?? "",
-        length,
-      });
+      history[date].push(obj);
     } else {
-      history[date] = [
-        {
-          time: format(datetime, "time"),
-          description: `${hr}h ${String(mm).padStart(2, "0")}`,
-          datetime,
-          comment: doneComment[datetime] ?? "",
-          length,
-        },
-      ];
+      history[date] = [obj];
     }
   });
 
@@ -111,7 +107,7 @@ export default function History({ activity }: { activity: Schedule }) {
             <Button
               onPress={() => {
                 if (newTime.length)
-                  addTime(activity, newTime).then(() => setShowAddTime(false));
+                  createDone(newTime).then(() => setShowAddTime(false));
               }}
             >
               Save
@@ -160,19 +156,18 @@ export default function History({ activity }: { activity: Schedule }) {
                             setExpandIdx(undefined);
                             setForm({
                               comment: "",
-                              length: 0,
                               datetime: 0,
+                              id: "",
+                              activityId: activity.id,
+                              length: 0,
                             });
                           } else {
-                            const date = dayjs(time.datetime).format(
-                              "YYYY-MM-DD"
-                            );
-                            const datetime = date + "T" + time.time + ":00";
-
                             setForm({
                               comment: time.comment,
                               length: time.length,
-                              datetime: dayjs(datetime).valueOf(),
+                              datetime: dayjs(time.datetime).valueOf(),
+                              id: time.id,
+                              activityId: activity.id,
                             });
                             setExpandIdx(time.datetime);
                           }
@@ -192,7 +187,7 @@ export default function History({ activity }: { activity: Schedule }) {
                       </TouchableOpacity>
                       <Comment
                         showComment={expandIdx !== time.datetime}
-                        comment={doneComment[time.datetime]}
+                        comment={time.comment}
                       />
                       {expandIdx === time.datetime ? (
                         <View>
@@ -246,14 +241,16 @@ export default function History({ activity }: { activity: Schedule }) {
                             >
                               <Button
                                 onPress={() =>
-                                  updateDoneInfo(activity, time.datetime, {
+                                  updateDone(time.id, {
                                     ...form,
-                                    datetime: getDateTimeKey(form.datetime),
+                                    datetime: form.datetime,
                                   }).then(() => {
                                     setForm({
                                       comment: "",
-                                      length: 0,
                                       datetime: 0,
+                                      id: "",
+                                      activityId: activity.id,
+                                      length: 0,
                                     });
                                     setExpandIdx(undefined);
                                   })
@@ -265,8 +262,10 @@ export default function History({ activity }: { activity: Schedule }) {
                                 onPress={() => {
                                   setForm({
                                     comment: "",
-                                    length: 0,
                                     datetime: 0,
+                                    id: "",
+                                    activityId: activity.id,
+                                    length: 0,
                                   });
                                   setExpandIdx(undefined);
                                 }}
@@ -278,9 +277,7 @@ export default function History({ activity }: { activity: Schedule }) {
                           <View>
                             <Button
                               color="error"
-                              onPress={() =>
-                                deleteDoneTime(activity, time.datetime)
-                              }
+                              onPress={() => deleteDone(form.id)}
                             >
                               Delete
                             </Button>
