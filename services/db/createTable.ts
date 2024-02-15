@@ -1,3 +1,4 @@
+import { logError } from "../database";
 import Database from "./Database";
 import ModelMap from "./ModelMap";
 
@@ -34,7 +35,8 @@ export default function createTable(
   model: ModelMap
 ) {
   const statement = createStatement(table, model);
-  db.transaction((tx) => {
-    tx.executeSql(statement);
-  });
+  db.transaction(
+    (tx) => tx.executeSql(statement),
+    (error) => logError("Activity", "create table", error)
+  );
 }

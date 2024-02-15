@@ -12,11 +12,12 @@ class Task {
     title: "",
     checked: 0,
     created: 0,
+    id: "",
   };
 
-  primaryKey = "id";
-  notNull = [];
-  autoIncrement = true;
+  static primaryKey = "id";
+  static notNull = [];
+  static autoIncrement = false;
 
   value = { ...Task.init };
 
@@ -29,16 +30,20 @@ class Task {
 
   static getMetaData(): TaskMetadata {
     const obj = {};
-
+    const extra = {
+      primaryKey: Task.primaryKey,
+      notNull: Task.notNull,
+      autoIncrement: Task.autoIncrement,
+    };
     for (const key in Task.init) {
       if (typeof Task.init[key] === "number") {
-        const current = generateObj(key, "REAL");
+        const current = generateObj(key, "REAL", extra);
         obj[key] = current;
       } else if (typeof Task.init[key] === "boolean") {
-        const current = generateObj(key, "INTEGER");
+        const current = generateObj(key, "INTEGER", extra);
         obj[key] = current;
       } else {
-        const current = generateObj(key, "TEXT");
+        const current = generateObj(key, "TEXT", extra);
         obj[key] = current;
       }
     }

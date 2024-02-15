@@ -30,6 +30,10 @@ class Activity {
 
   value = { ...Activity.init };
 
+  static primaryKey = "id";
+  static notNull = [];
+  static autoIncrement = false;
+
   constructor(data?: Omit<ActivityModel, Exclude>) {
     this.value = {
       ...data,
@@ -42,15 +46,20 @@ class Activity {
   static getMetaData(): ActivityMetadata {
     const obj = {};
 
+    const extra = {
+      primaryKey: Activity.primaryKey,
+      notNull: Activity.notNull,
+      autoIncrement: Activity.autoIncrement,
+    };
     for (const key in Activity.init) {
       if (typeof Activity.init[key] === "number") {
-        const current = generateObj(key, "REAL");
+        const current = generateObj(key, "REAL", extra);
         obj[key] = current;
       } else if (typeof Activity.init[key] === "boolean") {
-        const current = generateObj(key, "INTEGER");
+        const current = generateObj(key, "INTEGER", extra);
         obj[key] = current;
       } else {
-        const current = generateObj(key, "TEXT");
+        const current = generateObj(key, "TEXT", extra);
         obj[key] = current;
       }
     }

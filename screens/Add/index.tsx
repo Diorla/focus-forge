@@ -7,7 +7,6 @@ import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import { random } from "../../services/color";
 import SelectCategory from "../../components/selectCategory";
-import { createActivity } from "../../services/database";
 import useUser from "../../context/user/useUser";
 import useActivity from "../../context/activity/useActivity";
 import { useToast } from "react-native-toast-notifications";
@@ -42,7 +41,7 @@ export default function AddScreen() {
     user: { createdAt },
   } = useUser();
   const [form, setForm] = useState<ActivityModel>({ ...baseForm });
-  const { activities } = useActivity();
+  const { activities, createActivity } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));
   const toast = useToast();
   const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {

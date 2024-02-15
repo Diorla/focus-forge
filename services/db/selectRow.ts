@@ -10,8 +10,10 @@ function selectStatement(table: string, model: Model, col?: string[]) {
   const values = keys.map((key) => model[key]);
   const where = keys.map((key) => `${key} = ?`).join(" and ");
   const select = col ? col.join(", ") : "*";
+  let condition = "";
+  if (where.length) condition = `WHERE ${where}`;
   return {
-    statement: `SELECT ${select} FROM ${table} WHERE ${where}`,
+    statement: `SELECT ${select} FROM ${table} ${condition}`,
     values,
   };
 }

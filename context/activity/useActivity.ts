@@ -34,6 +34,9 @@ export default function useActivity() {
       taskLeft: number;
     };
     schedule: Schedule[];
+    updateActivity: (id: string, data: Partial<ActivityModel>) => Promise<void>;
+    createActivity: (activities: ActivityModel) => Promise<void>;
+    deleteActivity: (id: string) => Promise<void>;
   }
 
   return useContext<TaskContext>(activityContext);

@@ -14,9 +14,9 @@ class Done {
     activityId: "",
   };
 
-  primaryKey = "id";
-  notNull = [];
-  autoIncrement = true;
+  static primaryKey = "id";
+  static notNull = [];
+  static autoIncrement = false;
 
   value = { ...Done.init };
   constructor(data?: Omit<DoneModel, Exclude>) {
@@ -28,16 +28,20 @@ class Done {
 
   static getMetaData(): DoneMetadata {
     const obj = {};
-
+    const extra = {
+      primaryKey: Done.primaryKey,
+      notNull: Done.notNull,
+      autoIncrement: Done.autoIncrement,
+    };
     for (const key in Done.init) {
       if (typeof Done.init[key] === "number") {
-        const current = generateObj(key, "REAL");
+        const current = generateObj(key, "REAL", extra);
         obj[key] = current;
       } else if (typeof Done.init[key] === "boolean") {
-        const current = generateObj(key, "INTEGER");
+        const current = generateObj(key, "INTEGER", extra);
         obj[key] = current;
       } else {
-        const current = generateObj(key, "TEXT");
+        const current = generateObj(key, "TEXT", extra);
         obj[key] = current;
       }
     }

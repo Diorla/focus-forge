@@ -45,7 +45,7 @@ export default function Example() {
       db,
       table: "items",
       callback: forceUpdate,
-      model: { done: 0, value: text },
+      data: { done: 0, value: text },
     });
   };
 

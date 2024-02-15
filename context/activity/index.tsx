@@ -6,13 +6,17 @@ import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import selectRow from "../../services/db/selectRow";
-import { createTable, openDatabase } from "../../services/db";
+import { createTable, insertRow, openDatabase } from "../../services/db";
 import ActivityModel from "../../services/db/schema/Activity/Model";
 import DoneModel from "../../services/db/schema/Done/Model";
 import TaskModel from "../../services/db/schema/Task/Model";
 import Activity from "../../services/db/schema/Activity";
 import Done from "../../services/db/schema/Done";
 import Task from "../../services/db/schema/Task";
+import deleteRow from "../../services/db/deleteRow";
+import updateRow from "../../services/db/updateRow";
+import { useForceUpdate } from "./useForceUpdate";
+import { logError } from "../../services/database";
 
 dayjs.extend(isToday);
 
@@ -46,6 +50,7 @@ export default function ActivityProvider({
     taskLeft: 0,
   });
 
+  const [forceUpdate, forceUpdateInfo] = useForceUpdate();
   function loadActivity(
     activities: ActivityModel[],
     done: DoneModel[],
@@ -83,12 +88,6 @@ export default function ActivityProvider({
     setLoading(false);
   }
 
-  useEffect(() => {
-    createTable(db, Activity.tableName, Activity.getMetaData());
-    createTable(db, Done.tableName, Done.getMetaData());
-    createTable(db, Task.tableName, Task.getMetaData());
-  }, []);
-
   // Check if it's a new day since last update
   useEffect(() => {
     if (!dayjs(prevTime).isSame(userTime, "date")) {
@@ -98,35 +97,74 @@ export default function ActivityProvider({
 
   useEffect(() => {
     try {
+      createTable(db, Activity.tableName, Activity.getMetaData());
+      createTable(db, Done.tableName, Done.getMetaData());
+      createTable(db, Task.tableName, Task.getMetaData());
       const activities = [];
       const done = [];
       const tasks = [];
       selectRow({
         db,
-        table: "activities",
+        table: Activity.tableName,
         callback: (_, result) => {
           activities.push(...result.rows._array);
         },
+        errorCallback: (error) => logError("get activity", "select row", error),
       });
       selectRow({
         db,
-        table: "done",
+        table: Done.tableName,
         callback: (_, result) => {
           done.push(...result.rows._array);
         },
+        errorCallback: (error) => logError("get Done", "select row", error),
       });
       selectRow({
         db,
-        table: "tasks",
+        table: Task.tableName,
         callback: (_, result) => {
           tasks.push(...result.rows._array);
         },
+        errorCallback: (error) => logError("get Task", "select row", error),
       });
       loadActivity(activities, done, tasks);
     } catch (error) {
       setError(error);
+      logError("initial load", "loading activity", error);
+      // console.log("error", error);
     }
-  }, [user?.id]);
+  }, [forceUpdateInfo]);
+
+  function updateActivity(id: string, data: Partial<ActivityModel>) {
+    updateRow({
+      db,
+      table: Activity.tableName,
+      data: { ...data, id },
+      callback: forceUpdate,
+      errorCallback: (error) => logError("Activity", "update row", error),
+    });
+  }
+
+  async function createActivity(activity: ActivityModel) {
+    const newActivity = new Activity(activity);
+    insertRow({
+      db,
+      table: Activity.tableName,
+      data: newActivity.getData(),
+      callback: forceUpdate,
+      errorCallback: (error) => logError("Activity", "create row", error),
+    });
+  }
+
+  function deleteActivity(id: string) {
+    deleteRow({
+      db,
+      table: Activity.tableName,
+      id,
+      callback: forceUpdate,
+      errorCallback: (error) => logError("Activity", "delete row", error),
+    });
+  }
 
   return (
     <ActivityContext.Provider
@@ -136,6 +174,9 @@ export default function ActivityProvider({
         loading,
         time,
         schedule,
+        updateActivity,
+        createActivity,
+        deleteActivity,
       }}
     >
       {children}

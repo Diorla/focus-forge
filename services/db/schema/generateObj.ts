@@ -1,13 +1,22 @@
 import BaseModel, { DataType } from "../BaseModel";
 
-export default function generateObj(key: string, type: DataType): BaseModel {
+export default function generateObj(
+  key: string,
+  type: DataType,
+  extra: {
+    primaryKey: string;
+    autoIncrement: boolean;
+    notNull: string[];
+  }
+): BaseModel {
   const current: BaseModel = {
     type,
   };
-  if (key === this.primaryKey) {
+  const { primaryKey, autoIncrement, notNull } = extra;
+  if (key === primaryKey) {
     current.primaryKey = true;
-    if (this.autoIncrement) current.autoIncrement = true;
-    if (this.notNull.includes(key)) current.allowNull = false;
+    if (autoIncrement) current.autoIncrement = true;
+    if (notNull.includes(key)) current.allowNull = false;
   }
   return current;
 }

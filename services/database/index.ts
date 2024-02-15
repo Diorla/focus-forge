@@ -1,7 +1,6 @@
 import addTime from "./addTime";
 import archiveActivity from "./archiveActivity";
 import checkTask from "./checkTask";
-import createActivity from "./createActivity";
 import createTask from "./createTask";
 import deleteActivity from "./deleteActivity";
 import deleteDoneTime from "./deleteDoneTime";
@@ -26,7 +25,6 @@ export {
   logError,
   watchUser,
   updateUser,
-  createActivity,
   updateActivity,
   archiveActivity,
   checkTask,
