@@ -1,7 +1,7 @@
 import Database from "./Database";
-import TableModel from "./TableModel";
+import ModelMap from "./ModelMap";
 
-function createStatement(table: string, model: TableModel) {
+function createStatement(table: string, model: ModelMap) {
   const keys = Object.keys(model);
   const str = keys.map((key) => {
     const {
@@ -31,7 +31,7 @@ function createStatement(table: string, model: TableModel) {
 export default function createTable(
   db: Database,
   table: string,
-  model: TableModel
+  model: ModelMap
 ) {
   const statement = createStatement(table, model);
   db.transaction((tx) => {

@@ -1,6 +1,6 @@
 export type DataType = "INTEGER" | "TEXT" | "REAL" | "BLOB";
 
-export type Model = {
+type Model = {
   // Boolean is recognised as 0 or 1 in INTEGER
   // Save datetime as REAL
   type: DataType;
@@ -9,8 +9,5 @@ export type Model = {
   defaultValue?: unknown;
   autoIncrement?: boolean;
 };
-interface TableModel {
-  [key: string]: Model;
-}
 
-export default TableModel;
+export default Model;
