@@ -2,13 +2,12 @@ import { Button, Typography } from "../../components";
 import { Modal, ScrollView, View } from "react-native";
 import { useState } from "react";
 import { CheckBox, Divider, Input } from "@rneui/themed";
-import uncheckTask from "../../services/database/uncheckTask";
-import checkTask from "../../services/database/checkTask";
-import createTask from "../../services/database/createTask";
 import Schedule from "../../context/activity/Schedule";
 import TopSpace from "../../components/topSpace";
 import { MaterialIcons } from "@expo/vector-icons";
-import { deleteTask } from "../../services/database";
+import useActivity from "../../context/activity/useActivity";
+import TaskModel from "../../services/db/schema/Task/Model";
+import uuid from "react-native-uuid";
 
 export default function ChecklistModal({
   activity,
@@ -19,10 +18,25 @@ export default function ChecklistModal({
   visible: boolean;
   closeModal: () => void;
 }) {
+  const { updateTask, createTask, deleteTask } = useActivity();
   const { tasks } = activity;
   const [showAddNewTask, setShowAddNewTask] = useState(false);
-  const [task, setTask] = useState("");
+  const [task, setTask] = useState<TaskModel>({
+    id: String(uuid.v4()),
+    title: "",
+    checked: 0,
+    created: Date.now(),
+    activityId: activity.id,
+  });
   const [showAll, setShowAll] = useState(false);
+
+  const checkTask = (id: string) => {
+    updateTask(id, { checked: Date.now() });
+  };
+  const uncheckTask = (id: string) => {
+    updateTask(id, { checked: 0 });
+  };
+
   return (
     <Modal visible={visible} style={{ flex: 1 }}>
       <TopSpace />
@@ -66,9 +80,7 @@ export default function ChecklistModal({
                   <CheckBox
                     checked={!!item.checked}
                     onPress={() =>
-                      item.checked
-                        ? uncheckTask(activity, item.created)
-                        : checkTask(activity, item.created)
+                      item.checked ? uncheckTask(item.id) : checkTask(item.id)
                     }
                     iconType="material-community"
                     checkedIcon="checkbox-marked"
@@ -79,23 +91,37 @@ export default function ChecklistModal({
                     name="delete"
                     size={28}
                     color="black"
-                    onPress={() => deleteTask(activity, item.created)}
+                    onPress={() => deleteTask(item.id)}
                   />
                 </View>
               );
             })}
           {showAddNewTask ? (
             <View>
-              <Input value={task} onChangeText={(task) => setTask(task)} />
+              <Input
+                value={task.title}
+                onChangeText={(title) =>
+                  setTask({
+                    ...task,
+                    title,
+                  })
+                }
+              />
               <View
                 style={{ flexDirection: "row", justifyContent: "flex-end" }}
               >
                 <Button
                   disabled={!task}
                   onPress={() =>
-                    createTask(activity, task).then(() => {
+                    createTask(task).then(() => {
                       setShowAddNewTask(!showAddNewTask);
-                      setTask("");
+                      setTask({
+                        id: String(uuid.v4()),
+                        title: "",
+                        checked: 0,
+                        created: Date.now(),
+                        activityId: activity.id,
+                      });
                     })
                   }
                 >

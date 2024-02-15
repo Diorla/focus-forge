@@ -14,7 +14,7 @@ function updateRowStatement(table: string, data: Data) {
     .filter((key) =>
       NumberIsDefined(data[key]) ? !["activityId", "id"].includes(key) : false
     )
-    .map((key) => `${key} = ${data[key] || ""}`);
+    .map((key) => `${key} = ${data[key]}`);
   return `UPDATE  ${table} SET ${text.join(", ")} WHERE id = ?;`;
 }
 
