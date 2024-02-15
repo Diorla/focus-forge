@@ -5,20 +5,24 @@ import useUser from "../user/useUser";
 import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
-import selectRow from "../../services/db/selectRow";
-import { createTable, insertRow, openDatabase } from "../../services/db";
 import ActivityModel from "../../services/db/schema/Activity/Model";
-import Activity from "../../services/db/schema/Activity";
-import Done from "../../services/db/schema/Done";
-import Task from "../../services/db/schema/Task";
-import deleteRow from "../../services/db/deleteRow";
-import updateRow from "../../services/db/updateRow";
 import { useForceUpdate } from "./useForceUpdate";
 import { logError } from "../../services/database";
+import updateActivity from "./updateActivity";
+import createActivity from "./createActivity";
+import deleteActivity from "./deleteActivity";
+import initTable from "./initTable";
+import fetchInfo from "./fetchInfo";
+import updateDone from "./updateDone";
+import DoneModel from "../../services/db/schema/Done/Model";
+import createDone from "./createDone";
+import deleteDone from "./deleteDone";
+import updateTask from "./updateTask";
+import createTask from "./createTask";
+import deleteTask from "./deleteTask";
+import TaskModel from "../../services/db/schema/Task/Model";
 
 dayjs.extend(isToday);
-
-const db = openDatabase();
 
 export default function ActivityProvider({
   children,
@@ -89,33 +93,8 @@ export default function ActivityProvider({
 
   useEffect(() => {
     try {
-      createTable(db, Activity.tableName, Activity.getMetaData());
-      createTable(db, Done.tableName, Done.getMetaData());
-      createTable(db, Task.tableName, Task.getMetaData());
-      selectRow({
-        db,
-        table: Activity.tableName,
-        callback: (_, result) => {
-          setActivities(result.rows._array);
-        },
-        errorCallback: (error) => logError("get activity", "select row", error),
-      });
-      selectRow({
-        db,
-        table: Done.tableName,
-        callback: (_, result) => {
-          setDone(result.rows._array);
-        },
-        errorCallback: (error) => logError("get Done", "select row", error),
-      });
-      selectRow({
-        db,
-        table: Task.tableName,
-        callback: (_, result) => {
-          setTasks(result.rows._array);
-        },
-        errorCallback: (error) => logError("get Task", "select row", error),
-      });
+      initTable();
+      fetchInfo(setActivities, setDone, setTasks);
     } catch (error) {
       setError(error);
       logError("initial load", "loading activity", error);
@@ -126,37 +105,6 @@ export default function ActivityProvider({
     loadActivity();
   }, [activities.length, done.length, tasks.length]);
 
-  function updateActivity(id: string, data: Partial<ActivityModel>) {
-    updateRow({
-      db,
-      table: Activity.tableName,
-      data: { ...data, id },
-      callback: forceUpdate,
-      errorCallback: (error) => logError("Activity", "update row", error),
-    });
-  }
-
-  async function createActivity(activity: ActivityModel) {
-    const newActivity = new Activity(activity);
-    insertRow({
-      db,
-      table: Activity.tableName,
-      data: newActivity.getData(),
-      callback: forceUpdate,
-      errorCallback: (error) => logError("Activity", "create row", error),
-    });
-  }
-
-  function deleteActivity(id: string) {
-    deleteRow({
-      db,
-      table: Activity.tableName,
-      id,
-      callback: forceUpdate,
-      errorCallback: (error) => logError("Activity", "delete row", error),
-    });
-  }
-
   return (
     <ActivityContext.Provider
       value={{
@@ -165,9 +113,19 @@ export default function ActivityProvider({
         loading,
         time,
         schedule,
-        updateActivity,
-        createActivity,
-        deleteActivity,
+        updateActivity: (id: string, data: Partial<ActivityModel>) =>
+          updateActivity(id, data, forceUpdate),
+        createActivity: (activity: ActivityModel) =>
+          createActivity(activity, forceUpdate),
+        deleteActivity: (id: string) => deleteActivity(id, forceUpdate),
+        updateDone: (id: string, data: Partial<DoneModel>) =>
+          updateDone(id, data, forceUpdate),
+        createDone: (activity: DoneModel) => createDone(activity, forceUpdate),
+        deleteDone: (id: string) => deleteDone(id, forceUpdate),
+        updateTask: (id: string, data: Partial<TaskModel>) =>
+          updateTask(id, data, forceUpdate),
+        createTask: (activity: TaskModel) => createTask(activity, forceUpdate),
+        deleteTask: (id: string) => deleteTask(id, forceUpdate),
       }}
     >
       {children}
