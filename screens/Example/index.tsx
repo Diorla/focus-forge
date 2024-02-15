@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Platform, ScrollView, Text, TextInput, View } from "react-native";
 import {
-  TableModel,
+  ModelMap,
   createTable,
   insertRow,
   openDatabase,
@@ -17,7 +17,7 @@ export default function Example() {
   const [forceUpdate, forceUpdateId] = useForceUpdate();
 
   useEffect(() => {
-    const data: TableModel = {
+    const data: ModelMap = {
       id: {
         type: "INTEGER",
         primaryKey: true,
