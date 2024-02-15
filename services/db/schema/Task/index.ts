@@ -5,8 +5,9 @@ import generateObj from "../generateObj";
 type Exclude = "created";
 
 class Task {
-  static tableName = "task";
-  value: TaskModel = {
+  static tableName = "tasks";
+
+  private static init: TaskModel = {
     activityId: "",
     title: "",
     checked: 0,
@@ -17,21 +18,23 @@ class Task {
   notNull = [];
   autoIncrement = true;
 
-  constructor(data: Omit<TaskModel, Exclude>) {
+  value = { ...Task.init };
+
+  constructor(data?: Omit<TaskModel, Exclude>) {
     this.value = {
       ...data,
       created: Date.now(),
     };
   }
 
-  getMetaData(): TaskMetadata {
+  static getMetaData(): TaskMetadata {
     const obj = {};
 
-    for (const key in this.value) {
-      if (typeof this.value[key] === "number") {
+    for (const key in Task.init) {
+      if (typeof Task.init[key] === "number") {
         const current = generateObj(key, "REAL");
         obj[key] = current;
-      } else if (typeof this.value[key] === "boolean") {
+      } else if (typeof Task.init[key] === "boolean") {
         const current = generateObj(key, "INTEGER");
         obj[key] = current;
       } else {

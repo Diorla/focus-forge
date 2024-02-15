@@ -7,7 +7,7 @@ type Exclude = "id";
 
 class Done {
   static tableName = "done";
-  value: DoneModel = {
+  private static init: DoneModel = {
     id: "",
     dateTime: 0,
     comment: "",
@@ -18,21 +18,22 @@ class Done {
   notNull = [];
   autoIncrement = true;
 
-  constructor(data: Omit<DoneModel, Exclude>) {
+  value = { ...Done.init };
+  constructor(data?: Omit<DoneModel, Exclude>) {
     this.value = {
       ...data,
       id: String(uuid.v4()),
     };
   }
 
-  getMetaData(): DoneMetadata {
+  static getMetaData(): DoneMetadata {
     const obj = {};
 
-    for (const key in this.value) {
-      if (typeof this.value[key] === "number") {
+    for (const key in Done.init) {
+      if (typeof Done.init[key] === "number") {
         const current = generateObj(key, "REAL");
         obj[key] = current;
-      } else if (typeof this.value[key] === "boolean") {
+      } else if (typeof Done.init[key] === "boolean") {
         const current = generateObj(key, "INTEGER");
         obj[key] = current;
       } else {

@@ -6,10 +6,13 @@ import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import selectRow from "../../services/db/selectRow";
-import { openDatabase } from "../../services/db";
+import { createTable, openDatabase } from "../../services/db";
 import ActivityModel from "../../services/db/schema/Activity/Model";
 import DoneModel from "../../services/db/schema/Done/Model";
 import TaskModel from "../../services/db/schema/Task/Model";
+import Activity from "../../services/db/schema/Activity";
+import Done from "../../services/db/schema/Done";
+import Task from "../../services/db/schema/Task";
 
 dayjs.extend(isToday);
 
@@ -79,6 +82,12 @@ export default function ActivityProvider({
     setTasks(tasks);
     setLoading(false);
   }
+
+  useEffect(() => {
+    createTable(db, Activity.tableName, Activity.getMetaData());
+    createTable(db, Done.tableName, Done.getMetaData());
+    createTable(db, Task.tableName, Task.getMetaData());
+  }, []);
 
   // Check if it's a new day since last update
   useEffect(() => {

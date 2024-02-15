@@ -8,7 +8,8 @@ type Exclude = "createdAt" | "updatedAt" | "id";
 
 class Activity {
   static tableName = "activities";
-  value: ActivityModel = {
+
+  private static init: ActivityModel = {
     id: "",
     name: "",
     weeklyTarget: 0,
@@ -27,7 +28,9 @@ class Activity {
     lastDone: 0,
   };
 
-  constructor(data: Omit<ActivityModel, Exclude>) {
+  value = { ...Activity.init };
+
+  constructor(data?: Omit<ActivityModel, Exclude>) {
     this.value = {
       ...data,
       createdAt: Date.now(),
@@ -36,14 +39,14 @@ class Activity {
     };
   }
 
-  getMetaData(): ActivityMetadata {
+  static getMetaData(): ActivityMetadata {
     const obj = {};
 
-    for (const key in this.value) {
-      if (typeof this.value[key] === "number") {
+    for (const key in Activity.init) {
+      if (typeof Activity.init[key] === "number") {
         const current = generateObj(key, "REAL");
         obj[key] = current;
-      } else if (typeof this.value[key] === "boolean") {
+      } else if (typeof Activity.init[key] === "boolean") {
         const current = generateObj(key, "INTEGER");
         obj[key] = current;
       } else {
