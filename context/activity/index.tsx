@@ -8,8 +8,6 @@ import getSchedule from "./getSchedule";
 import selectRow from "../../services/db/selectRow";
 import { createTable, insertRow, openDatabase } from "../../services/db";
 import ActivityModel from "../../services/db/schema/Activity/Model";
-import DoneModel from "../../services/db/schema/Done/Model";
-import TaskModel from "../../services/db/schema/Task/Model";
 import Activity from "../../services/db/schema/Activity";
 import Done from "../../services/db/schema/Done";
 import Task from "../../services/db/schema/Task";
@@ -21,6 +19,7 @@ import { logError } from "../../services/database";
 dayjs.extend(isToday);
 
 const db = openDatabase();
+
 export default function ActivityProvider({
   children,
 }: {
@@ -51,11 +50,7 @@ export default function ActivityProvider({
   });
 
   const [forceUpdate, forceUpdateInfo] = useForceUpdate();
-  function loadActivity(
-    activities: ActivityModel[],
-    done: DoneModel[],
-    tasks: TaskModel[]
-  ) {
+  function loadActivity() {
     const time = getTime(activities, done, user);
 
     const scheduleList = getSchedule({
@@ -79,19 +74,16 @@ export default function ActivityProvider({
       if (todayTime && timeLeft <= 0.0001) taskDone++;
     });
 
-    setActivities(activities);
     setSchedule(scheduleList);
     setTime({ ...time, todoTime, taskDone, taskLeft });
     setPrevTime(userTime);
-    setDone(done);
-    setTasks(tasks);
     setLoading(false);
   }
 
   // Check if it's a new day since last update
   useEffect(() => {
     if (!dayjs(prevTime).isSame(userTime, "date")) {
-      loadActivity(activities, done, tasks);
+      loadActivity();
     }
   }, [userTime]);
 
@@ -100,14 +92,11 @@ export default function ActivityProvider({
       createTable(db, Activity.tableName, Activity.getMetaData());
       createTable(db, Done.tableName, Done.getMetaData());
       createTable(db, Task.tableName, Task.getMetaData());
-      const activities = [];
-      const done = [];
-      const tasks = [];
       selectRow({
         db,
         table: Activity.tableName,
         callback: (_, result) => {
-          activities.push(...result.rows._array);
+          setActivities(result.rows._array);
         },
         errorCallback: (error) => logError("get activity", "select row", error),
       });
@@ -115,7 +104,7 @@ export default function ActivityProvider({
         db,
         table: Done.tableName,
         callback: (_, result) => {
-          done.push(...result.rows._array);
+          setDone(result.rows._array);
         },
         errorCallback: (error) => logError("get Done", "select row", error),
       });
@@ -123,17 +112,19 @@ export default function ActivityProvider({
         db,
         table: Task.tableName,
         callback: (_, result) => {
-          tasks.push(...result.rows._array);
+          setTasks(result.rows._array);
         },
         errorCallback: (error) => logError("get Task", "select row", error),
       });
-      loadActivity(activities, done, tasks);
     } catch (error) {
       setError(error);
       logError("initial load", "loading activity", error);
-      // console.log("error", error);
     }
   }, [forceUpdateInfo]);
+
+  useEffect(() => {
+    loadActivity();
+  }, [activities.length, done.length, tasks.length]);
 
   function updateActivity(id: string, data: Partial<ActivityModel>) {
     updateRow({
