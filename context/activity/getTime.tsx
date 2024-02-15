@@ -74,13 +74,13 @@ export default function getTime(
   }
   activities.forEach((item) => {
     const doneList = done.filter((doneItem) => doneItem.activityId === item.id);
-    const timeToday = doneList.filter((done) => dayjs(done.dateTime).isToday());
+    const timeToday = doneList.filter((done) => dayjs(done.datetime).isToday());
     const timeThisWeek = doneList.filter(
       (done) =>
-        dayjs().isSame(done.dateTime, "week") && !dayjs(done.dateTime).isToday()
+        dayjs().isSame(done.datetime, "week") && !dayjs(done.datetime).isToday()
     );
-    timeToday.forEach((done) => (doneToday += done.dateTime));
-    timeThisWeek.forEach((done) => (doneThisWeek += done.dateTime));
+    timeToday.forEach((done) => (doneToday += done.length));
+    timeThisWeek.forEach((done) => (doneThisWeek += done.length));
   });
   thisWeekRemaining = weeklyQuota - doneThisWeek;
   if (thisWeekRemaining < 0) thisWeekRemaining = 0;
