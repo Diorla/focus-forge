@@ -1,6 +1,6 @@
 import { SQLStatementCallback, SQLTransactionErrorCallback } from "expo-sqlite";
 import Database from "./Database";
-import { NumberIsDefined } from "./isDefined";
+import isDefined from "./isDefined";
 
 interface Data {
   id: string;
@@ -11,10 +11,13 @@ function updateRowStatement(table: string, data: Data) {
   const keys = Object.keys(data);
 
   const text = keys
-    .filter((key) =>
-      NumberIsDefined(data[key]) ? !["activityId", "id"].includes(key) : false
-    )
-    .map((key) => `${key} = ${data[key]}`);
+    .filter((key) => (isDefined(data[key]) ? !["id"].includes(key) : false))
+    .map(
+      (key) =>
+        `${key} = ${
+          typeof data[key] === "string" ? "'" + data[key] + "'" : data[key]
+        }`
+    );
   return `UPDATE  ${table} SET ${text.join(", ")} WHERE id = ?;`;
 }
 

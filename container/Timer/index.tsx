@@ -4,14 +4,14 @@ import useInterval from "./useInterval";
 import Clock from "./Clock";
 import * as Progress from "react-native-progress";
 import { useTheme } from "@rneui/themed";
-import endTimer from "../../services/database/endTimer";
 import { useEffect, useState } from "react";
+import useActivity from "../../context/activity/useActivity";
+import { getDateTimeKey } from "../../services/datetime";
 
 export default function Timer({
   startTime,
   targetTime,
   id,
-  done,
   type = "today",
   doneToday = 0,
   length,
@@ -19,7 +19,6 @@ export default function Timer({
   startTime: number;
   targetTime: number;
   id: string;
-  done: { [key: string]: number };
   type?: "today" | "task";
   doneToday: number;
   length: number;
@@ -28,8 +27,28 @@ export default function Timer({
     theme: { colors },
   } = useTheme();
 
+  const { updateActivity, createDone } = useActivity();
   const [count, setCount] = useState((Date.now() - startTime) / 1000);
 
+  const endTimer = (id: string, startTime: number) => {
+    const key = getDateTimeKey(startTime);
+
+    // reset the activity time to 0
+    updateActivity(id, {
+      timerStart: 0,
+      timerLength: 0,
+      timerId: "",
+    });
+
+    // Create info about done task
+    return createDone({
+      id: key,
+      datetime: startTime,
+      comment: "",
+      activityId: id,
+      length,
+    });
+  };
   useInterval(() => {
     setCount(count + 1);
   }, 1000);
@@ -44,8 +63,8 @@ export default function Timer({
   }, [startTime]);
 
   const value = targetTime - doneToday - count;
-  if (length <= count && type === "today")
-    endTimer(id, startTime, done, startTime + length * 1000);
+
+  if (length <= count && type === "today") endTimer(id, startTime);
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />

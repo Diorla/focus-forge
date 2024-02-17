@@ -13,9 +13,9 @@ interface ActivityModel {
   archived: number;
   updatedAt: number;
   createdAt: number;
-  timerStart: 0;
-  timerLength: "";
-  timerId: "";
+  timerStart: number;
+  timerLength: number;
+  timerId: string;
   lastDone: number;
 }
 

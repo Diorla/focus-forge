@@ -23,7 +23,7 @@ class Activity {
     updatedAt: 0,
     createdAt: Date.now(),
     timerStart: 0,
-    timerLength: "",
+    timerLength: 0,
     timerId: "",
     lastDone: 0,
   };
