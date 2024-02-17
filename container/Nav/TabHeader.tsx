@@ -1,7 +1,7 @@
 import { View, TouchableOpacity, Modal } from "react-native";
 import { Button, Typography } from "../../components";
 import useUser from "../../context/user/useUser";
-import { format } from "../../services/datetime";
+import { format, getDateTimeKey } from "../../services/datetime";
 import useNavigate from "./useNavigate";
 import { FontAwesome5 } from "@expo/vector-icons";
 import StopWatch from "../Timer/StopWatch";
@@ -9,14 +9,26 @@ import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import Picker from "./Picker";
 import { startStopWatch } from "../../services/database";
-import endStopWatch from "../../services/database/endStopWatch";
 
-const ShowStopWatch = () => {
+const StopWatchModal = () => {
   const { user } = useUser();
-  const { activities = [] } = useActivity();
+  const { activities = [], createDone } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
   const [target, setTarget] = useState(activities[0]?.id);
+
+  const endTimer = (id: string, startTime: number) => {
+    const key = getDateTimeKey(startTime);
+
+    return createDone({
+      id: key,
+      datetime: startTime,
+      comment: "",
+      activityId: id,
+      length: (Date.now() - startTime) / 1000,
+    });
+    // TODO: Reset user value
+  };
 
   useEffect(() => {
     if (!target) setTarget(activities[0]?.id);
@@ -55,14 +67,10 @@ const ShowStopWatch = () => {
           <View style={{ flexDirection: "row" }}>
             <Button
               onPress={() => {
-                const activity = activities.find((item) => item.id === target);
                 if (running)
-                  endStopWatch({
-                    userId: user.id,
-                    activityId: target,
-                    startTime: user.startTime,
-                    done: activity.done,
-                  }).then(() => setVisible(false));
+                  endTimer(target, user.startTime).then(() =>
+                    setVisible(false)
+                  );
                 else startStopWatch(user.id);
               }}
             >
@@ -116,7 +124,7 @@ export default function TabHeader() {
           <Typography>{format()}</Typography>
         </View>
       </TouchableOpacity>
-      <ShowStopWatch />
+      <StopWatchModal />
     </View>
   );
 }
