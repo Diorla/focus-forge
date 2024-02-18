@@ -26,11 +26,16 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "dayjs": "^1.11.10",
     "expo": "~49.0.15",
+    "expo-asset": "~8.10.1",
     "expo-av": "~13.4.1",
+    "expo-build-properties": "~0.8.3",
     "expo-constants": "~14.4.2",
+    "expo-dev-client": "~2.4.12",
     "expo-device": "~5.4.0",
+    "expo-file-system": "~15.4.5",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.5",
+    "expo-sqlite": "~11.3.3",
     "expo-status-bar": "~1.6.0",
     "firebase": "^10.7.1",
     "react": "18.2.0",
@@ -44,12 +49,7 @@
     "react-native-svg": "13.9.0",
     "react-native-timeline-flatlist": "^0.8.0",
     "react-native-toast-notifications": "^3.4.0",
-    "react-native-uuid": "^2.0.1",
-    "expo-dev-client": "~2.4.12",
-    "expo-build-properties": "~0.8.3",
-    "expo-sqlite": "~11.3.3",
-    "expo-file-system": "~15.4.5",
-    "expo-asset": "~8.10.1"
+    "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
@@ -60,6 +60,7 @@
     "@typescript-eslint/parser": "^6.18.1",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
     "typescript": "^5.1.3"
