@@ -23,6 +23,7 @@ class Task {
 
   constructor(data?: Omit<TaskModel, Exclude>) {
     this.value = {
+      ...this.value,
       ...data,
       created: Date.now(),
     };

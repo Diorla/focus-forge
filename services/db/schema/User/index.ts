@@ -1,40 +1,31 @@
-import ActivityModel from "./Model";
-import ActivityMetadata from "./Metadata";
+import UserModel from "./Model";
+import UserMetadata from "./Metadata";
 import uuid from "react-native-uuid";
-import { random } from "../../../color";
 import generateObj from "../generateObj";
 
 type Exclude = "createdAt" | "updatedAt" | "id";
 
-class Activity {
+class User {
   static tableName = "activities";
 
-  private static init: ActivityModel = {
+  private static init: UserModel = {
     id: "",
     name: "",
-    weeklyTarget: 0,
-    dailyLimit: 0,
-    startDate: 0,
-    priority: "none",
-    description: "",
-    color: random(),
-    category: "",
-    archived: 0,
     updatedAt: 0,
     createdAt: Date.now(),
-    timerStart: 0,
-    timerLength: 0,
-    timerId: "",
-    lastDone: 0,
+    weeklyQuota: 0,
+    dailyQuota: [0, 0, 0, 0, 0, 0, 0],
+    useWeeklyQuota: false,
+    startTime: 0,
   };
 
-  value = { ...Activity.init };
+  value = { ...User.init };
 
   static primaryKey = "id";
   static notNull = [];
   static autoIncrement = false;
 
-  constructor(data?: Omit<ActivityModel, Exclude>) {
+  constructor(data?: Omit<UserModel, Exclude>) {
     this.value = {
       ...this.value,
       ...data,
@@ -44,19 +35,19 @@ class Activity {
     };
   }
 
-  static getMetaData(): ActivityMetadata {
+  static getMetaData(): UserMetadata {
     const obj = {};
 
     const extra = {
-      primaryKey: Activity.primaryKey,
-      notNull: Activity.notNull,
-      autoIncrement: Activity.autoIncrement,
+      primaryKey: User.primaryKey,
+      notNull: User.notNull,
+      autoIncrement: User.autoIncrement,
     };
-    for (const key in Activity.init) {
-      if (typeof Activity.init[key] === "number") {
+    for (const key in User.init) {
+      if (typeof User.init[key] === "number") {
         const current = generateObj(key, "REAL", extra);
         obj[key] = current;
-      } else if (typeof Activity.init[key] === "boolean") {
+      } else if (typeof User.init[key] === "boolean") {
         const current = generateObj(key, "INTEGER", extra);
         obj[key] = current;
       } else {
@@ -65,15 +56,19 @@ class Activity {
       }
     }
 
-    return obj as ActivityMetadata;
+    return obj as UserMetadata;
   }
 
   getData() {
-    return this.value;
+    return {
+      ...this.value,
+      dailyQuota: JSON.stringify(this.value.dailyQuota),
+      useWeeklyQuota: Number(this.value.useWeeklyQuota),
+    };
   }
   getKeys() {
     return Object.keys(this.value);
   }
 }
 
-export default Activity;
+export default User;

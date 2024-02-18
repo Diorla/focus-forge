@@ -22,6 +22,7 @@ class Done {
   value = { ...Done.init };
   constructor(data?: Omit<DoneModel, Exclude>) {
     this.value = {
+      ...this.value,
       ...data,
       id: String(uuid.v4()),
     };

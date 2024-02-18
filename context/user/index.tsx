@@ -1,28 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  onAuthStateChanged,
-  Unsubscribe,
-  initializeAuth,
-  getReactNativePersistence,
-} from "firebase/auth";
 import UserContext from "./userContext";
 import { View } from "react-native";
-import app from "../../constants/firebaseConfig";
-import { logError, watchUser } from "../../services/database";
+import { logError } from "../../services/database";
 import * as SplashScreen from "expo-splash-screen";
 import { ToastProvider } from "react-native-toast-notifications";
 
 SplashScreen.preventAutoHideAsync();
 
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "@rneui/themed";
 import useInterval from "../../container/Timer/useInterval";
-import dayjs from "dayjs";
+import { createTable, insertRow, openDatabase } from "../../services/db";
+import User from "../../services/db/schema/User";
+import selectRow from "../../services/db/selectRow";
+import { useForceUpdate } from "../activity/useForceUpdate";
+import deleteRow from "../../services/db/deleteRow";
+import UserModel from "../../services/db/schema/User/Model";
+import updateRow from "../../services/db/updateRow";
 
-const auth = initializeAuth(app, {
-  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
-});
-
+const db = openDatabase();
 export default function UserProvider({
   children,
 }: {
@@ -32,6 +27,7 @@ export default function UserProvider({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [time, setTime] = useState(Date.now());
+  const [forceUpdate, forceUpdateInfo] = useForceUpdate();
   const {
     theme: {
       colors: {
@@ -43,48 +39,30 @@ export default function UserProvider({
     },
   } = useTheme();
 
-  const signOut = () => {
-    signOut();
-    setUser(null);
-  };
-
   useEffect(() => {
-    let unsubscribe: Unsubscribe;
-    try {
-      unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-          watchUser(currentUser.uid, (dbUser) => {
-            const email = dbUser?.email || currentUser.email;
-            const name = dbUser?.name || currentUser.displayName;
-
-            const createdAt =
-              dayjs(auth.currentUser.metadata.creationTime).valueOf() ||
-              dbUser?.createdAt ||
-              Date.now();
-
-            setUser({
-              email,
-              name,
-              createdAt,
-              id: currentUser.uid,
-              ...dbUser,
-            });
-            setLoading(false);
-          });
-        } else {
-          setUser(null);
-          setLoading(false);
-        }
-      });
-    } catch (error) {
-      setError(error);
-      logError(user?.id, "auth user context", error);
-      setLoading(false);
-    }
-    return () => {
-      unsubscribe && unsubscribe();
-    };
-  }, [user?.id]);
+    createTable(db, User.tableName, User.getMetaData());
+    selectRow({
+      db,
+      table: User.tableName,
+      callback: (_, result) => {
+        const initialUser = new User();
+        const { dailyQuota: dQ, useWeeklyQuota: uWQ } = initialUser.getData();
+        const { dailyQuota = dQ, useWeeklyQuota = uWQ } = result.rows._array[0];
+        setUser({
+          ...initialUser.getData(),
+          ...result.rows._array[0],
+          dailyQuota: JSON.parse(dailyQuota || "[]"),
+          useWeeklyQuota: Boolean(useWeeklyQuota),
+        });
+        setLoading(false);
+      },
+      errorCallback: (error) => {
+        logError("get activity", "select row", error);
+        setLoading(false);
+        setError(error);
+      },
+    });
+  }, [user?.id, forceUpdateInfo]);
 
   const onLayoutRootView = useCallback(async () => {
     if (!loading) {
@@ -95,6 +73,43 @@ export default function UserProvider({
   useInterval(() => {
     setTime(Date.now());
   }, 15000);
+
+  async function deleteUser(id: string) {
+    deleteRow({
+      db,
+      table: User.tableName,
+      id,
+      callback: forceUpdate,
+      errorCallback: (error) => logError("User", "delete row", error),
+    });
+  }
+
+  async function createUser(task: UserModel, forceUpdate) {
+    const newUser = new User(task);
+    insertRow({
+      db,
+      table: User.tableName,
+      data: newUser.getData(),
+      callback: forceUpdate,
+      errorCallback: (error) => logError("User", "create row", error),
+    });
+  }
+
+  async function updateUser(id: string, data: Partial<UserModel>, forceUpdate) {
+    const { dailyQuota, useWeeklyQuota } = data;
+    updateRow({
+      db,
+      table: User.tableName,
+      data: {
+        ...data,
+        dailyQuota: JSON.stringify(dailyQuota),
+        useWeeklyQuota: Number(useWeeklyQuota),
+        id,
+      },
+      callback: forceUpdate,
+      errorCallback: (error) => logError("User", "update row", error),
+    });
+  }
 
   if (loading) return null;
   return (
@@ -109,9 +124,11 @@ export default function UserProvider({
           value={{
             user,
             loading,
-            signOut,
             error,
             time,
+            deleteUser,
+            createUser,
+            updateUser,
           }}
         >
           {children}
