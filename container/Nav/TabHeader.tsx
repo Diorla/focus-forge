@@ -8,10 +8,9 @@ import StopWatch from "../Timer/StopWatch";
 import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import Picker from "./Picker";
-import { startStopWatch } from "../../services/database";
 
 const StopWatchModal = () => {
-  const { user } = useUser();
+  const { user, updateUser } = useUser();
   const { activities = [], createDone } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
@@ -20,19 +19,28 @@ const StopWatchModal = () => {
   const endTimer = (id: string, startTime: number) => {
     const key = getDateTimeKey(startTime);
 
-    return createDone({
+    createDone({
       id: key,
       datetime: startTime,
       comment: "",
       activityId: id,
       length: (Date.now() - startTime) / 1000,
     });
-    // TODO: Reset user value
+
+    return updateUser({
+      startTime: 0,
+    });
   };
 
   useEffect(() => {
     if (!target) setTarget(activities[0]?.id);
   }, [activities.length]);
+
+  function startStopWatch() {
+    updateUser({
+      startTime: Date.now(),
+    });
+  }
 
   return (
     <>
@@ -71,7 +79,7 @@ const StopWatchModal = () => {
                   endTimer(target, user.startTime).then(() =>
                     setVisible(false)
                   );
-                else startStopWatch(user.id);
+                else startStopWatch();
               }}
             >
               {running ? "Stop" : "Start"}

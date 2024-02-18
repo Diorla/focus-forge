@@ -11,11 +11,11 @@ import { useTheme } from "@rneui/themed";
 import useInterval from "../../container/Timer/useInterval";
 import { createTable, insertRow, openDatabase } from "../../services/db";
 import User from "../../services/db/schema/User";
-import selectRow from "../../services/db/selectRow";
-import { useForceUpdate } from "../activity/useForceUpdate";
+import { useForceUpdate } from "../useForceUpdate";
 import deleteRow from "../../services/db/deleteRow";
 import UserModel from "../../services/db/schema/User/Model";
 import updateRow from "../../services/db/updateRow";
+import getUser from "../../services/db/getUser";
 
 const db = openDatabase();
 export default function UserProvider({
@@ -39,22 +39,43 @@ export default function UserProvider({
     },
   } = useTheme();
 
+  async function createUser(task: UserModel, forceUpdate) {
+    const newUser = new User(task);
+    insertRow({
+      db,
+      table: User.tableName,
+      data: newUser.getData(),
+      callback: forceUpdate,
+      errorCallback: (error) => logError("User", "create row", error),
+    });
+  }
+
   useEffect(() => {
     createTable(db, User.tableName, User.getMetaData());
-    selectRow({
+    getUser({
       db,
       table: User.tableName,
       callback: (_, result) => {
-        const initialUser = new User();
-        const { dailyQuota: dQ, useWeeklyQuota: uWQ } = initialUser.getData();
-        const { dailyQuota = dQ, useWeeklyQuota = uWQ } = result.rows._array[0];
-        setUser({
-          ...initialUser.getData(),
-          ...result.rows._array[0],
-          dailyQuota: JSON.parse(dailyQuota || "[]"),
-          useWeeklyQuota: Boolean(useWeeklyQuota),
-        });
-        setLoading(false);
+        const { dailyQuota, useWeeklyQuota, id } = result.rows._array[0] || {};
+        if (id) {
+          setUser({
+            ...result.rows._array[0],
+            dailyQuota: JSON.parse(dailyQuota || "[]"),
+            useWeeklyQuota: Boolean(useWeeklyQuota),
+          });
+          setLoading(false);
+        } else {
+          const initialUser = new User();
+          const { dailyQuota, useWeeklyQuota } = initialUser.getData();
+          createUser(
+            {
+              ...initialUser.getData(),
+              dailyQuota: JSON.parse(dailyQuota || "[]"),
+              useWeeklyQuota: Boolean(useWeeklyQuota),
+            },
+            forceUpdate
+          );
+        }
       },
       errorCallback: (error) => {
         logError("get activity", "select row", error);
@@ -62,7 +83,7 @@ export default function UserProvider({
         setError(error);
       },
     });
-  }, [user?.id, forceUpdateInfo]);
+  }, [forceUpdateInfo]);
 
   const onLayoutRootView = useCallback(async () => {
     if (!loading) {
@@ -84,18 +105,7 @@ export default function UserProvider({
     });
   }
 
-  async function createUser(task: UserModel, forceUpdate) {
-    const newUser = new User(task);
-    insertRow({
-      db,
-      table: User.tableName,
-      data: newUser.getData(),
-      callback: forceUpdate,
-      errorCallback: (error) => logError("User", "create row", error),
-    });
-  }
-
-  async function updateUser(id: string, data: Partial<UserModel>, forceUpdate) {
+  async function updateUser(data: Partial<UserModel>) {
     const { dailyQuota, useWeeklyQuota } = data;
     updateRow({
       db,
@@ -104,7 +114,7 @@ export default function UserProvider({
         ...data,
         dailyQuota: JSON.stringify(dailyQuota),
         useWeeklyQuota: Number(useWeeklyQuota),
-        id,
+        id: User.tableName,
       },
       callback: forceUpdate,
       errorCallback: (error) => logError("User", "update row", error),

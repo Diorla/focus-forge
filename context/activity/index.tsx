@@ -6,7 +6,7 @@ import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import ActivityModel from "../../services/db/schema/Activity/Model";
-import { useForceUpdate } from "./useForceUpdate";
+import { useForceUpdate } from "../useForceUpdate";
 import { logError } from "../../services/database";
 import updateActivity from "./updateActivity";
 import createActivity from "./createActivity";

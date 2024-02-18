@@ -1,15 +1,14 @@
 import UserModel from "./Model";
 import UserMetadata from "./Metadata";
-import uuid from "react-native-uuid";
 import generateObj from "../generateObj";
 
 type Exclude = "createdAt" | "updatedAt" | "id";
 
 class User {
-  static tableName = "activities";
+  static tableName = "user";
 
   private static init: UserModel = {
-    id: "",
+    id: User.tableName,
     name: "",
     updatedAt: 0,
     createdAt: Date.now(),
@@ -31,7 +30,6 @@ class User {
       ...data,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      id: String(uuid.v4()),
     };
   }
 

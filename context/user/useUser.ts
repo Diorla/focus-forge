@@ -20,8 +20,7 @@ export default function useUser() {
      * The current time to the milliseconds, to keep track of the day
      */
     time: number;
-    updateUser: (id: string, data: Partial<UserModel>) => Promise<void>;
-    createUser: (activities: UserModel) => Promise<void>;
+    updateUser: (data: Partial<UserModel>) => Promise<void>;
     deleteUser: (id: string) => Promise<void>;
   }
 

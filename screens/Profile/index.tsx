@@ -7,12 +7,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
-import { signOut } from "../../services/auth";
 import Item from "./Item";
+import useUser from "../../context/user/useUser";
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const { deleteUser, user } = useUser();
   return (
     <ScrollView>
       <Header />
@@ -49,7 +50,7 @@ export default function ProfileScreen() {
         <Item title="Rate us" onPress={() => navigate("RateUs")}>
           <AntDesign name="star" size={24} color={theme.colors.black} />
         </Item>
-        <ListItem onPress={() => signOut()}>
+        <ListItem onPress={() => deleteUser(user.id)}>
           <Feather name="log-out" size={24} color={theme.colors.black} />
           <ListItem.Content>
             <ListItem.Title>Log out</ListItem.Title>

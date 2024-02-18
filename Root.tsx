@@ -3,17 +3,21 @@ import Onboarding from "./container/Onboarding";
 import Registration from "./container/Registration";
 import Nav from "./container/Nav";
 import ActivityProvider from "./context/activity";
+import { useState } from "react";
 
 export default function Root() {
   const { user } = useUser();
+  const [register, setRegister] = useState(false);
 
-  if (user) {
-    if (!user?.name) return <Registration />;
-    return (
-      <ActivityProvider>
-        <Nav />
-      </ActivityProvider>
+  if (!user?.name)
+    return register ? (
+      <Registration />
+    ) : (
+      <Onboarding switchRegister={() => setRegister(true)} />
     );
-  }
-  return <Onboarding />;
+  return (
+    <ActivityProvider>
+      <Nav />
+    </ActivityProvider>
+  );
 }
