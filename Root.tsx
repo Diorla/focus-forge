@@ -8,7 +8,7 @@ export default function Root() {
   const { user } = useUser();
 
   if (user) {
-    if (!user?.registered) return <Registration />;
+    if (!user?.name) return <Registration />;
     return (
       <ActivityProvider>
         <Nav />

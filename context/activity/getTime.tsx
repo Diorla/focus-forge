@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import User from "../../models/User";
 import ActivityModel from "../../services/db/schema/Activity/Model";
 import DoneModel from "../../services/db/schema/Done/Model";
+import UserModel from "../../services/db/schema/User/Model";
 
 /**
  * => User
@@ -20,7 +20,7 @@ import DoneModel from "../../services/db/schema/Done/Model";
 export default function getTime(
   activities: ActivityModel[],
   done: DoneModel[],
-  user: User
+  user: UserModel
 ) {
   const { weeklyQuota: WQ, useWeeklyQuota, dailyQuota } = user;
   /**

@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import userContext from "./userContext";
-import User from "../../models/User";
 import UserModel from "../../services/db/schema/User/Model";
 
 export default function useUser() {
@@ -8,7 +7,7 @@ export default function useUser() {
     /**
      * All the user information
      */
-    user: User;
+    user: UserModel;
     /**
      * If the user information is loading
      */
