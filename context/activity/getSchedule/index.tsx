@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import Schedule from "../Schedule";
 import getDoneToday from "./getDoneToday";
 import getDoneThisWeek from "./getDoneThisWeek";
@@ -60,9 +59,7 @@ export default function getSchedule({
       );
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
-      const lastDone = Math.max(
-        ...doneList.map((done) => dayjs(done.datetime).valueOf())
-      );
+      const lastDone = Math.max(...doneList.map((done) => done.datetime));
 
       // this week remaining should be greater or equal to 0
       const tempTWR = item.weeklyTarget - doneThisWeek;
