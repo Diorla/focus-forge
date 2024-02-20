@@ -21,6 +21,7 @@ import updateTask from "./updateTask";
 import createTask from "./createTask";
 import deleteTask from "./deleteTask";
 import TaskModel from "../../services/db/schema/Task/Model";
+import Schedule from "./Schedule";
 
 dayjs.extend(isToday);
 
@@ -34,7 +35,7 @@ export default function ActivityProvider({
   const [activities, setActivities] = useState([]);
   const [done, setDone] = useState([]);
   const [tasks, setTasks] = useState([]);
-  const [schedule, setSchedule] = useState([]);
+  const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [time, setTime] = useState({
@@ -54,7 +55,18 @@ export default function ActivityProvider({
   });
 
   const [forceUpdate, forceUpdateInfo] = useForceUpdate();
-  function loadActivity() {
+  // Determine if new stuff is created
+  const doneLength = done.length;
+  const activitiesLength = activities.length;
+  const tasksLength = tasks.length;
+
+  // Timer started or ended
+  const timerLength = activities
+    .map((item) => item.timerId)
+    .sort((a, b) => (a < b ? 1 : -1))
+    .join("");
+
+  function generateSchedule() {
     const time = getTime(activities, done, user);
 
     const scheduleList = getSchedule({
@@ -87,7 +99,7 @@ export default function ActivityProvider({
   // Check if it's a new day since last update
   useEffect(() => {
     if (!dayjs(prevTime).isSame(userTime, "date")) {
-      loadActivity();
+      generateSchedule();
     }
   }, [userTime]);
 
@@ -102,8 +114,8 @@ export default function ActivityProvider({
   }, [forceUpdateInfo]);
 
   useEffect(() => {
-    loadActivity();
-  }, [activities.length, done.length, tasks.length]);
+    generateSchedule();
+  }, [doneLength, activitiesLength, tasksLength, timerLength]);
 
   return (
     <ActivityContext.Provider
