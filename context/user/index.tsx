@@ -18,6 +18,7 @@ import updateRow from "../../services/db/updateRow";
 import getUser from "../../services/db/getUser";
 
 const db = openDatabase();
+
 export default function UserProvider({
   children,
 }: {
@@ -52,11 +53,15 @@ export default function UserProvider({
 
   useEffect(() => {
     createTable(db, User.tableName, User.getMetaData());
+  }, []);
+
+  useEffect(() => {
     getUser({
       db,
       table: User.tableName,
       callback: (_, result) => {
         const { dailyQuota, useWeeklyQuota, id } = result.rows._array[0] || {};
+        // Convert stringified data to Objects
         if (id) {
           setUser({
             ...result.rows._array[0],
