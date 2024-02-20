@@ -32,7 +32,7 @@ const baseForm: ActivityModel = {
 
   lastDone: 0,
   timerStart: 0,
-  timerLength: "",
+  timerLength: 0,
   timerId: "",
 };
 export default function AddScreen() {
