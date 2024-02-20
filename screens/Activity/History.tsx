@@ -107,7 +107,16 @@ export default function History({ activity }: { activity: Schedule }) {
             <Button
               onPress={() => {
                 if (newTime.length)
-                  createDone(newTime).then(() => setShowAddTime(false));
+                  createDone(newTime).then(() => {
+                    setShowAddTime(false);
+                    setNewTime({
+                      comment: "",
+                      datetime: Date.now(),
+                      id: String(uuid.v4()),
+                      activityId: activity.id,
+                      length: 0,
+                    });
+                  });
               }}
             >
               Save
