@@ -13,7 +13,7 @@ import useUser from "../../context/user/useUser";
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { deleteUser, user } = useUser();
+  const { deleteUser } = useUser();
   return (
     <ScrollView>
       <Header />
@@ -50,7 +50,13 @@ export default function ProfileScreen() {
         <Item title="Rate us" onPress={() => navigate("RateUs")}>
           <AntDesign name="star" size={24} color={theme.colors.black} />
         </Item>
-        <ListItem onPress={() => deleteUser(user.id)}>
+        <Item title="Export" onPress={() => null /*export to file*/}>
+          <AntDesign name="star" size={24} color={theme.colors.black} />
+        </Item>
+        <Item title="Import" onPress={() => null /*import to file*/}>
+          <AntDesign name="star" size={24} color={theme.colors.black} />
+        </Item>
+        <ListItem onPress={() => deleteUser()}>
           <Feather name="log-out" size={24} color={theme.colors.black} />
           <ListItem.Content>
             <ListItem.Title>Log out</ListItem.Title>

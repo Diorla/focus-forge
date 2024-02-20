@@ -21,7 +21,7 @@ export default function useUser() {
      */
     time: number;
     updateUser: (data: Partial<UserModel>) => Promise<void>;
-    deleteUser: (id: string) => Promise<void>;
+    deleteUser: () => Promise<void>;
   }
 
   return useContext<UserContext>(userContext);

@@ -12,10 +12,12 @@ import useInterval from "../../container/Timer/useInterval";
 import { createTable, insertRow, openDatabase } from "../../services/db";
 import User from "../../services/db/schema/User";
 import { useForceUpdate } from "../useForceUpdate";
-import deleteRow from "../../services/db/deleteRow";
 import UserModel from "../../services/db/schema/User/Model";
 import updateRow from "../../services/db/updateRow";
 import getUser from "../../services/db/getUser";
+import Done from "../../services/db/schema/Done";
+import Task from "../../services/db/schema/Task";
+import Activity from "../../services/db/schema/Activity";
 
 const db = openDatabase();
 
@@ -100,14 +102,18 @@ export default function UserProvider({
     setTime(Date.now());
   }, 15000);
 
-  async function deleteUser(id: string) {
-    deleteRow({
-      db,
-      table: User.tableName,
-      id,
-      callback: forceUpdate,
-      errorCallback: (error) => logError("User", "delete row", error),
-    });
+  async function deleteUser() {
+    db.transaction(
+      (tx) => {
+        tx.executeSql(`DELETE FROM ${User.name}`, null, forceUpdate);
+        tx.executeSql(`DELETE FROM ${Done.tableName}`, null, forceUpdate);
+        tx.executeSql(`DELETE FROM ${Task.tableName}`, null, forceUpdate);
+        tx.executeSql(`DELETE FROM ${Activity.tableName}`, null, forceUpdate);
+      },
+      (err) => {
+        logError("User", "delete row", err);
+      }
+    );
   }
 
   async function updateUser(data: Partial<UserModel>) {

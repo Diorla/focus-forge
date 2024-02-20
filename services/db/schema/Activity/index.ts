@@ -4,7 +4,7 @@ import uuid from "react-native-uuid";
 import { random } from "../../../color";
 import generateObj from "../generateObj";
 
-type Exclude = "createdAt" | "updatedAt" | "id";
+type Exclude = "createdAt" | "updatedAt";
 
 class Activity {
   static tableName = "activities";
@@ -36,11 +36,11 @@ class Activity {
 
   constructor(data?: Omit<ActivityModel, Exclude>) {
     this.value = {
+      id: String(uuid.v4()),
       ...this.value,
       ...data,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      id: String(uuid.v4()),
     };
   }
 
