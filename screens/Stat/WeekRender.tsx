@@ -12,9 +12,9 @@ import Schedule from "../../context/activity/Schedule";
 
 const calculateDoneTime = (schedule: Schedule, date: Dayjs) => {
   const { done } = schedule;
-  const total = Object.keys(done)
-    .filter((dateKey) => dayjs(date).isSame(dateKey, "week"))
-    .map((item) => done[item])
+  const total = done
+    .filter((item) => dayjs(date).isSame(item.datetime, "week"))
+    .map((item) => item.length)
     .reduce((prev, curr) => prev + curr, 0);
   return total;
 };
