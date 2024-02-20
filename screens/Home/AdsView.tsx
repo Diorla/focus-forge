@@ -19,7 +19,7 @@ export default function AdsView() {
 
   // Premium and new members (length to be decided) will not see ads
   // I chose 21 because my oldest account is 21 as of the time of this coding
-  const isPremium = user.email === "adedotster" || diff < 21;
+  const isPremium = diff < 21;
   if (isPremium) return null;
   return (
     <View style={{ marginTop: 8 }}>
