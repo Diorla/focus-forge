@@ -6,6 +6,7 @@ import getTodayTime from "./getTodayTime";
 import ActivityModel from "../../../services/db/schema/Activity/Model";
 import DoneModel from "../../../services/db/schema/Done/Model";
 import TaskModel from "../../../services/db/schema/Task/Model";
+import dayjs from "dayjs";
 
 /**
  * => Activity
@@ -59,7 +60,13 @@ export default function getSchedule({
       );
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
-      const lastDone = Math.max(...doneList.map((done) => done.datetime));
+
+      // Remove future time, technically not done yet
+      const lastDone = Math.max(
+        ...doneList
+          .filter((item) => dayjs().isSame(item.datetime, "day"))
+          .map((done) => done.datetime)
+      );
 
       // this week remaining should be greater or equal to 0
       const tempTWR = item.weeklyTarget - doneThisWeek;
