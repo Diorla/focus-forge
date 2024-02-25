@@ -7,6 +7,7 @@ import { useTheme } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import { getDateTimeKey } from "../../services/datetime";
+import { useKeepAwake } from "expo-keep-awake";
 
 export default function Timer({
   startTime,
@@ -23,6 +24,7 @@ export default function Timer({
   doneToday: number;
   length: number;
 }) {
+  useKeepAwake();
   const {
     theme: { colors },
   } = useTheme();
