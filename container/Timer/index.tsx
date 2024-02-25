@@ -52,7 +52,8 @@ export default function Timer({
     });
   };
   useInterval(() => {
-    setCount(count + 1);
+    if (length <= count && type === "today") endTimer(id, startTime);
+    else setCount(count + 1);
   }, 1000);
 
   useEffect(() => {
@@ -66,7 +67,6 @@ export default function Timer({
 
   const value = targetTime - doneToday - count;
 
-  if (length <= count && type === "today") endTimer(id, startTime);
   return (
     <View style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />
