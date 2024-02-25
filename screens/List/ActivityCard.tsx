@@ -76,7 +76,7 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
     <TouchableOpacity onPress={() => navigate("Activity", { id })}>
       <Card containerStyle={{ backgroundColor: bgColor, borderRadius: 4 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Typography color={color} type="big">
+          <Typography color={color} style={{ fontWeight: "bold" }}>
             {activity.name}
           </Typography>
           <Typography color={color}>
