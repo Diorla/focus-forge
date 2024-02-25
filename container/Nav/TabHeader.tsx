@@ -57,12 +57,14 @@ const StopWatchModal = () => {
               label=""
               value={target}
               onValueChange={(value) => setTarget(value)}
-              list={activities.map((item) => {
-                return {
-                  label: item.name,
-                  value: item.id,
-                };
-              })}
+              list={activities
+                .sort((prev, next) => (prev.name > next.name ? 1 : -1))
+                .map((item) => {
+                  return {
+                    label: item.name,
+                    value: item.id,
+                  };
+                })}
             />
           </View>
           <View style={{ marginVertical: 20 }}>
