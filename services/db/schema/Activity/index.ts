@@ -36,9 +36,9 @@ class Activity {
 
   constructor(data?: Omit<ActivityModel, Exclude>) {
     this.value = {
-      id: String(uuid.v4()),
       ...this.value,
       ...data,
+      id: data.id || String(uuid.v4()),
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };

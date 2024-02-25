@@ -1,6 +1,7 @@
 import TaskModel from "./Model";
 import TaskMetadata from "./Metadata";
 import generateObj from "../generateObj";
+import uuid from "react-native-uuid";
 
 type Exclude = "created";
 
@@ -24,7 +25,7 @@ class Task {
   constructor(data?: Omit<TaskModel, Exclude>) {
     this.value = {
       ...this.value,
-      ...data,
+      id: data.id || String(uuid.v4()),
       created: Date.now(),
     };
   }
