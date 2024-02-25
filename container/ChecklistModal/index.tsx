@@ -75,18 +75,21 @@ export default function ChecklistModal({
                     flexDirection: "row",
                     alignItems: "center",
                     justifyContent: "space-between",
+                    flex: 1,
                   }}
                 >
-                  <CheckBox
-                    checked={!!item.checked}
-                    onPress={() =>
-                      item.checked ? uncheckTask(item.id) : checkTask(item.id)
-                    }
-                    iconType="material-community"
-                    checkedIcon="checkbox-marked"
-                    uncheckedIcon="checkbox-blank-outline"
-                    title={item.title}
-                  />
+                  <View style={{ flex: 1 }}>
+                    <CheckBox
+                      checked={!!item.checked}
+                      onPress={() =>
+                        item.checked ? uncheckTask(item.id) : checkTask(item.id)
+                      }
+                      iconType="material-community"
+                      checkedIcon="checkbox-marked"
+                      uncheckedIcon="checkbox-blank-outline"
+                      title={item.title}
+                    />
+                  </View>
                   <MaterialIcons
                     name="delete"
                     size={28}
