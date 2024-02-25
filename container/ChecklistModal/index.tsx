@@ -109,6 +109,7 @@ export default function ChecklistModal({
                     title,
                   })
                 }
+                multiline
               />
               <View
                 style={{ flexDirection: "row", justifyContent: "flex-end" }}

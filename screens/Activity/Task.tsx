@@ -89,6 +89,7 @@ export default function Task({ activity }: { activity: Schedule }) {
                 title,
               })
             }
+            multiline
           />
           <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
             <Button
