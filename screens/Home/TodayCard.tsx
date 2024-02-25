@@ -10,14 +10,13 @@ import Schedule from "../../context/activity/Schedule";
 import Timer from "../../container/Timer";
 import ChecklistModal from "../../container/ChecklistModal";
 import { useState } from "react";
-import { format, getDateTimeKey, secondsToHrMm } from "../../services/datetime";
+import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
-import { schedulePushNotification } from "../../services/notification";
-import { cancelScheduledNotificationAsync } from "expo-notifications";
 import dayjs from "dayjs";
 import useUser from "../../context/user/useUser";
 import { AdShowOptions } from "react-native-google-mobile-ads";
 import useActivity from "../../context/activity/useActivity";
+import { logError } from "../../services/database";
 
 export function TodayCard({
   schedule,
@@ -41,7 +40,6 @@ export function TodayCard({
     timerId,
     todayTime,
     id,
-    name,
     doneToday = 0,
     timerStart,
     timerLength,
@@ -138,20 +136,15 @@ export function TodayCard({
                 endTimer(id, timerStart)
                   .then(() => toast.show("Timer paused"))
                   .then(() => isLoadedAd && !isPremium && showAd());
-                cancelScheduledNotificationAsync(timerId);
               } else {
-                schedulePushNotification(
-                  {
-                    title: `${name}`,
-                    body: `Ended at ${format(Date.now() + todayTime * 1000)}`,
-                    data: null,
-                  },
-                  todayTime - doneToday + 5
-                ).then((notificationId) =>
-                  startTimer(id, todayTime - doneToday, notificationId).then(
-                    () => toast.show("Timer started")
-                  )
-                );
+                try {
+                  const timerId = String(Date.now());
+                  startTimer(id, todayTime - doneToday, timerId).then(() =>
+                    toast.show("Timer started")
+                  );
+                } catch (error) {
+                  logError("today card", "starting timer", error);
+                }
               }
             }}
           />
