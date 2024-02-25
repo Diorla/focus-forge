@@ -55,16 +55,11 @@ export default function ActivityProvider({
   });
 
   const [forceUpdate, forceUpdateInfo] = useForceUpdate();
-  // Determine if new stuff is created
-  const doneLength = done.length;
-  const activitiesLength = activities.length;
-  const tasksLength = tasks.length;
 
-  // Timer started or ended
-  const timerLength = activities
-    .map((item) => item.timerId)
-    .sort((a, b) => (a < b ? 1 : -1))
-    .join("");
+  // Determine if new stuff is created
+  const doneString = JSON.stringify(done);
+  const activitiesString = JSON.stringify(activities);
+  const tasksString = JSON.stringify(tasks);
 
   function generateSchedule() {
     const time = getTime(activities, done, user);
@@ -115,7 +110,7 @@ export default function ActivityProvider({
 
   useEffect(() => {
     generateSchedule();
-  }, [doneLength, activitiesLength, tasksLength, timerLength]);
+  }, [doneString, activitiesString, tasksString]);
 
   return (
     <ActivityContext.Provider
