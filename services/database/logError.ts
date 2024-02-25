@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
 import { setDoc, Timestamp } from "firebase/firestore";
 import uuid from "react-native-uuid";
 import { doc } from "./firestore";
+import { SQLError } from "expo-sqlite";
 
 /**
  * It will be used to save errors to database
@@ -11,27 +13,28 @@ import { doc } from "./firestore";
 export default function logError(
   identifier: string,
   event: string,
-  err: Error
+  err: Error | SQLError
 ) {
+  const { name = "", stack = null } = { ...err };
   try {
     if (__DEV__)
       console.log({
+        name,
+        stack,
         identifier: identifier || "Anonymous",
         event: event || "Unidentified error",
-        name: err?.name,
         message: err?.message,
-        stack: err?.stack,
         time: Date.now(),
         err: err,
       });
     else
       setDoc(doc("errors", String(uuid.v4())), {
+        name: JSON.stringify(name),
+        stack: JSON.stringify(stack),
         err: JSON.stringify(err),
         identifier: identifier || "Anonymous",
         event: event || "Unidentified error",
-        name: JSON.stringify(err?.name),
         message: JSON.stringify(err?.message),
-        stack: JSON.stringify(err?.stack),
         time: Timestamp.now(),
       });
   } catch (error) {

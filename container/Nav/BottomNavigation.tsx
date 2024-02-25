@@ -6,7 +6,6 @@ import { useTheme } from "@rneui/themed";
 import { Octicons } from "@expo/vector-icons";
 import { Typography } from "../../components";
 import path from "./path";
-import NavProps from "./NavProps";
 import useNavigate from "./useNavigate";
 
 export default function BottomNavigation({

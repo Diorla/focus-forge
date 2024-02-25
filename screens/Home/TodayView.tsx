@@ -24,14 +24,14 @@ export default function TodayView() {
   const today = schedule
     .filter((item) => {
       const todo = item.todayTime - item.doneToday;
-      return todo > 0.001 || item.timer;
+      return todo > 0.001 || item.timerLength;
     })
     .sort(
       (a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority)
     );
 
   if (today.length) {
-    const runningActivity = today.find((item) => item.timer?.startTime);
+    const runningActivity = today.find((item) => item.timerStart);
     const notRunning = today.filter((item) => item.id !== runningActivity?.id);
     const first = runningActivity ?? today[0];
     const rest = runningActivity ? notRunning : today.slice(1);
@@ -59,8 +59,8 @@ export default function TodayView() {
             <>
               {rest
                 .sort((a, b) => {
-                  if (b.timer) return 1;
-                  if (a.timer) return -1;
+                  if (b.timerStart) return 1;
+                  if (a.timerStart) return -1;
                   return 0;
                 })
                 .map((item) => (

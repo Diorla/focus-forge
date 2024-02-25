@@ -5,9 +5,7 @@ import { Button, Typography } from "../../components";
 import Schedule from "../../context/activity/Schedule";
 import TopSpace from "../../components/topSpace";
 import useNavigate from "./useNavigate";
-import unarchiveActivity from "../../services/database/unarchiveActivity";
-import archiveActivity from "../../services/database/archiveActivity";
-import deleteActivity from "../../services/database/deleteActivity";
+import useActivity from "../../context/activity/useActivity";
 
 export default function MenuModal({
   color,
@@ -18,6 +16,7 @@ export default function MenuModal({
 }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate<{ id: string }>();
+  const { updateActivity, deleteActivity } = useActivity();
   if (activity) {
     const { archived = "", id = "", name = "" } = activity;
     return (
@@ -46,7 +45,9 @@ export default function MenuModal({
             <Button
               type="clear"
               onPress={() =>
-                archived ? unarchiveActivity(id) : archiveActivity(id)
+                archived
+                  ? updateActivity(id, { archived: 0 })
+                  : updateActivity(id, { archived: Date.now() })
               }
             >
               {archived ? "Unarchive" : "Archive"}

@@ -7,7 +7,6 @@ import Button from "../../components/button";
 import { DailyQuota } from "../../models/User";
 import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
-import { updateUser } from "../../services/database";
 import useUser from "../../context/user/useUser";
 
 function insertArray<type>(arr: type[], idx: number, value: type) {
@@ -15,7 +14,8 @@ function insertArray<type>(arr: type[], idx: number, value: type) {
 }
 export function QuotaForm({ name }: { name: string }) {
   const {
-    user: { id, email },
+    user: { id },
+    updateUser,
   } = useUser();
   interface QuotaFormState {
     weeklyQuota: number;
@@ -46,8 +46,6 @@ export function QuotaForm({ name }: { name: string }) {
       dailyQuota,
       useWeeklyQuota,
       id,
-      registered: true,
-      email,
     });
   };
   if (!quota.useWeeklyQuota)

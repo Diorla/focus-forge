@@ -1,9 +1,9 @@
 import { View } from "react-native";
 import Typography from "../../components/typography";
 import Button from "../../components/button";
-import { DailyQuota } from "../../models/User";
 import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
+import { DailyQuota } from "../../services/db/schema/User/Model";
 
 function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];

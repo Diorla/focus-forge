@@ -8,7 +8,7 @@ import useNavigate from "../../container/Nav/useNavigate";
 export default function Header() {
   const navigate = useNavigate();
   const {
-    user: { name, createdAt, email },
+    user: { name, createdAt },
   } = useUser();
 
   return (
@@ -22,9 +22,6 @@ export default function Header() {
       <View>
         <Typography type="big" style={{ textAlign: "center" }}>
           {name}
-        </Typography>
-        <Typography style={{ textAlign: "center" }} type="caption">
-          {email}
         </Typography>
         <Typography style={{ textAlign: "center" }}>
           {format(createdAt)}

@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
-import Activity from "../../models/Activity";
-import User from "../../models/User";
+import ActivityModel from "../../services/db/schema/Activity/Model";
+import DoneModel from "../../services/db/schema/Done/Model";
+import UserModel from "../../services/db/schema/User/Model";
 
 /**
  * => User
@@ -16,7 +17,11 @@ import User from "../../models/User";
  * Today remaining (TR) => The time still available for assigning task today, it's TQ - DT
  */
 
-export default function getTime(activities: Activity[], user: User) {
+export default function getTime(
+  activities: ActivityModel[],
+  done: DoneModel[],
+  user: UserModel
+) {
   const { weeklyQuota: WQ, useWeeklyQuota, dailyQuota } = user;
   /**
    * Total time set aside for the week
@@ -68,14 +73,14 @@ export default function getTime(activities: Activity[], user: User) {
     weeklyQuota = dailyQuota.reduce((prev, curr) => prev + curr, 0);
   }
   activities.forEach((item) => {
-    const doneList = Object.keys(item.done || {});
-    const timeToday = doneList.filter((datetime) => dayjs(datetime).isToday());
+    const doneList = done.filter((doneItem) => doneItem.activityId === item.id);
+    const timeToday = doneList.filter((done) => dayjs(done.datetime).isToday());
     const timeThisWeek = doneList.filter(
-      (datetime) =>
-        dayjs().isSame(datetime, "week") && !dayjs(datetime).isToday()
+      (done) =>
+        dayjs().isSame(done.datetime, "week") && !dayjs(done.datetime).isToday()
     );
-    timeToday.forEach((date) => (doneToday += item.done[date]));
-    timeThisWeek.forEach((date) => (doneThisWeek += item.done[date]));
+    timeToday.forEach((done) => (doneToday += done.length));
+    timeThisWeek.forEach((done) => (doneThisWeek += done.length));
   });
   thisWeekRemaining = weeklyQuota - doneThisWeek;
   if (thisWeekRemaining < 0) thisWeekRemaining = 0;

@@ -7,16 +7,16 @@ import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import { random } from "../../services/color";
 import SelectCategory from "../../components/selectCategory";
-import Activity, { Priority } from "../../models/Activity";
-import { createActivity } from "../../services/database";
 import useUser from "../../context/user/useUser";
 import useActivity from "../../context/activity/useActivity";
 import { useToast } from "react-native-toast-notifications";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
 import dayjs from "dayjs";
+import ActivityModel from "../../services/db/schema/Activity/Model";
+import { Priority } from "../../context/activity/Schedule";
 
-const baseForm: Activity = {
+const baseForm: ActivityModel = {
   name: "",
   weeklyTarget: 0,
   dailyLimit: 0,
@@ -29,19 +29,19 @@ const baseForm: Activity = {
   archived: 0,
   createdAt: Date.now(),
   updatedAt: Date.now(),
-  userId: "",
-  done: {},
-  tasks: [],
+
   lastDone: 0,
-  doneComment: {},
+  timerStart: 0,
+  timerLength: 0,
+  timerId: "",
 };
 export default function AddScreen() {
   const { theme } = useTheme();
   const {
-    user: { id, createdAt },
+    user: { createdAt },
   } = useUser();
-  const [form, setForm] = useState<Activity>({ ...baseForm, userId: id });
-  const { activities } = useActivity();
+  const [form, setForm] = useState<ActivityModel>({ ...baseForm });
+  const { activities, createActivity } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));
   const toast = useToast();
   const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
@@ -86,7 +86,7 @@ export default function AddScreen() {
       ...form,
     })
       .then(() => {
-        setForm({ ...baseForm, userId: id });
+        setForm({ ...baseForm });
       })
       .then(() => toast.show("New activity added"))
       .then(() => isLoaded && !isPremium && show())

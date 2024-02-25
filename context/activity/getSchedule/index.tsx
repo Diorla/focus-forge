@@ -1,10 +1,12 @@
-import dayjs from "dayjs";
-import Activity from "../../../models/Activity";
 import Schedule from "../Schedule";
 import getDoneToday from "./getDoneToday";
 import getDoneThisWeek from "./getDoneThisWeek";
 import getTodayQuota from "./getTodayQuota";
 import getTodayTime from "./getTodayTime";
+import ActivityModel from "../../../services/db/schema/Activity/Model";
+import DoneModel from "../../../services/db/schema/Done/Model";
+import TaskModel from "../../../services/db/schema/Task/Model";
+import dayjs from "dayjs";
 
 /**
  * => Activity
@@ -23,6 +25,14 @@ import getTodayTime from "./getTodayTime";
  */
 const priority = ["high", "medium", "low", "none"];
 
+type ScheduleProps = {
+  activities: ActivityModel[];
+  initialTodayRemaining: number;
+  initialUpcomingTime: number;
+  done: DoneModel[];
+  tasks: TaskModel[];
+};
+
 /**
  * Used to generate schedule for each task
  * @param activities list of activities that has been added
@@ -30,11 +40,13 @@ const priority = ["high", "medium", "low", "none"];
  * @param initialUpcomingTime all future time available
  * @returns
  */
-export default function getSchedule(
-  activities: Activity[],
-  initialTodayRemaining: number,
-  initialUpcomingTime: number
-) {
+export default function getSchedule({
+  activities,
+  initialTodayRemaining,
+  initialUpcomingTime,
+  done,
+  tasks,
+}: ScheduleProps) {
   const list: Schedule[] = [];
 
   let currentTodayRemaining = initialTodayRemaining;
@@ -43,11 +55,17 @@ export default function getSchedule(
   activities
     .sort((a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority))
     .forEach((item) => {
-      const doneList = Object.keys(item.done || {});
-      const doneToday = getDoneToday(doneList, item.done);
-      const doneThisWeek = getDoneThisWeek(doneList, item.done);
+      const doneList = done.filter(
+        (doneItem) => doneItem.activityId === item.id
+      );
+      const doneToday = getDoneToday(doneList);
+      const doneThisWeek = getDoneThisWeek(doneList);
+
+      // Remove future time, technically not done yet
       const lastDone = Math.max(
-        ...doneList.map((item) => dayjs(item).valueOf())
+        ...doneList
+          .filter((item) => dayjs().isSame(item.datetime, "day"))
+          .map((done) => done.datetime)
       );
 
       // this week remaining should be greater or equal to 0
@@ -66,6 +84,8 @@ export default function getSchedule(
           upcomingTime: 0,
           overflowTime: 0,
           lastDone: Number.isFinite(lastDone) ? lastDone : 0,
+          done: doneList,
+          tasks: tasks.filter((task) => task.activityId === item.id),
         });
         return null;
       }
@@ -135,6 +155,8 @@ export default function getSchedule(
         upcomingTime,
         overflowTime,
         lastDone: Number.isFinite(lastDone) ? lastDone : 0,
+        done: doneList,
+        tasks: tasks.filter((task) => task.activityId === item.id),
       });
     });
   return list;

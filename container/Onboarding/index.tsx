@@ -6,7 +6,11 @@ import AnimatedBackground from "../../AnimatedBackground";
 import Typography from "../../components/typography";
 import Dots from "./Dots";
 
-export default function Onboarding({ getStarted }: { getStarted: () => void }) {
+export default function Onboarding({
+  switchRegister,
+}: {
+  switchRegister: () => void;
+}) {
   const [index, setIndex] = useState(0);
   const {
     theme: { colors },
@@ -63,7 +67,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
               setIndex(idx);
             }}
           />
-          <Button block onPress={getStarted}>
+          <Button block onPress={switchRegister}>
             Get Started
           </Button>
         </View>
@@ -132,7 +136,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
               setIndex(idx);
             }}
           />
-          <Button block onPress={getStarted}>
+          <Button block onPress={switchRegister}>
             Get Started
           </Button>
         </View>
@@ -192,7 +196,7 @@ export default function Onboarding({ getStarted }: { getStarted: () => void }) {
             setIndex(idx);
           }}
         />
-        <Button block onPress={getStarted}>
+        <Button block onPress={switchRegister}>
           Get Started
         </Button>
       </View>

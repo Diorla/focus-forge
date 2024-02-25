@@ -3,7 +3,6 @@ import {
   Button as RNButton,
   useTheme,
 } from "@rneui/themed";
-import { Platform } from "react-native";
 
 interface ButtonProps extends RNButtonProps {
   block?: boolean;
@@ -30,9 +29,7 @@ export default function Button(props: ButtonProps) {
         {...props}
       />
     );
-  if (Platform.OS === "ios")
-    return (
-      <RNButton type="clear" {...props} titleStyle={{ color: currentColor }} />
-    );
-  return <RNButton {...props} />;
+  return (
+    <RNButton type="clear" {...props} titleStyle={{ color: currentColor }} />
+  );
 }

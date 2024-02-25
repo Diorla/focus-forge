@@ -1,8 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Typography } from "../../components";
+import { Button, Typography } from "../../components";
 import { ScrollView, View } from "react-native";
 import useActivity from "../../context/activity/useActivity";
-import { useEffect } from "react";
 import { getContrastColor } from "../../services/color";
 import Time from "./Time";
 import { Divider } from "@rneui/themed";
@@ -17,10 +16,6 @@ export default function ActivityScreen() {
   const { schedule } = useActivity();
   const activity = schedule.find((item) => item.id === id);
   const { goBack } = useNavigation();
-
-  useEffect(() => {
-    if (!activity?.id) goBack();
-  }, [activity?.id]);
 
   if (activity) {
     const color = getContrastColor(activity.color);
@@ -40,4 +35,10 @@ export default function ActivityScreen() {
       </ScrollView>
     );
   }
+  return (
+    <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+      <Typography>Activity not found</Typography>
+      <Button onPress={goBack}>Go back</Button>
+    </View>
+  );
 }

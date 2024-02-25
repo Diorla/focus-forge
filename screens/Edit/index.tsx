@@ -6,21 +6,20 @@ import { useState } from "react";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
-import Activity, { Priority } from "../../models/Activity";
-import { updateActivity } from "../../services/database";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useActivity from "../../context/activity/useActivity";
+import ActivityModel from "../../services/db/schema/Activity/Model";
+import { Priority } from "../../context/activity/Schedule";
 
 export default function EditScreen() {
   const { theme } = useTheme();
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { id = "" } = params as { id: string };
-  const { schedule } = useActivity();
-  const [form, setForm] = useState<Activity>(
-    schedule.find((item) => item.id === id)
+  const { activities, updateActivity } = useActivity();
+  const [form, setForm] = useState<ActivityModel>(
+    activities.find((item) => item.id === id)
   );
-  const { activities } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));
 
   const [errorMSG, setErrorMSG] = useState({
@@ -50,11 +49,9 @@ export default function EditScreen() {
       });
       return;
     }
-    updateActivity({
-      ...form,
-    }).then(() => {
+
+    updateActivity(form.id, form).then(() => {
       goBack();
-      // setForm({ ...baseForm, userId: id });
     });
   };
 

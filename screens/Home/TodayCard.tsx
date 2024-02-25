@@ -8,17 +8,15 @@ import PlayButton from "./PlayButton";
 import useNavigate from "../../container/Nav/useNavigate";
 import Schedule from "../../context/activity/Schedule";
 import Timer from "../../container/Timer";
-import startTimer from "../../services/database/startTimer";
-import endTimer from "../../services/database/endTimer";
 import ChecklistModal from "../../container/ChecklistModal";
 import { useState } from "react";
-import { format, secondsToHrMm } from "../../services/datetime";
+import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
-import { schedulePushNotification } from "../../services/notification";
-import { cancelScheduledNotificationAsync } from "expo-notifications";
 import dayjs from "dayjs";
 import useUser from "../../context/user/useUser";
 import { AdShowOptions } from "react-native-google-mobile-ads";
+import useActivity from "../../context/activity/useActivity";
+import { logError } from "../../services/database";
 
 export function TodayCard({
   schedule,
@@ -32,15 +30,23 @@ export function TodayCard({
   const {
     theme: { colors },
   } = useTheme();
+  const { updateActivity, createDone } = useActivity();
   const { user } = useUser();
 
   const toast = useToast();
   const navigate = useNavigate<{ id: string }>();
   const [visible, setVisible] = useState(false);
-  const { timer, todayTime, id, done = {}, name, doneToday = 0 } = schedule;
+  const {
+    timerId,
+    todayTime,
+    id,
+    doneToday = 0,
+    timerStart,
+    timerLength,
+  } = schedule;
 
   const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
-  const running = !!timer;
+  const running = !!timerId;
   const borderStyle = running
     ? { borderSize: 1, borderColor: colors.primary }
     : {};
@@ -48,6 +54,33 @@ export function TodayCard({
   const diff = dayjs().diff(user.createdAt, "day");
 
   const isPremium = diff < 21;
+
+  const startTimer = (id: string, length: number, notificationId: string) => {
+    return updateActivity(id, {
+      timerStart: Date.now(),
+      timerLength: length,
+      timerId: notificationId,
+    });
+  };
+
+  const endTimer = (id: string, startTime: number) => {
+    const length = (Date.now() - startTime) / 1000;
+    const key = getDateTimeKey(startTime);
+
+    updateActivity(id, {
+      timerStart: 0,
+      timerLength: 0,
+      timerId: "",
+    });
+
+    return createDone({
+      id: key,
+      datetime: startTime,
+      comment: "",
+      activityId: id,
+      length,
+    });
+  };
 
   return (
     <>
@@ -72,14 +105,13 @@ export function TodayCard({
             marginVertical: 10,
           }}
         >
-          {timer ? (
+          {timerId ? (
             <Timer
               targetTime={todayTime}
-              startTime={timer.startTime}
+              startTime={timerStart}
               id={id}
-              done={done}
               doneToday={doneToday}
-              length={timer.length}
+              length={timerLength}
             />
           ) : (
             <>
@@ -101,23 +133,18 @@ export function TodayCard({
             playing={running}
             onPress={() => {
               if (running) {
-                endTimer(id, timer.startTime, done)
+                endTimer(id, timerStart)
                   .then(() => toast.show("Timer paused"))
                   .then(() => isLoadedAd && !isPremium && showAd());
-                cancelScheduledNotificationAsync(timer.notificationId);
               } else {
-                schedulePushNotification(
-                  {
-                    title: `${name}`,
-                    body: `Ended at ${format(Date.now() + todayTime * 1000)}`,
-                    data: null,
-                  },
-                  todayTime - doneToday + 5
-                ).then((notificationId) =>
-                  startTimer(id, todayTime - doneToday, notificationId).then(
-                    () => toast.show("Timer started")
-                  )
-                );
+                try {
+                  const timerId = String(Date.now());
+                  startTimer(id, todayTime - doneToday, timerId).then(() =>
+                    toast.show("Timer started")
+                  );
+                } catch (error) {
+                  logError("today card", "starting timer", error);
+                }
               }
             }}
           />

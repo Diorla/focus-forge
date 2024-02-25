@@ -2,7 +2,6 @@ import { ScrollView } from "react-native";
 import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
 import useActivity from "../../context/activity/useActivity";
-import dayjs from "dayjs";
 
 export default function RecentView() {
   const { schedule = [] } = useActivity();
@@ -13,12 +12,11 @@ export default function RecentView() {
   // I could use decimal.js https://mikemcl.github.io/decimal.js/ if need be
   const completed = schedule
     .filter((item) => {
-      return (
-        item.todayTime - item.doneToday <= 0.001 &&
-        dayjs(item.lastDone).isToday()
-      );
+      return item.todayTime - item.doneToday <= 0.001 && item.doneToday;
     })
-    .sort((a, b) => a.lastDone - b.lastDone);
+    .sort((a, b) => {
+      return a.lastDone - b.lastDone;
+    });
 
   if (completed.length)
     return (

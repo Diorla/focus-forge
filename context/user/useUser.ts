@@ -1,22 +1,17 @@
 import { useContext } from "react";
 import userContext from "./userContext";
-import User from "../../models/User";
+import UserModel from "../../services/db/schema/User/Model";
 
 export default function useUser() {
   interface UserContext {
     /**
      * All the user information
      */
-    user: User;
+    user: UserModel;
     /**
      * If the user information is loading
      */
     loading: boolean;
-    /**
-     * All the tasks of the user
-     */
-
-    signOut: () => void;
     /**
      * If there is an error
      */
@@ -25,6 +20,8 @@ export default function useUser() {
      * The current time to the milliseconds, to keep track of the day
      */
     time: number;
+    updateUser: (data: Partial<UserModel>) => Promise<void>;
+    deleteUser: () => Promise<void>;
   }
 
   return useContext<UserContext>(userContext);

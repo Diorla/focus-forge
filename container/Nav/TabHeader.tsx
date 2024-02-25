@@ -1,26 +1,46 @@
 import { View, TouchableOpacity, Modal } from "react-native";
 import { Button, Typography } from "../../components";
 import useUser from "../../context/user/useUser";
-import { format } from "../../services/datetime";
+import { format, getDateTimeKey } from "../../services/datetime";
 import useNavigate from "./useNavigate";
 import { FontAwesome5 } from "@expo/vector-icons";
 import StopWatch from "../Timer/StopWatch";
 import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import Picker from "./Picker";
-import { startStopWatch } from "../../services/database";
-import endStopWatch from "../../services/database/endStopWatch";
 
-const ShowStopWatch = () => {
-  const { user } = useUser();
-  const { activities = [] } = useActivity();
+const StopWatchModal = () => {
+  const { user, updateUser } = useUser();
+  const { activities = [], createDone } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
   const [target, setTarget] = useState(activities[0]?.id);
 
+  const endTimer = (id: string, startTime: number) => {
+    const key = getDateTimeKey(startTime);
+
+    createDone({
+      id: key,
+      datetime: startTime,
+      comment: "",
+      activityId: id,
+      length: (Date.now() - startTime) / 1000,
+    });
+
+    return updateUser({
+      startTime: 0,
+    });
+  };
+
   useEffect(() => {
     if (!target) setTarget(activities[0]?.id);
   }, [activities.length]);
+
+  function startStopWatch() {
+    updateUser({
+      startTime: Date.now(),
+    });
+  }
 
   return (
     <>
@@ -37,12 +57,14 @@ const ShowStopWatch = () => {
               label=""
               value={target}
               onValueChange={(value) => setTarget(value)}
-              list={activities.map((item) => {
-                return {
-                  label: item.name,
-                  value: item.id,
-                };
-              })}
+              list={activities
+                .sort((prev, next) => (prev.name > next.name ? 1 : -1))
+                .map((item) => {
+                  return {
+                    label: item.name,
+                    value: item.id,
+                  };
+                })}
             />
           </View>
           <View style={{ marginVertical: 20 }}>
@@ -55,15 +77,11 @@ const ShowStopWatch = () => {
           <View style={{ flexDirection: "row" }}>
             <Button
               onPress={() => {
-                const activity = activities.find((item) => item.id === target);
                 if (running)
-                  endStopWatch({
-                    userId: user.id,
-                    activityId: target,
-                    startTime: user.startTime,
-                    done: activity.done,
-                  }).then(() => setVisible(false));
-                else startStopWatch(user.id);
+                  endTimer(target, user.startTime).then(() =>
+                    setVisible(false)
+                  );
+                else startStopWatch();
               }}
             >
               {running ? "Stop" : "Start"}
@@ -116,7 +134,7 @@ export default function TabHeader() {
           <Typography>{format()}</Typography>
         </View>
       </TouchableOpacity>
-      <ShowStopWatch />
+      <StopWatchModal />
     </View>
   );
 }

@@ -20,6 +20,15 @@ const activityContext = createContext({
     taskLeft: 0,
   },
   schedule: [],
+  updateActivity: null,
+  createActivity: null,
+  deleteActivity: null,
+  updateDone: null,
+  createDone: null,
+  deleteDone: null,
+  updateTask: null,
+  createTask: null,
+  deleteTask: null,
 });
 
 export default activityContext;

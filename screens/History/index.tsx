@@ -15,37 +15,40 @@ export default function HistoryScreen() {
   const { theme } = useTheme();
   const { schedule } = useActivity();
   const [history, setHistory] = useState({});
+  const obj = {};
+  schedule.forEach((item) => {
+    obj[item.id] = item.name;
+  });
 
   useEffect(() => {
     const history = {};
     schedule.forEach((item) => {
-      const { done, doneComment = {} } = item;
-      const doneList = Object.keys(done);
-      doneList.forEach((datetime) => {
-        const date = getDateKey(datetime);
-        const length = item.done[datetime];
+      const { done } = item;
+      done.forEach((item) => {
+        const date = getDateKey(item.datetime);
+        const length = item.length;
         const [hr, mm, ss] = secondsToHrMm(length);
-        const comment = doneComment[datetime];
+        const comment = item.comment;
         const description = comment
-          ? `${doneComment[datetime] || ""}
+          ? `${comment || ""}
           ${timeFormat(hr)}:${timeFormat(mm)}:${timeFormat(ss)}`
           : `\t  ${timeFormat(hr)}:${timeFormat(mm)}:${timeFormat(ss)}`;
         if (history[date]) {
           history[date].push({
-            time: format(datetime, "time"),
-            title: item.name,
+            time: format(item.datetime, "time"),
+            title: obj[item.activityId],
             description,
             length,
-            datetime,
+            datetime: item,
           });
         } else {
           history[date] = [
             {
-              time: format(datetime, "time"),
-              title: item.name,
+              time: format(item.datetime, "time"),
+              title: obj[item.activityId],
               description,
               length,
-              datetime,
+              datetime: item,
             },
           ];
         }

@@ -4,11 +4,10 @@ import useUser from "../../context/user/useUser";
 import { useState } from "react";
 import { QuotaForm } from "./QuotaForm";
 import { Button } from "../../components";
-import { updateUser } from "../../services/database";
 import { useToast } from "react-native-toast-notifications";
 
 export default function EditProfileScreen() {
-  const { user } = useUser();
+  const { user, updateUser } = useUser();
 
   const [form, setForm] = useState({
     ...user,
@@ -33,7 +32,7 @@ export default function EditProfileScreen() {
           />
           <Button
             onPress={() =>
-              updateUser({ ...user, ...form }).then(() =>
+              updateUser(form).then(() =>
                 toast.show("Profile updated", { type: "success" })
               )
             }
