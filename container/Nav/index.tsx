@@ -47,7 +47,10 @@ function Nav() {
           name="Activity"
           component={ActivityScreen}
           options={(props) => {
-            const { id } = props?.route?.params || { id: "" };
+            const {
+              route: { params },
+            } = props || { route: { params: { id: "" } } };
+            const { id } = params;
             const activity = schedule.find((item) => item.id === id);
             const color = getContrastColor(
               activity?.color || theme.colors.white
@@ -82,7 +85,10 @@ function Nav() {
           name="EditActivity"
           component={EditScreen}
           options={(props) => {
-            const { id } = props?.route?.params || { id: "" };
+            const {
+              route: { params },
+            } = props || { route: { params: { id: "" } } };
+            const { id } = params;
             const activity = schedule.find((item) => item.id === id);
             const color = getContrastColor(activity.color);
             return {
