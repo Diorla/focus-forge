@@ -2,6 +2,7 @@ import DoneModel from "./Model";
 import DoneMetadata from "./Metadata";
 import uuid from "react-native-uuid";
 import generateObj from "../generateObj";
+import mergeObject from "../../mergeObject";
 
 type Exclude = "id";
 
@@ -19,12 +20,10 @@ class Done {
   static notNull = [];
   static autoIncrement = false;
 
-  value = { ...Done.init };
+  value = { ...Done.init, id: String(uuid.v4()) };
   constructor(data?: Omit<DoneModel, Exclude>) {
     this.value = {
-      ...this.value,
-      ...data,
-      id: String(uuid.v4()),
+      ...mergeObject(this.value, data),
     };
   }
 

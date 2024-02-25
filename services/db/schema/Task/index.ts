@@ -2,6 +2,7 @@ import TaskModel from "./Model";
 import TaskMetadata from "./Metadata";
 import generateObj from "../generateObj";
 import uuid from "react-native-uuid";
+import mergeObject from "../../mergeObject";
 
 type Exclude = "created";
 
@@ -20,13 +21,15 @@ class Task {
   static notNull = [];
   static autoIncrement = false;
 
-  value = { ...Task.init };
+  value = {
+    ...Task.init,
+    id: String(uuid.v4()),
+    created: Date.now(),
+  };
 
   constructor(data?: Omit<TaskModel, Exclude>) {
     this.value = {
-      ...this.value,
-      id: data.id || String(uuid.v4()),
-      created: Date.now(),
+      ...mergeObject(this.value, data),
     };
   }
 

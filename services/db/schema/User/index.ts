@@ -1,6 +1,7 @@
 import UserModel from "./Model";
 import UserMetadata from "./Metadata";
 import generateObj from "../generateObj";
+import mergeObject from "../../mergeObject";
 
 type Exclude = "createdAt" | "updatedAt" | "id";
 
@@ -18,7 +19,7 @@ class User {
     startTime: 0,
   };
 
-  value = { ...User.init };
+  value = { ...User.init, createdAt: Date.now(), updatedAt: Date.now() };
 
   static primaryKey = "id";
   static notNull = [];
@@ -26,10 +27,7 @@ class User {
 
   constructor(data?: Omit<UserModel, Exclude>) {
     this.value = {
-      ...this.value,
-      ...data,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      ...mergeObject(this.value, data),
     };
   }
 

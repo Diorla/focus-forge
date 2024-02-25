@@ -3,6 +3,7 @@ import ActivityMetadata from "./Metadata";
 import uuid from "react-native-uuid";
 import { random } from "../../../color";
 import generateObj from "../generateObj";
+import mergeObject from "../../mergeObject";
 
 type Exclude = "createdAt" | "updatedAt";
 
@@ -28,7 +29,12 @@ class Activity {
     lastDone: 0,
   };
 
-  value = { ...Activity.init };
+  value = {
+    ...Activity.init,
+    id: String(uuid.v4()),
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
 
   static primaryKey = "id";
   static notNull = [];
@@ -36,11 +42,7 @@ class Activity {
 
   constructor(data?: Omit<ActivityModel, Exclude>) {
     this.value = {
-      ...this.value,
-      ...data,
-      id: data.id || String(uuid.v4()),
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
+      ...mergeObject(this.value, data),
     };
   }
 
