@@ -1,20 +1,22 @@
 import { View, TouchableOpacity, Modal } from "react-native";
 import { Button, Typography } from "../../components";
 import useUser from "../../context/user/useUser";
-import { format, getDateTimeKey } from "../../services/datetime";
+import { format, getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import useNavigate from "./useNavigate";
 import { FontAwesome5 } from "@expo/vector-icons";
 import StopWatch from "../Timer/StopWatch";
 import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import Picker from "./Picker";
+import { useToast } from "react-native-toast-notifications";
 
 const StopWatchModal = () => {
   const { user, updateUser } = useUser();
-  const { activities = [], createDone } = useActivity();
+  const { schedule = [], createDone } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
-  const [target, setTarget] = useState(activities[0]?.id);
+  const [target, setTarget] = useState(schedule[0]?.id);
+  const toast = useToast();
 
   const endTimer = (id: string, startTime: number) => {
     const key = getDateTimeKey(startTime);
@@ -33,8 +35,8 @@ const StopWatchModal = () => {
   };
 
   useEffect(() => {
-    if (!target) setTarget(activities[0]?.id);
-  }, [activities.length]);
+    if (!target) setTarget(schedule[0]?.id);
+  }, [schedule.length]);
 
   function startStopWatch() {
     updateUser({
@@ -42,6 +44,11 @@ const StopWatchModal = () => {
     });
   }
 
+  const selected = schedule.find((item) => item.id === target);
+
+  const { todayTime = 0, doneToday = 0 } = selected || {};
+
+  const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
   return (
     <>
       <Modal visible={visible}>
@@ -52,12 +59,17 @@ const StopWatchModal = () => {
             justifyContent: "center",
           }}
         >
+          <Typography type="big">
+            {String(hh).padStart(2, "0")}:{String(mm).padStart(2, "0")}:
+            {String(ss).padStart(2, "0")}
+          </Typography>
+          <Typography type="small">This week</Typography>
           <View style={{ flexDirection: "row" }}>
             <Picker
               label=""
               value={target}
               onValueChange={(value) => setTarget(value)}
-              list={activities
+              list={schedule
                 .sort((prev, next) => (prev.name > next.name ? 1 : -1))
                 .map((item) => {
                   return {
@@ -79,7 +91,9 @@ const StopWatchModal = () => {
               onPress={() => {
                 if (running)
                   endTimer(target, user.startTime).then(() =>
-                    setVisible(false)
+                    toast.show("Timer ended", {
+                      type: "success",
+                    })
                   );
                 else startStopWatch();
               }}
