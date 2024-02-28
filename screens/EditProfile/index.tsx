@@ -1,10 +1,11 @@
 import { Input } from "@rneui/themed";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import useUser from "../../context/user/useUser";
 import { useState } from "react";
 import { QuotaForm } from "./QuotaForm";
 import { Button } from "../../components";
 import { useToast } from "react-native-toast-notifications";
+import KeyboardWrapper from "../../container/KeyboardWrapper";
 
 export default function EditProfileScreen() {
   const { user, updateUser } = useUser();
@@ -16,9 +17,7 @@ export default function EditProfileScreen() {
   const toast = useToast();
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardWrapper>
       <ScrollView style={{ paddingTop: 16 }}>
         <View style={{ marginBottom: 48 }}>
           <Input
@@ -41,6 +40,6 @@ export default function EditProfileScreen() {
           </Button>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardWrapper>
   );
 }

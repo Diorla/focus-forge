@@ -1,5 +1,5 @@
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
 import { Input, useTheme } from "@rneui/themed";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import useActivity from "../../context/activity/useActivity";
 import ActivityModel from "../../services/db/schema/Activity/Model";
 import { Priority } from "../../context/activity/Schedule";
+import KeyboardWrapper from "../../container/KeyboardWrapper";
 
 export default function EditScreen() {
   const { theme } = useTheme();
@@ -59,9 +60,7 @@ export default function EditScreen() {
     ? form.weeklyTarget / form.dailyLimit
     : 0;
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardWrapper>
       <ScrollView style={{ backgroundColor: form.color }}>
         <View
           style={{
@@ -179,6 +178,6 @@ export default function EditScreen() {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardWrapper>
   );
 }

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
 import { Input, useTheme } from "@rneui/themed";
 import { useEffect, useState } from "react";
@@ -15,6 +15,7 @@ import getAdsId from "../../services/utils/getAdsId";
 import dayjs from "dayjs";
 import ActivityModel from "../../services/db/schema/Activity/Model";
 import { Priority } from "../../context/activity/Schedule";
+import KeyboardWrapper from "../../container/KeyboardWrapper";
 
 const baseForm: ActivityModel = {
   name: "",
@@ -97,9 +98,7 @@ export default function AddScreen() {
     ? form.weeklyTarget / form.dailyLimit
     : 0;
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
+    <KeyboardWrapper>
       <ScrollView style={{ backgroundColor: theme.colors.primary }}>
         <View
           style={{
@@ -217,6 +216,6 @@ export default function AddScreen() {
           </View>
         </View>
       </ScrollView>
-    </KeyboardAvoidingView>
+    </KeyboardWrapper>
   );
 }
