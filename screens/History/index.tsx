@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, View } from "react-native";
+import { ActivityIndicator, ScrollView, View } from "react-native";
 import TopSpace from "../../components/topSpace";
 import TabHeader from "../../container/Nav/TabHeader";
 import { useTheme } from "@rneui/themed";
@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 const timeFormat = (value: number) => String(value).padStart(2, "0");
 // TODO: Use sectionList
 export default function HistoryScreen() {
+  const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const { schedule } = useActivity();
   const [history, setHistory] = useState({});
@@ -56,8 +57,22 @@ export default function HistoryScreen() {
     });
 
     setHistory(history);
+    setLoading(false);
   }, []);
 
+  if (loading)
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          flexDirection: "row",
+          padding: 10,
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
   return (
     <View style={{ flex: 1 }}>
       <TopSpace />

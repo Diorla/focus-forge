@@ -1,5 +1,5 @@
 import { Button, DatePicker, TimeInput, Typography } from "../../components";
-import { Modal, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Modal, TouchableOpacity, View } from "react-native";
 import { Card, Input, useTheme } from "@rneui/themed";
 import Schedule from "../../context/activity/Schedule";
 import {
@@ -8,12 +8,13 @@ import {
   getDateTimeKey,
   secondsToHrMm,
 } from "../../services/datetime";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import DoneModel from "../../services/db/schema/Done/Model";
 import useActivity from "../../context/activity/useActivity";
 import uuid from "react-native-uuid";
+import Comment from "./Comment";
 
 type History = {
   time: string;
@@ -24,19 +25,9 @@ type History = {
   id: string;
 };
 
-function Comment({
-  showComment,
-  comment,
-}: {
-  showComment: boolean;
-  comment: string;
-}) {
-  if (showComment && comment)
-    return <Typography type="small">{comment}</Typography>;
-  return null;
-}
-
 export default function History({ activity }: { activity: Schedule }) {
+  const [loading, setLoading] = useState(true);
+  const [history, setHistory] = useState<{ [key: string]: History[] }>({});
   const { theme } = useTheme();
   const { deleteDone, updateDone, createDone } = useActivity();
   const { done = [] } = activity;
@@ -59,25 +50,43 @@ export default function History({ activity }: { activity: Schedule }) {
   });
 
   const [showAddTime, setShowAddTime] = useState(false);
-  const history: { [key: string]: History[] } = {};
-  done.forEach((item) => {
-    const date = getDateKey(item.datetime);
-    const [hr, mm] = secondsToHrMm(item.length);
-    const obj = {
-      time: format(item.datetime, "time"),
-      description: `${hr}h ${String(mm).padStart(2, "0")}`,
-      datetime: getDateTimeKey(item.datetime),
-      comment: item.comment,
-      length: item.length,
-      id: item.id,
-    };
-    if (history[date]) {
-      history[date].push(obj);
-    } else {
-      history[date] = [obj];
-    }
-  });
 
+  useEffect(() => {
+    const tempHistory: { [key: string]: History[] } = {};
+    done.forEach((item) => {
+      const date = getDateKey(item.datetime);
+      const [hr, mm] = secondsToHrMm(item.length);
+      const obj = {
+        time: format(item.datetime, "time"),
+        description: `${hr}h ${String(mm).padStart(2, "0")}`,
+        datetime: getDateTimeKey(item.datetime),
+        comment: item.comment,
+        length: item.length,
+        id: item.id,
+      };
+      if (tempHistory[date]) {
+        tempHistory[date].push(obj);
+      } else {
+        tempHistory[date] = [obj];
+      }
+    });
+    setHistory(tempHistory);
+    setLoading(false);
+  }, []);
+
+  if (loading)
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          flexDirection: "row",
+          padding: 10,
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
   return (
     <Card>
       <Modal visible={showAddTime}>
