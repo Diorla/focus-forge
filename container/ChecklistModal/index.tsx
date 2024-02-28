@@ -1,6 +1,6 @@
 import { Button, Typography } from "../../components";
 import { Modal, ScrollView, View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckBox, Divider, Input } from "@rneui/themed";
 import Schedule from "../../context/activity/Schedule";
 import TopSpace from "../../components/topSpace";
@@ -21,7 +21,12 @@ export default function ChecklistModal({
 }) {
   const { updateTask, createTask, deleteTask } = useActivity();
   const { tasks } = activity;
-  const [taskList, setTaskList] = useState(tasks);
+  const [taskList, setTaskList] = useState([]);
+
+  useEffect(() => {
+    setTaskList(tasks);
+  }, []);
+
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [task, setTask] = useState<TaskModel>({
     id: String(uuid.v4()),
