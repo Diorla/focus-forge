@@ -77,7 +77,7 @@ export default function History({ activity }: { activity: Schedule }) {
     });
     setHistory(tempHistory);
     setLoading(false);
-  }, []);
+  }, [JSON.stringify(done)]);
 
   if (loading)
     return (
