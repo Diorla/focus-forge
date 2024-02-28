@@ -46,9 +46,16 @@ const StopWatchModal = () => {
 
   const selected = schedule.find((item) => item.id === target);
 
-  const { todayTime = 0, doneToday = 0 } = selected || {};
+  const {
+    todayTime = 0,
+    doneToday = 0,
+    overflowTime = 0,
+    upcomingTime = 0,
+  } = selected || {};
 
-  const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
+  const [hh, mm, ss] = secondsToHrMm(
+    todayTime - doneToday + overflowTime + upcomingTime
+  );
   return (
     <>
       <Modal visible={visible}>
