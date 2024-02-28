@@ -42,7 +42,6 @@ export default function DatePicker({
       value: new Date(date),
       onChange,
       mode: "date",
-      minimumDate: new Date(),
     });
   };
 

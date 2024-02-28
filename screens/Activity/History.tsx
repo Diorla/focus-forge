@@ -25,6 +25,11 @@ type History = {
   id: string;
 };
 
+const generateHistoryHeader = (date: string) => {
+  if (dayjs(date).isToday()) return "Today";
+  if (dayjs().diff(date, "day") === 1) return "Yesterday";
+  return format(date, "date");
+};
 export default function History({ activity }: { activity: Schedule }) {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
@@ -151,7 +156,9 @@ export default function History({ activity }: { activity: Schedule }) {
         .map((item) => {
           return (
             <View key={item}>
-              <Typography type="header">{format(item, "date")}</Typography>
+              <Typography type="header">
+                {generateHistoryHeader(item)}
+              </Typography>
               <View>
                 {history[item]
                   .sort(
