@@ -21,6 +21,7 @@ export default function ChecklistModal({
 }) {
   const { updateTask, createTask, deleteTask } = useActivity();
   const { tasks } = activity;
+  const [taskList, setTaskList] = useState(tasks);
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [task, setTask] = useState<TaskModel>({
     id: String(uuid.v4()),
@@ -50,7 +51,7 @@ export default function ChecklistModal({
             {activity.name}
           </Typography>
           <Divider />
-          <View style={{ flex: 1, padding: 4 }}>
+          <View style={{ flex: 1, padding: 4, paddingHorizontal: 8 }}>
             <View
               style={{
                 flexDirection: "row",
@@ -63,7 +64,7 @@ export default function ChecklistModal({
                 {showAll ? "Hide completed" : "Show all"}
               </Button>
             </View>
-            {tasks
+            {taskList
               .filter((item) => {
                 if (showAll) return true;
                 return !item.checked;
@@ -98,7 +99,10 @@ export default function ChecklistModal({
                       name="delete"
                       size={28}
                       color="black"
-                      onPress={() => deleteTask(item.id)}
+                      onPress={() => {
+                        deleteTask(item.id);
+                        setTaskList(taskList.filter((i) => i.id !== item.id));
+                      }}
                     />
                   </View>
                 );
@@ -121,16 +125,18 @@ export default function ChecklistModal({
                   <Button
                     disabled={!task}
                     onPress={() =>
-                      createTask(task).then(() => {
-                        setShowAddNewTask(!showAddNewTask);
-                        setTask({
-                          id: String(uuid.v4()),
-                          title: "",
-                          checked: 0,
-                          created: Date.now(),
-                          activityId: activity.id,
-                        });
-                      })
+                      createTask(task)
+                        .then(() => {
+                          setTask({
+                            id: String(uuid.v4()),
+                            title: "",
+                            checked: 0,
+                            created: Date.now(),
+                            activityId: activity.id,
+                          });
+                          setTaskList([...taskList, task]);
+                        })
+                        .then(() => setShowAddNewTask(!showAddNewTask))
                     }
                   >
                     Save

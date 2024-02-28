@@ -10,6 +10,7 @@ import uuid from "react-native-uuid";
 export default function Task({ activity }: { activity: Schedule }) {
   const { updateTask, createTask, deleteTask } = useActivity();
   const { tasks } = activity;
+  const [taskList, setTaskList] = useState(tasks);
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [task, setTask] = useState({
     id: String(uuid.v4()),
@@ -26,6 +27,7 @@ export default function Task({ activity }: { activity: Schedule }) {
   const uncheckTask = (id: string) => {
     updateTask(id, { checked: 0 });
   };
+
   return (
     <Card>
       <View
@@ -40,7 +42,7 @@ export default function Task({ activity }: { activity: Schedule }) {
           {showAll ? "Hide completed" : "Show all"}
         </Button>
       </View>
-      {tasks
+      {taskList
         .filter((item) => {
           if (showAll) return true;
           return !item.checked;
@@ -74,7 +76,10 @@ export default function Task({ activity }: { activity: Schedule }) {
                 name="delete"
                 size={28}
                 color="black"
-                onPress={() => deleteTask(item.id)}
+                onPress={() => {
+                  deleteTask(item.id);
+                  setTaskList(taskList.filter((i) => i.id !== item.id));
+                }}
               />
             </View>
           );
@@ -96,15 +101,16 @@ export default function Task({ activity }: { activity: Schedule }) {
               disabled={!task}
               onPress={() =>
                 createTask(task)
-                  .then(() =>
+                  .then(() => {
                     setTask({
                       id: String(uuid.v4()),
                       title: "",
                       checked: 0,
                       created: Date.now(),
                       activityId: activity.id,
-                    })
-                  )
+                    });
+                    setTaskList([...taskList, task]);
+                  })
                   .then(() => setShowAddNewTask(!showAddNewTask))
               }
               containerStyle={{
