@@ -9,6 +9,7 @@ import Range from "./Range";
 import Task from "./Task";
 import History from "./History";
 import PriorityLabel from "./PriorityLabel";
+import KeyboardWrapper from "../../container/KeyboardWrapper";
 
 export default function ActivityScreen() {
   const { params } = useRoute();
@@ -24,14 +25,16 @@ export default function ActivityScreen() {
       <ScrollView
         style={{ flex: 1, backgroundColor: activity.color, padding: 2 }}
       >
-        <Time activity={activity} color={color} />
-        <Range activity={activity} color={color} />
-        <PriorityLabel priority={activity?.priority} />
-        <Divider style={{ marginVertical: 8 }} />
-        <Typography color={color}>{activity.description}</Typography>
-        <Task activity={activity} />
-        <History activity={activity} />
-        <View style={{ height: 50 }} />
+        <KeyboardWrapper>
+          <Time activity={activity} color={color} />
+          <Range activity={activity} color={color} />
+          <PriorityLabel priority={activity?.priority} />
+          <Divider style={{ marginVertical: 8 }} />
+          <Typography color={color}>{activity.description}</Typography>
+          <Task activity={activity} />
+          <History activity={activity} />
+          <View style={{ height: 50 }} />
+        </KeyboardWrapper>
       </ScrollView>
     );
   }
