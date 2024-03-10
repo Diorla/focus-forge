@@ -4,7 +4,7 @@ import { ScrollView, View } from "react-native";
 import useActivity from "../../context/activity/useActivity";
 import { getContrastColor } from "../../services/color";
 import Time from "./Time";
-import { Divider } from "@rneui/themed";
+import { Card, Divider } from "@rneui/themed";
 import Range from "./Range";
 import Task from "./Task";
 import History from "./History";
@@ -31,7 +31,9 @@ export default function ActivityScreen() {
           <PriorityLabel priority={activity?.priority} />
           <Divider style={{ marginVertical: 8 }} />
           <Typography color={color}>{activity.description}</Typography>
-          <Task activity={activity} />
+          <Card>
+            <Task activity={activity} />
+          </Card>
           <History activity={activity} />
           <View style={{ height: 50 }} />
         </KeyboardWrapper>

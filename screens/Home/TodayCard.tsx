@@ -8,7 +8,7 @@ import PlayButton from "./PlayButton";
 import useNavigate from "../../container/Nav/useNavigate";
 import Schedule from "../../context/activity/Schedule";
 import Timer from "../../container/Timer";
-import ChecklistModal from "../../container/ChecklistModal";
+import ChecklistModal from "./ChecklistModal";
 import { useState } from "react";
 import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";

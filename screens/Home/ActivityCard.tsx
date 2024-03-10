@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
 import Schedule from "../../context/activity/Schedule";
-import ChecklistModal from "../../container/ChecklistModal";
+import ChecklistModal from "./ChecklistModal";
 import { useState } from "react";
 import generateCardTime from "./generateCardTime";
 import CardInfo from "./CardInfo";

@@ -1,7 +1,7 @@
 import { Button, Typography } from "../../components";
 import { View } from "react-native";
 import { useState } from "react";
-import { Card, CheckBox, Input } from "@rneui/themed";
+import { CheckBox, Input } from "@rneui/themed";
 import Schedule from "../../context/activity/Schedule";
 import { MaterialIcons } from "@expo/vector-icons";
 import useActivity from "../../context/activity/useActivity";
@@ -22,14 +22,18 @@ export default function Task({ activity }: { activity: Schedule }) {
   const [showAll, setShowAll] = useState(false);
 
   const checkTask = (id: string) => {
+    setTaskList(
+      taskList.map((i) => (i.id === id ? { ...i, checked: Date.now() } : i))
+    );
     updateTask(id, { checked: Date.now() });
   };
   const uncheckTask = (id: string) => {
+    setTaskList(taskList.map((i) => (i.id === id ? { ...i, checked: 0 } : i)));
     updateTask(id, { checked: 0 });
   };
 
   return (
-    <Card>
+    <>
       <View
         style={{
           flexDirection: "row",
@@ -62,9 +66,13 @@ export default function Task({ activity }: { activity: Schedule }) {
               <View style={{ flex: 1 }}>
                 <CheckBox
                   checked={!!item.checked}
-                  onPress={() =>
-                    item.checked ? uncheckTask(item.id) : checkTask(item.id)
-                  }
+                  onPress={() => {
+                    if (item.checked) {
+                      uncheckTask(item.id);
+                    } else {
+                      checkTask(item.id);
+                    }
+                  }}
                   iconType="material-community"
                   checkedIcon="checkbox-marked"
                   uncheckedIcon="checkbox-blank-outline"
@@ -132,6 +140,6 @@ export default function Task({ activity }: { activity: Schedule }) {
           </Button>
         </View>
       )}
-    </Card>
+    </>
   );
 }
