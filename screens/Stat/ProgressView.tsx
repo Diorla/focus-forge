@@ -89,7 +89,7 @@ export default function ProgressView() {
             unfilledColor={theme.colors.grey5}
             borderColor={medium > 0.00001 ? "transparent" : theme.colors.grey0}
             showsText
-            thickness={9}
+            thickness={5}
             formatText={() => (
               <Typography color={theme.colors.white} type="big">
                 {Math.floor(medium * 100) + "%"}
@@ -112,7 +112,7 @@ export default function ProgressView() {
             unfilledColor={theme.colors.grey0}
             borderColor={low > 0.00001 ? "transparent" : theme.colors.grey0}
             showsText
-            thickness={9}
+            thickness={5}
             formatText={() => (
               <Typography color={theme.colors.white} type="big">
                 {Math.floor(low * 100) + "%"}
