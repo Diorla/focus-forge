@@ -6,6 +6,7 @@ import Schedule from "../../context/activity/Schedule";
 import { MaterialIcons } from "@expo/vector-icons";
 import useActivity from "../../context/activity/useActivity";
 import uuid from "react-native-uuid";
+import Confirm from "../../components/confirm";
 
 export default function Task({ activity }: { activity: Schedule }) {
   const { updateTask, createTask, deleteTask } = useActivity();
@@ -80,15 +81,17 @@ export default function Task({ activity }: { activity: Schedule }) {
                   textStyle={{ flexWrap: "wrap" }}
                 />
               </View>
-              <MaterialIcons
-                name="delete"
-                size={28}
-                color="black"
-                onPress={() => {
+              <Confirm
+                title="Remove task"
+                message="Delete task from checklist"
+                acceptFn={() => {
                   deleteTask(item.id);
                   setTaskList(taskList.filter((i) => i.id !== item.id));
                 }}
-              />
+                acceptTitle="Delete"
+              >
+                <MaterialIcons name="delete" size={28} color="black" />
+              </Confirm>
             </View>
           );
         })}

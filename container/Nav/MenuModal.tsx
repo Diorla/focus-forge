@@ -6,6 +6,8 @@ import Schedule from "../../context/activity/Schedule";
 import TopSpace from "../../components/topSpace";
 import useNavigate from "./useNavigate";
 import useActivity from "../../context/activity/useActivity";
+import Confirm from "../../components/confirm";
+import { useTheme } from "@rneui/themed";
 
 export default function MenuModal({
   color,
@@ -17,6 +19,7 @@ export default function MenuModal({
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate<{ id: string }>();
   const { updateActivity, deleteActivity } = useActivity();
+  const { theme } = useTheme();
   if (activity) {
     const { archived = "", id = "", name = "" } = activity;
     return (
@@ -52,15 +55,24 @@ export default function MenuModal({
             >
               {archived ? "Unarchive" : "Archive"}
             </Button>
-            <Button
-              onPress={() => {
+            <Confirm
+              title="Delete activity"
+              message="You cannot undo this action, do you want to proceed"
+              acceptFn={() => {
                 setVisible(false);
                 deleteActivity(id);
               }}
-              type="clear"
+              acceptTitle="Delete"
             >
-              Delete
-            </Button>
+              <Typography
+                style={{
+                  textAlign: "center",
+                  color: theme.colors.error,
+                }}
+              >
+                Delete
+              </Typography>
+            </Confirm>
           </View>
           <View style={{ marginBottom: 20, alignItems: "center" }}>
             <Button onPress={() => setVisible(!visible)} type="outline">

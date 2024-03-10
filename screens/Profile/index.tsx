@@ -9,6 +9,7 @@ import { Feather } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
 import Item from "./Item";
 import useUser from "../../context/user/useUser";
+import Confirm from "../../components/confirm";
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
@@ -56,12 +57,19 @@ export default function ProfileScreen() {
         <Item title="Import" onPress={() => null /*import to file*/}>
           <AntDesign name="star" size={24} color={theme.colors.black} />
         </Item>
-        <ListItem onPress={() => deleteUser()}>
-          <Feather name="log-out" size={24} color={theme.colors.black} />
-          <ListItem.Content>
-            <ListItem.Title>Log out</ListItem.Title>
-          </ListItem.Content>
-        </ListItem>
+        <Confirm
+          title="Reset data"
+          message="This will delete all your data. You cannot reverse this process, you can back up the data for future use"
+          acceptFn={() => deleteUser()}
+          acceptTitle="Delete"
+        >
+          <ListItem>
+            <Feather name="log-out" size={24} color={theme.colors.black} />
+            <ListItem.Content>
+              <ListItem.Title>Reset data</ListItem.Title>
+            </ListItem.Content>
+          </ListItem>
+        </Confirm>
       </View>
     </ScrollView>
   );

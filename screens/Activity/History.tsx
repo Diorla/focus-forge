@@ -15,6 +15,7 @@ import DoneModel from "../../services/db/schema/Done/Model";
 import useActivity from "../../context/activity/useActivity";
 import uuid from "react-native-uuid";
 import Comment from "./Comment";
+import Confirm from "../../components/confirm";
 
 type History = {
   time: string;
@@ -300,12 +301,23 @@ export default function History({ activity }: { activity: Schedule }) {
                             </View>
                           </View>
                           <View>
-                            <Button
-                              color="error"
-                              onPress={() => deleteDone(form.id)}
+                            <Confirm
+                              title="Remove time"
+                              message="Delete time from history"
+                              acceptFn={() => {
+                                deleteDone(form.id);
+                              }}
+                              acceptTitle="Delete"
                             >
-                              Delete
-                            </Button>
+                              <Typography
+                                style={{
+                                  textAlign: "center",
+                                  color: theme.colors.error,
+                                }}
+                              >
+                                Delete
+                              </Typography>
+                            </Confirm>
                           </View>
                         </View>
                       ) : null}
