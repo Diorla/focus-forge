@@ -7,12 +7,14 @@ import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
+import ChecklistModal from "./ChecklistModal";
 
 const priority = ["high", "medium", "low", "none"];
 
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useActivity();
+  const [currentSchedule, setCurrentSchedule] = useState(null);
 
   const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
     keywords: schedule.map((item) => item.name),
@@ -38,6 +40,13 @@ export default function TodayView() {
 
     return (
       <View style={{ marginVertical: 16 }}>
+        {currentSchedule ? (
+          <ChecklistModal
+            activity={currentSchedule}
+            visible={!!currentSchedule}
+            closeModal={() => setCurrentSchedule(null)}
+          />
+        ) : null}
         <View
           style={{
             flexDirection: "row",
@@ -54,7 +63,12 @@ export default function TodayView() {
           ) : null}
         </View>
         <View>
-          <TodayCard schedule={first} isLoadedAd={isLoaded} showAd={show} />
+          <TodayCard
+            schedule={first}
+            setCurrentSchedule={() => setCurrentSchedule(first)}
+            isLoadedAd={isLoaded}
+            showAd={show}
+          />
           {expanded ? (
             <>
               {rest
@@ -67,6 +81,7 @@ export default function TodayView() {
                   <TodayCard
                     key={item.id}
                     schedule={item}
+                    setCurrentSchedule={() => setCurrentSchedule(item)}
                     isLoadedAd={isLoaded}
                     showAd={show}
                   />

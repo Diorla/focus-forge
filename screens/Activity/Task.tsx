@@ -7,6 +7,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import useActivity from "../../context/activity/useActivity";
 import uuid from "react-native-uuid";
 import Confirm from "../../components/confirm";
+import KeyboardWrapper from "../../container/KeyboardWrapper";
 
 export default function Task({ activity }: { activity: Schedule }) {
   const { updateTask, createTask, deleteTask } = useActivity();
@@ -97,16 +98,18 @@ export default function Task({ activity }: { activity: Schedule }) {
         })}
       {showAddNewTask ? (
         <View>
-          <Input
-            value={task.title}
-            onChangeText={(title) =>
-              setTask({
-                ...task,
-                title,
-              })
-            }
-            multiline
-          />
+          <KeyboardWrapper>
+            <Input
+              value={task.title}
+              onChangeText={(title) =>
+                setTask({
+                  ...task,
+                  title,
+                })
+              }
+              multiline
+            />
+          </KeyboardWrapper>
           <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
             <Button
               disabled={!task}

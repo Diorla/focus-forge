@@ -8,8 +8,6 @@ import PlayButton from "./PlayButton";
 import useNavigate from "../../container/Nav/useNavigate";
 import Schedule from "../../context/activity/Schedule";
 import Timer from "../../container/Timer";
-import ChecklistModal from "./ChecklistModal";
-import { useState } from "react";
 import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import dayjs from "dayjs";
@@ -22,10 +20,12 @@ export function TodayCard({
   schedule,
   isLoadedAd,
   showAd,
+  setCurrentSchedule,
 }: {
   schedule: Schedule;
   isLoadedAd: boolean;
   showAd: (arg?: AdShowOptions) => void;
+  setCurrentSchedule;
 }) {
   const {
     theme: { colors },
@@ -35,7 +35,6 @@ export function TodayCard({
 
   const toast = useToast();
   const navigate = useNavigate<{ id: string }>();
-  const [visible, setVisible] = useState(false);
   const {
     timerId,
     todayTime,
@@ -84,11 +83,6 @@ export function TodayCard({
 
   return (
     <>
-      <ChecklistModal
-        activity={schedule}
-        visible={visible}
-        closeModal={() => setVisible(false)}
-      />
       <Card containerStyle={{ borderRadius: 8, ...borderStyle }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography>{schedule.name}</Typography>
@@ -154,7 +148,7 @@ export function TodayCard({
             {schedule.priority}
           </Typography>
 
-          <TouchableOpacity onPress={() => setVisible(!visible)}>
+          <TouchableOpacity onPress={() => setCurrentSchedule(schedule)}>
             <View
               style={{
                 flexDirection: "row",
