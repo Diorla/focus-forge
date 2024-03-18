@@ -17,26 +17,25 @@ import ActivityModel from "../../services/db/schema/Activity/Model";
 import { Priority } from "../../context/activity/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
 
-const baseForm: ActivityModel = {
-  name: "",
-  weeklyTarget: 0,
-  dailyLimit: 0,
-  startDate: Date.now(),
-  priority: "none",
-  color: random(),
-  category: "",
-  description: "",
-  id: "",
-  archived: 0,
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
-
-  lastDone: 0,
-  timerStart: 0,
-  timerLength: 0,
-  timerId: "",
-};
 export default function AddScreen() {
+  const baseForm: ActivityModel = {
+    name: "",
+    weeklyTarget: 0,
+    dailyLimit: 0,
+    startDate: Date.now(),
+    priority: "none",
+    color: random(),
+    category: "",
+    description: "",
+    id: "",
+    archived: 0,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    lastDone: 0,
+    timerStart: 0,
+    timerLength: 0,
+    timerId: "",
+  };
   const { theme } = useTheme();
   const {
     user: { createdAt },
