@@ -8,6 +8,7 @@ import "expo-dev-client";
 import ErrorBoundary from "react-native-error-boundary";
 import { logError } from "./services/database";
 import { Button, View, Text } from "react-native";
+import SQLiteProvider from "./context/sqlite";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -31,12 +32,14 @@ export default function App() {
       onError={(error) => logError("error boundary", "uncaught error", error)}
       FallbackComponent={CustomFallback}
     >
-      <ThemeProvider theme={theme}>
-        <UserProvider>
-          <Root />
-          <StatusBar style="auto" />
-        </UserProvider>
-      </ThemeProvider>
+      <SQLiteProvider>
+        <ThemeProvider theme={theme}>
+          <UserProvider>
+            <Root />
+            <StatusBar style="auto" />
+          </UserProvider>
+        </ThemeProvider>
+      </SQLiteProvider>
     </ErrorBoundary>
   );
 }
