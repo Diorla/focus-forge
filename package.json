@@ -33,6 +33,7 @@
     "expo-dev-client": "~2.4.12",
     "expo-device": "~5.4.0",
     "expo-file-system": "~15.4.5",
+    "expo-keep-awake": "~12.3.0",
     "expo-notifications": "~0.20.1",
     "expo-splash-screen": "~0.20.5",
     "expo-sqlite": "13.3.0",
@@ -41,6 +42,7 @@
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-animatable": "^1.4.0",
+    "react-native-error-boundary": "^1.2.4",
     "react-native-google-mobile-ads": "^12.10.0",
     "react-native-modal-selector": "^2.1.2",
     "react-native-progress": "^5.0.1",
@@ -49,8 +51,7 @@
     "react-native-svg": "13.9.0",
     "react-native-timeline-flatlist": "^0.8.0",
     "react-native-toast-notifications": "^3.4.0",
-    "react-native-uuid": "^2.0.1",
-    "expo-keep-awake": "~12.3.0"
+    "react-native-uuid": "^2.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
