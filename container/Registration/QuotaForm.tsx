@@ -4,10 +4,10 @@ import { useState } from "react";
 import Typography from "../../components/typography";
 import { useTheme } from "@rneui/themed";
 import Button from "../../components/button";
-import { DailyQuota } from "../../models/User";
 import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
-import useUser from "../../context/user/useUser";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import { DailyQuota } from "../../context/sqlite/schema/User/Model";
 
 function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];
@@ -16,7 +16,7 @@ export function QuotaForm({ name }: { name: string }) {
   const {
     user: { id },
     updateUser,
-  } = useUser();
+  } = useSQLiteQuery();
   interface QuotaFormState {
     weeklyQuota: number;
     dailyQuota: DailyQuota;

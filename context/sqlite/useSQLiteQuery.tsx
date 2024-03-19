@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import SQLiteContextType from "./SQLiteContextType";
+import SQLiteContextType from "./types/SQLiteContextType";
 import SQLiteContext from "./SQLiteContext";
 
 export default function useSQLiteQuery() {

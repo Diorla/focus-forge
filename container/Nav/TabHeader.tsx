@@ -1,6 +1,5 @@
 import { View, TouchableOpacity, Modal } from "react-native";
 import { Button, Typography } from "../../components";
-import useUser from "../../context/user/useUser";
 import { format, getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import useNavigate from "./useNavigate";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -9,16 +8,17 @@ import { useEffect, useState } from "react";
 import useActivity from "../../context/activity/useActivity";
 import Picker from "./Picker";
 import { useToast } from "react-native-toast-notifications";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 const StopWatchModal = () => {
-  const { user, updateUser } = useUser();
+  const { user, updateUser } = useSQLiteQuery();
   const { schedule = [], createDone } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
   const [target, setTarget] = useState(schedule[0]?.id);
   const toast = useToast();
 
-  const endTimer = (id: string, startTime: number) => {
+  const endTimer = async (id: string, startTime: number) => {
     const key = getDateTimeKey(startTime);
 
     createDone({
@@ -130,7 +130,7 @@ const StopWatchModal = () => {
 export default function TabHeader() {
   const {
     user: { name },
-  } = useUser();
+  } = useSQLiteQuery();
 
   const navigate = useNavigate();
   return (

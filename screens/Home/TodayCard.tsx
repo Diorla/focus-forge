@@ -11,10 +11,10 @@ import Timer from "../../container/Timer";
 import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import dayjs from "dayjs";
-import useUser from "../../context/user/useUser";
 import { AdShowOptions } from "react-native-google-mobile-ads";
 import useActivity from "../../context/activity/useActivity";
 import { logError } from "../../services/database";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export function TodayCard({
   schedule,
@@ -31,7 +31,7 @@ export function TodayCard({
     theme: { colors },
   } = useTheme();
   const { updateActivity, createDone } = useActivity();
-  const { user } = useUser();
+  const { user } = useSQLiteQuery();
 
   const toast = useToast();
   const navigate = useNavigate<{ id: string }>();

@@ -8,13 +8,13 @@ import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
 import Item from "./Item";
-import useUser from "../../context/user/useUser";
 import Confirm from "../../components/confirm";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { deleteUser } = useUser();
+  const { deleteUser } = useSQLiteQuery();
   return (
     <ScrollView>
       <Header />

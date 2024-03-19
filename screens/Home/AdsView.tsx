@@ -1,9 +1,9 @@
 import { View } from "react-native";
-import useUser from "../../context/user/useUser";
 import React from "react";
 import { BannerAd, BannerAdSize } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
 import dayjs from "dayjs";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 const adUnitId = getAdsId();
 
@@ -14,7 +14,7 @@ function Banner() {
 }
 
 export default function AdsView() {
-  const { user } = useUser();
+  const { user } = useSQLiteQuery();
   const diff = dayjs().diff(user.createdAt, "day");
 
   // Premium and new members (length to be decided) will not see ads

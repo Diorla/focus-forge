@@ -7,7 +7,6 @@ import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import { random } from "../../services/color";
 import SelectCategory from "../../components/selectCategory";
-import useUser from "../../context/user/useUser";
 import useActivity from "../../context/activity/useActivity";
 import { useToast } from "react-native-toast-notifications";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
@@ -16,6 +15,7 @@ import dayjs from "dayjs";
 import ActivityModel from "../../services/db/schema/Activity/Model";
 import { Priority } from "../../context/activity/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function AddScreen() {
   const baseForm: ActivityModel = {
@@ -39,7 +39,7 @@ export default function AddScreen() {
   const { theme } = useTheme();
   const {
     user: { createdAt },
-  } = useUser();
+  } = useSQLiteQuery();
   const [form, setForm] = useState<ActivityModel>({ ...baseForm });
   const { activities, createActivity } = useActivity();
   const list = Array.from(new Set(activities.map((item) => item.category)));

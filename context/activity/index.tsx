@@ -22,6 +22,7 @@ import createTask from "./createTask";
 import deleteTask from "./deleteTask";
 import TaskModel from "../../services/db/schema/Task/Model";
 import Schedule from "./Schedule";
+import useSQLiteQuery from "../sqlite/useSQLiteQuery";
 
 dayjs.extend(isToday);
 
@@ -30,7 +31,8 @@ export default function ActivityProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, time: userTime } = useUser();
+  const { user } = useSQLiteQuery();
+  const { time: userTime } = useUser();
   const [prevTime, setPrevTime] = useState(userTime);
   const [activities, setActivities] = useState([]);
   const [done, setDone] = useState([]);

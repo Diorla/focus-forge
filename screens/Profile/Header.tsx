@@ -2,14 +2,14 @@ import * as React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { Typography } from "../../components";
 import { format } from "../../services/datetime";
-import useUser from "../../context/user/useUser";
 import useNavigate from "../../container/Nav/useNavigate";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function Header() {
   const navigate = useNavigate();
   const {
     user: { name, createdAt },
-  } = useUser();
+  } = useSQLiteQuery();
 
   return (
     <TouchableOpacity

@@ -14,7 +14,7 @@ import MenuModal from "./MenuModal";
 import EditScreen from "../../screens/Edit";
 import { useTheme } from "@rneui/themed";
 import EditProfileScreen from "../../screens/EditProfile";
-import useUser from "../../context/user/useUser";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,7 +24,7 @@ const PlaceholderScreen = () => {
 function Nav() {
   const { schedule } = useActivity();
   const { theme } = useTheme();
-  const { user } = useUser();
+  const { user } = useSQLiteQuery();
   return (
     <NavigationContainer>
       <Stack.Navigator>

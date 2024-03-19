@@ -1,14 +1,14 @@
 import { Input } from "@rneui/themed";
 import { ScrollView, View } from "react-native";
-import useUser from "../../context/user/useUser";
 import { useState } from "react";
 import { QuotaForm } from "./QuotaForm";
 import { Button } from "../../components";
 import { useToast } from "react-native-toast-notifications";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function EditProfileScreen() {
-  const { user, updateUser } = useUser();
+  const { user, updateUser } = useSQLiteQuery();
 
   const [form, setForm] = useState({
     ...user,
