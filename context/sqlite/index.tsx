@@ -1,18 +1,7 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as SQLite from "expo-sqlite";
 import { logError } from "../../services/database";
-
-export type SQLiteContextType = {
-  restartDB: () => void;
-};
-
-const SQLiteContext = createContext<SQLiteContextType>({
-  restartDB: null,
-});
-
-export const useSQLiteQuery = () => {
-  return useContext<SQLiteContextType>(SQLiteContext);
-};
+import SQLiteContext from "./SQLiteContext";
 
 export default function SQLiteProvider({
   children,
@@ -25,7 +14,7 @@ export default function SQLiteProvider({
     setDb(db);
 
     return () => {
-      db.closeSync();
+      if (db?.closeSync) db?.closeSync();
     };
   }, []);
 
