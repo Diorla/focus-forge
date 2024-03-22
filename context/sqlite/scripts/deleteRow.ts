@@ -1,4 +1,5 @@
 import { SQLTransactionErrorCallback, SQLiteDatabase } from "expo-sqlite";
+import selectRows from "./selectRows";
 
 export interface DeleteRowProps {
   db: SQLiteDatabase;
@@ -17,8 +18,8 @@ export default function deleteRow({
 }: DeleteRowProps) {
   db.transaction(
     (tx) =>
-      tx.executeSql(`delete from ${table} where id = ?;`, [id], (_, results) =>
-        callback(results.rows._array)
+      tx.executeSql(`delete from ${table} where id = ?;`, [id], () =>
+        selectRows({ db, table, callback, errorCallback })
       ),
     errorCallback
   );
