@@ -2,7 +2,7 @@ import { Button, Typography } from "../../components";
 import { View } from "react-native";
 import { useState } from "react";
 import { CheckBox, Input } from "@rneui/themed";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 import { MaterialIcons } from "@expo/vector-icons";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 import uuid from "react-native-uuid";

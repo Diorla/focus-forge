@@ -1,4 +1,4 @@
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 
 export default function generateCardTime(
   type: "completed" | "overflow" | "upcoming" | "previous" | "recent",

@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Chip, useTheme } from "@rneui/themed";
-import { Priority } from "../../context/activity/Schedule";
+import { Priority } from "../../context/schedule/Schedule";
 
 export default function PriorityLabel({ priority }: { priority: Priority }) {
   const { theme } = useTheme();

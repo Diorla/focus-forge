@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import PlayButton from "./PlayButton";
 import useNavigate from "../../container/Nav/useNavigate";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 import Timer from "../../container/Timer";
 import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { View } from "react-native";
 import { TimeFormat, Typography } from "../../components";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 
 export default function Count({
   activity,

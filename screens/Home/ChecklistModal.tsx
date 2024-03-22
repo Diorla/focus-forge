@@ -1,7 +1,7 @@
 import { Button, Typography } from "../../components";
 import { Modal, ScrollView } from "react-native";
 import { Divider } from "@rneui/themed";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 import TopSpace from "../../components/topSpace";
 import Task from "../Activity/Task";
 

@@ -1,6 +1,6 @@
 import { Typography } from "../../components";
 import { View } from "react-native";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 import { format, secondsToHrMm } from "../../services/datetime";
 
 export default function Range({

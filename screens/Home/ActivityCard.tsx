@@ -4,7 +4,7 @@ import { Card, Divider, useTheme } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 import ChecklistModal from "./ChecklistModal";
 import { useState } from "react";
 import generateCardTime from "./generateCardTime";

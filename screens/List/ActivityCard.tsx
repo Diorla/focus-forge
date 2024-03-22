@@ -5,7 +5,7 @@ import { Card } from "@rneui/themed";
 import { Octicons } from "@expo/vector-icons";
 import { getContrastColor } from "../../services/color";
 import useNavigate from "../../container/Nav/useNavigate";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 import { secondsToHrMm } from "../../services/datetime";
 
 // <Octicons name="dash" size={24} color="black" />
