@@ -4,7 +4,7 @@ import TaskModel from "../schema/Task/Model";
 import UserModel from "../schema/User/Model";
 
 type SQLiteContextType = {
-  restartDB: () => void;
+  restartDB: (fn: () => Promise<void>) => void;
   isReady: boolean;
   user: UserModel;
   activityList: ActivityModel[];

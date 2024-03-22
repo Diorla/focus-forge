@@ -10,11 +10,14 @@ import useNavigate from "../../container/Nav/useNavigate";
 import Item from "./Item";
 import Confirm from "../../components/confirm";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import { loadDB, logError } from "../../services/database";
+import { useToast } from "react-native-toast-notifications";
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { deleteUser } = useSQLiteQuery();
+  const { deleteUser, restartDB } = useSQLiteQuery();
+  const toast = useToast();
   return (
     <ScrollView>
       <Header />
@@ -54,9 +57,22 @@ export default function ProfileScreen() {
         <Item title="Export" onPress={() => null /*export to file*/}>
           <AntDesign name="star" size={24} color={theme.colors.black} />
         </Item>
-        <Item title="Import" onPress={() => null /*import to file*/}>
-          <AntDesign name="star" size={24} color={theme.colors.black} />
-        </Item>
+        <Confirm
+          title="Import from server"
+          message="This will override your local storage, do you want to continue"
+          acceptFn={() => {
+            try {
+              restartDB(loadDB);
+              toast.show("Database loaded");
+            } catch (error) {
+              logError("reloading DB", "profile", error);
+            }
+          }}
+        >
+          <Item title="Import" onPress={null}>
+            <AntDesign name="star" size={24} color={theme.colors.black} />
+          </Item>
+        </Confirm>
         <Confirm
           title="Reset data"
           message="This will delete all your data. You cannot reverse this process, you can back up the data for future use"

@@ -9,6 +9,7 @@ import ErrorBoundary from "react-native-error-boundary";
 import { logError } from "./services/database";
 import { Button, View, Text } from "react-native";
 import SQLiteProvider from "./context/sqlite";
+import { ToastProvider } from "react-native-toast-notifications";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -28,18 +29,25 @@ const CustomFallback = (props: { error: Error; resetError }) => (
 
 export default function App() {
   return (
-    <ErrorBoundary
-      onError={(error) => logError("error boundary", "uncaught error", error)}
-      FallbackComponent={CustomFallback}
-    >
-      <SQLiteProvider>
-        <ThemeProvider theme={theme}>
-          <UserProvider>
-            <Root />
-            <StatusBar style="auto" />
-          </UserProvider>
-        </ThemeProvider>
-      </SQLiteProvider>
-    </ErrorBoundary>
+    <ThemeProvider theme={theme}>
+      <ErrorBoundary
+        onError={(error) => logError("error boundary", "uncaught error", error)}
+        FallbackComponent={CustomFallback}
+      >
+        <ToastProvider
+        // successColor={successColor}
+        // dangerColor={dangerColor}
+        // warningColor={warningColor}
+        // normalColor={normalColor}
+        >
+          <SQLiteProvider>
+            <UserProvider>
+              <Root />
+              <StatusBar style="auto" />
+            </UserProvider>
+          </SQLiteProvider>
+        </ToastProvider>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }

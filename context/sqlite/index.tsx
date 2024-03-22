@@ -32,7 +32,6 @@ export default function SQLiteProvider({
   const [activityList, setActivityList] = useState([]);
   const [doneList, setDoneList] = useState([]);
   const [taskList, setTaskList] = useState([]);
-  // const [forceUpdate, setForceUpdate] = useState(0);
 
   const onLayoutRootView = useCallback(async () => {
     if (isReady) {
@@ -45,12 +44,14 @@ export default function SQLiteProvider({
     setDb(db);
   }, []);
 
-  function restartDB() {
+  function restartDB(fn: () => Promise<void>) {
     try {
       db.closeAsync().then(() => {
-        const db = SQLite.openDatabase("db.db");
-        setDb(db);
-        setIsReady(true);
+        fn().then(() => {
+          const db = SQLite.openDatabase("db.db");
+          setDb(db);
+          setIsReady(true);
+        });
       });
     } catch (error) {
       logError("", "restart DB", error);
