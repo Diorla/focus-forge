@@ -95,6 +95,12 @@ export default function ProfileScreen() {
             </ListItem.Content>
           </ListItem>
         </Confirm>
+        <ListItem>
+          <Feather name="log-in" size={24} color={theme.colors.black} />
+          <ListItem.Content>
+            <ListItem.Title>Log in/log out</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
       </View>
     </ScrollView>
   );
