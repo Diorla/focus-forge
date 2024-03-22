@@ -7,9 +7,9 @@ const adUnitId = getAdsId("interstitial");
 
 export default function useInterstitial() {
   const [loaded, setLoaded] = useState(false);
-  const { activities } = useActivity();
+  const { schedule } = useActivity();
 
-  const keywords = activities.map((item) => item.name);
+  const keywords = schedule.map((item) => item.name);
 
   const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
     keywords,

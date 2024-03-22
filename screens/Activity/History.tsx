@@ -11,8 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import DoneModel from "../../services/db/schema/Done/Model";
-import useActivity from "../../context/activity/useActivity";
+import DoneModel from "../../context/sqlite/schema/Done/Model";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 import uuid from "react-native-uuid";
 import Comment from "./Comment";
 import Confirm from "../../components/confirm";
@@ -35,7 +35,7 @@ export default function History({ activity }: { activity: Schedule }) {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
   const { theme } = useTheme();
-  const { deleteDone, updateDone, createDone } = useActivity();
+  const { deleteDone, updateDone, createDone } = useSQLiteQuery();
   const { done = [] } = activity;
   const [expandIdx, setExpandIdx] = useState("");
   const [form, setForm] = useState<DoneModel>({
@@ -59,7 +59,7 @@ export default function History({ activity }: { activity: Schedule }) {
 
   useEffect(() => {
     const tempHistory: { [key: string]: History[] } = {};
-    done.forEach((item) => {
+    done?.forEach((item) => {
       const date = getDateKey(item.datetime);
       const [hr, mm] = secondsToHrMm(item.length);
       const obj = {
@@ -121,17 +121,17 @@ export default function History({ activity }: { activity: Schedule }) {
           >
             <Button
               onPress={() => {
-                if (newTime.length)
-                  createDone(newTime).then(() => {
-                    setShowAddTime(false);
-                    setNewTime({
-                      comment: "",
-                      datetime: Date.now(),
-                      id: String(uuid.v4()),
-                      activityId: activity.id,
-                      length: 0,
-                    });
+                if (newTime.length) {
+                  createDone(newTime);
+                  setShowAddTime(false);
+                  setNewTime({
+                    comment: "",
+                    datetime: Date.now(),
+                    id: String(uuid.v4()),
+                    activityId: activity.id,
+                    length: 0,
                   });
+                }
               }}
             >
               Save
@@ -153,7 +153,7 @@ export default function History({ activity }: { activity: Schedule }) {
         <Button onPress={() => setShowAddTime(true)}>Add time</Button>
       </View>
       {Object.keys(history)
-        .sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
+        ?.sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
         .map((item) => {
           return (
             <View key={item}>
@@ -162,7 +162,7 @@ export default function History({ activity }: { activity: Schedule }) {
               </Typography>
               <View>
                 {history[item]
-                  .sort(
+                  ?.sort(
                     (a, b) =>
                       dayjs(b.datetime).valueOf() - dayjs(a.datetime).valueOf()
                   )
@@ -266,21 +266,20 @@ export default function History({ activity }: { activity: Schedule }) {
                               }}
                             >
                               <Button
-                                onPress={() =>
+                                onPress={() => {
                                   updateDone(time.id, {
                                     ...form,
                                     datetime: form.datetime,
-                                  }).then(() => {
-                                    setForm({
-                                      comment: "",
-                                      datetime: 0,
-                                      id: "",
-                                      activityId: activity.id,
-                                      length: 0,
-                                    });
-                                    setExpandIdx(undefined);
-                                  })
-                                }
+                                  });
+                                  setForm({
+                                    comment: "",
+                                    datetime: 0,
+                                    id: "",
+                                    activityId: activity.id,
+                                    length: 0,
+                                  });
+                                  setExpandIdx(undefined);
+                                }}
                               >
                                 Save
                               </Button>

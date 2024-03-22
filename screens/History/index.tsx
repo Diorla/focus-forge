@@ -17,15 +17,15 @@ export default function HistoryScreen() {
   const { schedule } = useActivity();
   const [history, setHistory] = useState({});
   const obj = {};
-  schedule.forEach((item) => {
+  schedule?.forEach((item) => {
     obj[item.id] = item.name;
   });
 
   useEffect(() => {
     const history = {};
-    schedule.forEach((item) => {
+    schedule?.forEach((item) => {
       const { done } = item;
-      done.forEach((item) => {
+      done?.forEach((item) => {
         const date = getDateKey(item.datetime);
         const length = item.length;
         const [hr, mm, ss] = secondsToHrMm(length);
@@ -79,10 +79,10 @@ export default function HistoryScreen() {
       <TabHeader />
       <ScrollView>
         {Object.keys(history)
-          .sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
+          ?.sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
           .map((item) => (
             <HistoryItem
-              data={history[item].sort(
+              data={history[item]?.sort(
                 (a: { datetime: string }, b: { datetime: string }) =>
                   dayjs(b.datetime).valueOf() - dayjs(a.datetime).valueOf()
               )}

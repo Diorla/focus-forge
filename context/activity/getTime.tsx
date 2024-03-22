@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
-import ActivityModel from "../../services/db/schema/Activity/Model";
-import DoneModel from "../../services/db/schema/Done/Model";
-import UserModel from "../../services/db/schema/User/Model";
+import ActivityModel from "../sqlite/schema/Activity/Model";
+import DoneModel from "../sqlite/schema/Done/Model";
+import UserModel from "../sqlite/schema/User/Model";
 
 /**
  * => User
@@ -72,15 +72,15 @@ export default function getTime(
   } else {
     weeklyQuota = dailyQuota.reduce((prev, curr) => prev + curr, 0);
   }
-  activities.forEach((item) => {
+  activities?.forEach((item) => {
     const doneList = done.filter((doneItem) => doneItem.activityId === item.id);
     const timeToday = doneList.filter((done) => dayjs(done.datetime).isToday());
     const timeThisWeek = doneList.filter(
       (done) =>
         dayjs().isSame(done.datetime, "week") && !dayjs(done.datetime).isToday()
     );
-    timeToday.forEach((done) => (doneToday += done.length));
-    timeThisWeek.forEach((done) => (doneThisWeek += done.length));
+    timeToday?.forEach((done) => (doneToday += done.length));
+    timeThisWeek?.forEach((done) => (doneThisWeek += done.length));
   });
   thisWeekRemaining = weeklyQuota - doneThisWeek;
   if (thisWeekRemaining < 0) thisWeekRemaining = 0;

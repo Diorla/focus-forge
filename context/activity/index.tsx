@@ -5,24 +5,9 @@ import useUser from "../user/useUser";
 import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
-import ActivityModel from "../../services/db/schema/Activity/Model";
-import { useForceUpdate } from "../useForceUpdate";
-import { logError } from "../../services/database";
-import updateActivity from "./updateActivity";
-import createActivity from "./createActivity";
-import deleteActivity from "./deleteActivity";
-import initTable from "./initTable";
-import fetchInfo from "./fetchInfo";
-import updateDone from "./updateDone";
-import DoneModel from "../../services/db/schema/Done/Model";
-import createDone from "./createDone";
-import deleteDone from "./deleteDone";
-import updateTask from "./updateTask";
-import createTask from "./createTask";
-import deleteTask from "./deleteTask";
-import TaskModel from "../../services/db/schema/Task/Model";
 import Schedule from "./Schedule";
 import useSQLiteQuery from "../sqlite/useSQLiteQuery";
+import { Typography } from "../../components";
 
 dayjs.extend(isToday);
 
@@ -31,15 +16,12 @@ export default function ActivityProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { user } = useSQLiteQuery();
+  const { user, activityList, doneList, taskList } = useSQLiteQuery();
   const { time: userTime } = useUser();
   const [prevTime, setPrevTime] = useState(userTime);
-  const [activities, setActivities] = useState([]);
-  const [done, setDone] = useState([]);
-  const [tasks, setTasks] = useState([]);
   const [schedule, setSchedule] = useState<Schedule[]>([]);
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const [time, setTime] = useState({
     doneThisWeek: 0,
     doneToday: 0,
@@ -56,29 +38,27 @@ export default function ActivityProvider({
     taskLeft: 0,
   });
 
-  const [forceUpdate, forceUpdateInfo] = useForceUpdate();
-
   // Determine if new stuff is created
-  const doneString = JSON.stringify(done);
-  const activitiesString = JSON.stringify(activities);
-  const tasksString = JSON.stringify(tasks);
+  const doneListString = JSON.stringify(doneList);
+  const activityListString = JSON.stringify(activityList);
+  const taskListString = JSON.stringify(taskList);
 
   function generateSchedule() {
-    const time = getTime(activities, done, user);
+    const time = getTime(activityList, doneList, user);
 
     const scheduleList = getSchedule({
-      activities,
+      activities: activityList,
       initialTodayRemaining: time.todayRemaining,
       initialUpcomingTime: time.upcomingTime,
-      done,
-      tasks,
+      done: doneList,
+      tasks: taskList,
     });
 
     let todoTime = 0;
     let taskDone = 0;
     let taskLeft = 0;
 
-    scheduleList.forEach((item) => {
+    scheduleList?.forEach((item) => {
       const { todayTime, doneToday } = item;
       todoTime += todayTime - doneToday;
       const timeLeft = todayTime - doneToday;
@@ -101,40 +81,16 @@ export default function ActivityProvider({
   }, [userTime]);
 
   useEffect(() => {
-    try {
-      initTable();
-      fetchInfo(setActivities, setDone, setTasks);
-    } catch (error) {
-      setError(error);
-      logError("initial load", "loading activity", error);
-    }
-  }, [forceUpdateInfo]);
-
-  useEffect(() => {
     generateSchedule();
-  }, [doneString, activitiesString, tasksString]);
+  }, [doneListString, activityListString, taskListString]);
 
+  if (loading) return <Typography>Loading...</Typography>;
   return (
     <ActivityContext.Provider
       value={{
-        activities,
-        error,
         loading,
         time,
         schedule,
-        updateActivity: (id: string, data: Partial<ActivityModel>) =>
-          updateActivity(id, data, forceUpdate),
-        createActivity: (activity: ActivityModel) =>
-          createActivity(activity, forceUpdate),
-        deleteActivity: (id: string) => deleteActivity(id, forceUpdate),
-        updateDone: (id: string, data: Partial<DoneModel>) =>
-          updateDone(id, data, forceUpdate),
-        createDone: (activity: DoneModel) => createDone(activity, forceUpdate),
-        deleteDone: (id: string) => deleteDone(id, forceUpdate),
-        updateTask: (id: string, data: Partial<TaskModel>) =>
-          updateTask(id, data, forceUpdate),
-        createTask: (activity: TaskModel) => createTask(activity, forceUpdate),
-        deleteTask: (id: string) => deleteTask(id, forceUpdate),
       }}
     >
       {children}

@@ -14,6 +14,10 @@ import { View } from "react-native";
 import insertRow from "./scripts/insertRow";
 import updateRow from "./scripts/updateRow";
 import UserModel from "./schema/User/Model";
+import ActivityModel from "./schema/Activity/Model";
+import deleteRow from "./scripts/deleteRow";
+import DoneModel from "./schema/Done/Model";
+import TaskModel from "./schema/Task/Model";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,9 +29,9 @@ export default function SQLiteProvider({
   const [db, setDb] = useState<SQLite.SQLiteDatabase>(null);
   const [isReady, setIsReady] = useState(false);
   const [user, setUser] = useState(null);
-  const [activity, setActivity] = useState([]);
-  const [done, setDone] = useState([]);
-  const [task, setTask] = useState([]);
+  const [activityList, setActivityList] = useState([]);
+  const [doneList, setDoneList] = useState([]);
+  const [taskList, setTaskList] = useState([]);
   // const [forceUpdate, setForceUpdate] = useState(0);
 
   const onLayoutRootView = useCallback(async () => {
@@ -65,7 +69,7 @@ export default function SQLiteProvider({
     selectRows({
       db,
       table: Activity.tableName,
-      callback: setActivity,
+      callback: setActivityList,
       errorCallback: (error) => logError(User.tableName, "get user", error),
     });
   }
@@ -75,7 +79,7 @@ export default function SQLiteProvider({
     selectRows({
       db,
       table: Done.tableName,
-      callback: setDone,
+      callback: setDoneList,
       errorCallback: (error) => logError(Done.tableName, "get user", error),
     });
   }
@@ -85,7 +89,7 @@ export default function SQLiteProvider({
     selectRows({
       db,
       table: Task.tableName,
-      callback: setTask,
+      callback: setTaskList,
       errorCallback: (error) => logError(Task.tableName, "get user", error),
     });
   }
@@ -135,6 +139,100 @@ export default function SQLiteProvider({
   async function deleteUser() {
     db.closeAsync().then(() => db.deleteAsync());
   }
+
+  function createActivity(activity: ActivityModel) {
+    const newActivity = new Activity(activity);
+    insertRow({
+      db,
+      table: Activity.tableName,
+      data: newActivity.getData(),
+      callback: setActivityList,
+      errorCallback: (error) => logError("Activity", "create row", error),
+    });
+  }
+
+  function updateActivity(id: string, data: Partial<ActivityModel>) {
+    updateRow({
+      db,
+      table: Activity.tableName,
+      data: { ...data, id },
+      callback: setActivityList,
+      errorCallback: (error) => logError("Activity", "update row", error),
+    });
+  }
+
+  function deleteActivity(id: string) {
+    deleteRow({
+      db,
+      table: Activity.tableName,
+      id,
+      callback: setActivityList,
+      errorCallback: (error) => logError("Activity", "delete row", error),
+    });
+  }
+
+  function createDone(done: DoneModel) {
+    const newDone = new Done(done);
+    insertRow({
+      db,
+      table: Done.tableName,
+      data: newDone.getData(),
+      callback: setDoneList,
+      errorCallback: (error) => logError("Done", "create row", error),
+    });
+  }
+
+  function deleteDone(id: string) {
+    deleteRow({
+      db,
+      table: Done.tableName,
+      id,
+      callback: setDoneList,
+      errorCallback: (error) => logError("Done", "delete row", error),
+    });
+  }
+
+  function updateDone(id: string, data: Partial<DoneModel>) {
+    updateRow({
+      db,
+      table: Done.tableName,
+      data: { ...data, id },
+      callback: setDoneList,
+      errorCallback: (error) => logError("Done", "update row", error),
+    });
+  }
+
+  function createTask(task: TaskModel) {
+    const newTask = new Task(task);
+    insertRow({
+      db,
+      table: Task.tableName,
+      data: newTask.getData(),
+      callback: setTaskList,
+      errorCallback: (error) => logError("Task", "create row", error),
+    });
+  }
+
+  function deleteTask(id: string) {
+    deleteRow({
+      db,
+      table: Task.tableName,
+      id,
+      callback: setTaskList,
+      errorCallback: (error) => logError("Task", "delete row", error),
+    });
+  }
+
+  function updateTask(id: string, data: Partial<TaskModel>) {
+    updateRow({
+      db,
+      table: Task.tableName,
+      data: { ...data, id },
+      callback: setTaskList,
+      errorCallback: (error) => logError("Task", "update row", error),
+    });
+  }
+
   return (
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <SQLiteContext.Provider
@@ -142,12 +240,21 @@ export default function SQLiteProvider({
           restartDB,
           isReady,
           user,
-          activity,
-          done,
-          task,
+          activityList,
+          doneList,
+          taskList,
           createUser,
           updateUser,
           deleteUser,
+          createActivity,
+          updateActivity,
+          deleteActivity,
+          updateDone,
+          createDone,
+          deleteDone,
+          updateTask,
+          createTask,
+          deleteTask,
         }}
       >
         {children}

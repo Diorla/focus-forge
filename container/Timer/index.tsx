@@ -5,9 +5,9 @@ import Clock from "./Clock";
 import * as Progress from "react-native-progress";
 import { useTheme } from "@rneui/themed";
 import { useEffect, useState } from "react";
-import useActivity from "../../context/activity/useActivity";
 import { getDateTimeKey } from "../../services/datetime";
 import { useKeepAwake } from "expo-keep-awake";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function Timer({
   startTime,
@@ -29,7 +29,7 @@ export default function Timer({
     theme: { colors },
   } = useTheme();
 
-  const { updateActivity, createDone } = useActivity();
+  const { updateActivity, createDone } = useSQLiteQuery();
   const [count, setCount] = useState((Date.now() - startTime) / 1000);
 
   const endTimer = (id: string, startTime: number) => {

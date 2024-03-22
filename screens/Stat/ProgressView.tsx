@@ -17,7 +17,7 @@ export default function ProgressView() {
   let highTop = 0.0000001;
   let highBottom = 0.0000001;
 
-  schedule.forEach((item) => {
+  schedule?.forEach((item) => {
     const done = item.doneThisWeek + item.doneToday;
     const total = item.weeklyTarget < done ? done : item.weeklyTarget;
     if (item.archived) {

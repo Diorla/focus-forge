@@ -11,8 +11,8 @@ import { useToast } from "react-native-toast-notifications";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 const StopWatchModal = () => {
-  const { user, updateUser } = useSQLiteQuery();
-  const { schedule = [], createDone } = useActivity();
+  const { user, updateUser, createDone } = useSQLiteQuery();
+  const { schedule = [] } = useActivity();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
   const [target, setTarget] = useState(schedule[0]?.id);

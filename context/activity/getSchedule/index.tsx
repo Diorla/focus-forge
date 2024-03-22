@@ -3,10 +3,10 @@ import getDoneToday from "./getDoneToday";
 import getDoneThisWeek from "./getDoneThisWeek";
 import getTodayQuota from "./getTodayQuota";
 import getTodayTime from "./getTodayTime";
-import ActivityModel from "../../../services/db/schema/Activity/Model";
-import DoneModel from "../../../services/db/schema/Done/Model";
-import TaskModel from "../../../services/db/schema/Task/Model";
 import dayjs from "dayjs";
+import ActivityModel from "../../sqlite/schema/Activity/Model";
+import DoneModel from "../../sqlite/schema/Done/Model";
+import TaskModel from "../../sqlite/schema/Task/Model";
 
 /**
  * => Activity
@@ -53,7 +53,9 @@ export default function getSchedule({
   let currentUpcomingTime = initialUpcomingTime;
 
   activities
-    .sort((a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority))
+    ?.sort(
+      (a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority)
+    )
     .forEach((item) => {
       const doneList = done.filter(
         (doneItem) => doneItem.activityId === item.id

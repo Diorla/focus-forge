@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import DoneModel from "../../../services/db/schema/Done/Model";
+import DoneModel from "../../sqlite/schema/Done/Model";
 
 // time already for this week, excluding today
 export default function getDoneThisWeek(doneList: DoneModel[]) {
@@ -10,6 +10,6 @@ export default function getDoneThisWeek(doneList: DoneModel[]) {
       dayjs().isSame(done.datetime, "week") && !dayjs(done.datetime).isToday()
   );
 
-  timeThisWeek.forEach((done) => (doneThisWeek += done.length));
+  timeThisWeek?.forEach((done) => (doneThisWeek += done.length));
   return doneThisWeek;
 }

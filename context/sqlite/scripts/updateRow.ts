@@ -1,5 +1,6 @@
 import { SQLTransactionErrorCallback, SQLiteDatabase } from "expo-sqlite";
 import isDefined from "./isDefined";
+import selectRows from "./selectRows";
 
 interface Data {
   id: string;
@@ -24,7 +25,7 @@ export interface UpdateRowProps {
   db: SQLiteDatabase;
   table: string;
   data: Data;
-  callback?: (val: unknown) => void;
+  callback?: (val: unknown[]) => void;
   errorCallback?: SQLTransactionErrorCallback;
 }
 
@@ -38,9 +39,9 @@ export default function updateRow({
   const statement = updateRowStatement(table, data);
   db.transaction(
     (tx) =>
-      tx.executeSql(statement, [data.id], (_, result) =>
-        callback(result.rows._array[0])
-      ),
+      tx.executeSql(statement, [data.id], () => {
+        selectRows({ db, table, callback, errorCallback });
+      }),
     errorCallback
   );
 }

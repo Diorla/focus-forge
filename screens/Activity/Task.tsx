@@ -4,13 +4,13 @@ import { useState } from "react";
 import { CheckBox, Input } from "@rneui/themed";
 import Schedule from "../../context/activity/Schedule";
 import { MaterialIcons } from "@expo/vector-icons";
-import useActivity from "../../context/activity/useActivity";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 import uuid from "react-native-uuid";
 import Confirm from "../../components/confirm";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
 
 export default function Task({ activity }: { activity: Schedule }) {
-  const { updateTask, createTask, deleteTask } = useActivity();
+  const { updateTask, createTask, deleteTask } = useSQLiteQuery();
   const { tasks } = activity;
   const [taskList, setTaskList] = useState(tasks);
   const [showAddNewTask, setShowAddNewTask] = useState(false);
@@ -113,20 +113,18 @@ export default function Task({ activity }: { activity: Schedule }) {
           <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
             <Button
               disabled={!task}
-              onPress={() =>
-                createTask(task)
-                  .then(() => {
-                    setTask({
-                      id: String(uuid.v4()),
-                      title: "",
-                      checked: 0,
-                      created: Date.now(),
-                      activityId: activity.id,
-                    });
-                    setTaskList([...taskList, task]);
-                  })
-                  .then(() => setShowAddNewTask(!showAddNewTask))
-              }
+              onPress={() => {
+                createTask(task);
+                setTask({
+                  id: String(uuid.v4()),
+                  title: "",
+                  checked: 0,
+                  created: Date.now(),
+                  activityId: activity.id,
+                });
+                setTaskList([...taskList, task]);
+                setShowAddNewTask(!showAddNewTask);
+              }}
               containerStyle={{
                 marginRight: 8,
               }}

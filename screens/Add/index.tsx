@@ -12,7 +12,7 @@ import { useToast } from "react-native-toast-notifications";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
 import dayjs from "dayjs";
-import ActivityModel from "../../services/db/schema/Activity/Model";
+import ActivityModel from "../../context/sqlite/schema/Activity/Model";
 import { Priority } from "../../context/activity/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
@@ -41,11 +41,12 @@ export default function AddScreen() {
     user: { createdAt },
   } = useSQLiteQuery();
   const [form, setForm] = useState<ActivityModel>({ ...baseForm });
-  const { activities, createActivity } = useActivity();
-  const list = Array.from(new Set(activities.map((item) => item.category)));
+  const { schedule } = useActivity();
+  const { createActivity } = useSQLiteQuery();
+  const list = Array.from(new Set(schedule.map((item) => item.category)));
   const toast = useToast();
   const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
-    keywords: activities.map((item) => item.name),
+    keywords: schedule.map((item) => item.name),
   });
 
   const diff = dayjs().diff(createdAt, "day");
@@ -82,15 +83,16 @@ export default function AddScreen() {
       });
       return;
     }
-    createActivity({
-      ...form,
-    })
-      .then(() => {
-        setForm({ ...baseForm });
-      })
-      .then(() => toast.show("New activity added"))
-      .then(() => isLoaded && !isPremium && show())
-      .catch((err) => toast.show("Adding new activity failed: " + err.message));
+    try {
+      createActivity({
+        ...form,
+      });
+      setForm({ ...baseForm });
+      toast.show("New activity added");
+      isLoaded && !isPremium && show();
+    } catch (error) {
+      toast.show("Adding new activity failed: " + error.message);
+    }
   };
 
   const daysToFinish = form.dailyLimit

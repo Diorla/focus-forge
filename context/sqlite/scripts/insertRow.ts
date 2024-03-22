@@ -1,4 +1,5 @@
 import { SQLTransactionErrorCallback, SQLiteDatabase } from "expo-sqlite";
+import selectRows from "./selectRows";
 
 interface Data {
   [key: string]: string | number;
@@ -33,8 +34,8 @@ export default function insertRow({
   const { statement, values } = insertRowStatement(table, data);
   db.transaction(
     (tx) =>
-      tx.executeSql(statement, values, (_, results) =>
-        callback(results.rows._array)
+      tx.executeSql(statement, values, () =>
+        selectRows({ db, table, callback, errorCallback })
       ),
     errorCallback
   );

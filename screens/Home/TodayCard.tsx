@@ -12,7 +12,6 @@ import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import dayjs from "dayjs";
 import { AdShowOptions } from "react-native-google-mobile-ads";
-import useActivity from "../../context/activity/useActivity";
 import { logError } from "../../services/database";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
@@ -30,7 +29,8 @@ export function TodayCard({
   const {
     theme: { colors },
   } = useTheme();
-  const { updateActivity, createDone } = useActivity();
+  const { createDone } = useSQLiteQuery();
+  const { updateActivity } = useSQLiteQuery();
   const { user } = useSQLiteQuery();
 
   const toast = useToast();
@@ -127,15 +127,14 @@ export function TodayCard({
             playing={running}
             onPress={() => {
               if (running) {
-                endTimer(id, timerStart)
-                  .then(() => toast.show("Timer paused"))
-                  .then(() => isLoadedAd && !isPremium && showAd());
+                endTimer(id, timerStart);
+                toast.show("Timer paused");
+                if (isLoadedAd && !isPremium) showAd();
               } else {
                 try {
                   const timerId = String(Date.now());
-                  startTimer(id, todayTime - doneToday, timerId).then(() =>
-                    toast.show("Timer started")
-                  );
+                  startTimer(id, todayTime - doneToday, timerId);
+                  toast.show("Timer started");
                 } catch (error) {
                   logError("today card", "starting timer", error);
                 }

@@ -8,20 +8,22 @@ import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useActivity from "../../context/activity/useActivity";
-import ActivityModel from "../../services/db/schema/Activity/Model";
+import ActivityModel from "../../context/sqlite/schema/Activity/Model";
 import { Priority } from "../../context/activity/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function EditScreen() {
   const { theme } = useTheme();
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { id = "" } = params as { id: string };
-  const { activities, updateActivity } = useActivity();
+  const { schedule } = useActivity();
+  const { updateActivity } = useSQLiteQuery();
   const [form, setForm] = useState<ActivityModel>(
-    activities.find((item) => item.id === id)
+    schedule.find((item) => item.id === id)
   );
-  const list = Array.from(new Set(activities.map((item) => item.category)));
+  const list = Array.from(new Set(schedule.map((item) => item.category)));
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -51,9 +53,8 @@ export default function EditScreen() {
       return;
     }
 
-    updateActivity(form.id, form).then(() => {
-      goBack();
-    });
+    updateActivity(form.id, form);
+    goBack();
   };
 
   const daysToFinish = form.dailyLimit

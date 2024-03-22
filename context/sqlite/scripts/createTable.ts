@@ -1,6 +1,6 @@
 import { SQLiteDatabase } from "expo-sqlite";
-import { ModelMap } from "../../../services/db";
 import { logError } from "../../../services/database";
+import ModelMap from "../types/ModelMap";
 
 function createStatement(table: string, model: ModelMap) {
   const keys = Object.keys(model);

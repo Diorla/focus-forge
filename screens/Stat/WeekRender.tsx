@@ -54,7 +54,7 @@ export default function WeekRender() {
     const prevCategory = {};
     const activityList: Stat[] = [];
     const prevActivityList: Stat[] = [];
-    schedule.forEach((item) => {
+    schedule?.forEach((item) => {
       const total = calculateDoneTime(item, target);
       const prevTotal = calculateDoneTime(
         item,
@@ -191,7 +191,7 @@ export default function WeekRender() {
           </Button>
         </View>
         {list
-          .sort((prev, next) => {
+          ?.sort((prev, next) => {
             return next.time - prev.time;
           })
           .map((item) => (
