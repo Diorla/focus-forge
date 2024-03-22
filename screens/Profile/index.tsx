@@ -10,7 +10,7 @@ import useNavigate from "../../container/Nav/useNavigate";
 import Item from "./Item";
 import Confirm from "../../components/confirm";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
-import { loadDB, logError } from "../../services/database";
+import { loadDB, logError, uploadDB } from "../../services/database";
 import { useToast } from "react-native-toast-notifications";
 
 export default function ProfileScreen() {
@@ -54,12 +54,21 @@ export default function ProfileScreen() {
         <Item title="Rate us" onPress={() => navigate("RateUs")}>
           <AntDesign name="star" size={24} color={theme.colors.black} />
         </Item>
-        <Item title="Export" onPress={() => null /*export to file*/}>
-          <AntDesign name="star" size={24} color={theme.colors.black} />
-        </Item>
+        <Confirm
+          title="Back up"
+          message="This will override your remote storage, do you wish to continue?"
+          acceptFn={() => {
+            uploadDB("userID");
+            toast.show("Database uploaded");
+          }}
+        >
+          <Item title="Export" onPress={null}>
+            <AntDesign name="star" size={24} color={theme.colors.black} />
+          </Item>
+        </Confirm>
         <Confirm
           title="Import from server"
-          message="This will override your local storage, do you want to continue"
+          message="This will override your local storage, do you wish to continue?"
           acceptFn={() => {
             try {
               restartDB(loadDB);
