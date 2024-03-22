@@ -1,7 +1,7 @@
 import Onboarding from "./container/Onboarding";
 import Registration from "./container/Registration";
 import Nav from "./container/Nav";
-import ActivityProvider from "./context/activity";
+import ScheduleProvider from "./context/schedule";
 import { useState } from "react";
 import useSQLiteQuery from "./context/sqlite/useSQLiteQuery";
 
@@ -16,8 +16,8 @@ export default function Root() {
       <Onboarding switchRegister={() => setRegister(true)} />
     );
   return (
-    <ActivityProvider>
+    <ScheduleProvider>
       <Nav />
-    </ActivityProvider>
+    </ScheduleProvider>
   );
 }

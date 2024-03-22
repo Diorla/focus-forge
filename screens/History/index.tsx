@@ -4,7 +4,7 @@ import TopSpace from "../../components/topSpace";
 import TabHeader from "../../container/Nav/TabHeader";
 import { useTheme } from "@rneui/themed";
 import HistoryItem from "./HistoryItem";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import { useEffect, useState } from "react";
 import { format, getDateKey, secondsToHrMm } from "../../services/datetime";
 import dayjs from "dayjs";
@@ -14,7 +14,7 @@ const timeFormat = (value: number) => String(value).padStart(2, "0");
 export default function HistoryScreen() {
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const [history, setHistory] = useState({});
   const obj = {};
   schedule?.forEach((item) => {

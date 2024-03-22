@@ -8,7 +8,7 @@ import ActivityScreen from "../../screens/Activity";
 import RootStackParamList from "./RootStackParamList";
 import ViewStatScreen from "../../screens/ViewStat";
 import { Typography } from "../../components";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import { getContrastColor } from "../../services/color";
 import MenuModal from "./MenuModal";
 import EditScreen from "../../screens/Edit";
@@ -22,7 +22,7 @@ const PlaceholderScreen = () => {
   return <Typography>Placeholder screen</Typography>;
 };
 function Nav() {
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const { theme } = useTheme();
   const { user } = useSQLiteQuery();
   return (

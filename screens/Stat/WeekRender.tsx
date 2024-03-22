@@ -4,11 +4,11 @@ import { Button, TimeFormat, Typography } from "../../components";
 import { Card, Icon, useTheme } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import relativeWeek from "./relativeWeek";
 import StatItem from "./StatItem";
 import calculatePercentageChange from "./calculatePercentageChange";
-import Schedule from "../../context/activity/Schedule";
+import Schedule from "../../context/schedule/Schedule";
 
 const calculateDoneTime = (schedule: Schedule, date: Dayjs) => {
   const { done } = schedule;
@@ -37,7 +37,7 @@ export default function WeekRender() {
   const [targetWeekCategoryList, setTargetWeekCategoryList] = useState<Stat[]>(
     []
   );
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
 
   const target = dayjs().add(weekDifference, "week");
   const title = relativeWeek(target);

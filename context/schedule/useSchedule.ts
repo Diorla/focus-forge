@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import activityContext from "./activityContext";
+import scheduleContext from "./scheduleContext";
 import Schedule from "./Schedule";
 
-export default function useActivity() {
+export default function useSchedule() {
   interface TaskContext {
     /**
      * Still retrieving the activities
@@ -27,5 +27,5 @@ export default function useActivity() {
     schedule: Schedule[];
   }
 
-  return useContext<TaskContext>(activityContext);
+  return useContext<TaskContext>(scheduleContext);
 }

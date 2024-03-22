@@ -4,7 +4,7 @@ import TxtButton from "../../components/txtButton";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TodayCard } from "./TodayCard";
 import { useEffect, useState } from "react";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
 import ChecklistModal from "./ChecklistModal";
@@ -13,7 +13,7 @@ const priority = ["high", "medium", "low", "none"];
 
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const [currentSchedule, setCurrentSchedule] = useState(null);
 
   const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {

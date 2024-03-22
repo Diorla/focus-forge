@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ActivityContext from "./activityContext";
+import ActivityContext from "./scheduleContext";
 import dayjs from "dayjs";
 import useUser from "../user/useUser";
 import isToday from "dayjs/plugin/isToday";
@@ -11,7 +11,7 @@ import { Typography } from "../../components";
 
 dayjs.extend(isToday);
 
-export default function ActivityProvider({
+export default function ScheduleProvider({
   children,
 }: {
   children: React.ReactNode;

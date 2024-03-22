@@ -7,9 +7,9 @@ import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import ActivityModel from "../../context/sqlite/schema/Activity/Model";
-import { Priority } from "../../context/activity/Schedule";
+import { Priority } from "../../context/schedule/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
@@ -18,7 +18,7 @@ export default function EditScreen() {
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { id = "" } = params as { id: string };
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const { updateActivity } = useSQLiteQuery();
   const [form, setForm] = useState<ActivityModel>(
     schedule.find((item) => item.id === id)

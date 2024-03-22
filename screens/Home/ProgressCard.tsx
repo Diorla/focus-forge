@@ -2,7 +2,7 @@ import { View } from "react-native";
 import { Typography } from "../../components";
 import { Card, Divider, useTheme } from "@rneui/themed";
 import * as Progress from "react-native-progress";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import { secondsToHrMm } from "../../services/datetime";
 
 export default function ProgressCard() {
@@ -11,7 +11,7 @@ export default function ProgressCard() {
   } = useTheme();
   const {
     time: { doneToday, todoTime, taskDone, taskLeft },
-  } = useActivity();
+  } = useSchedule();
 
   const ratio = doneToday / (doneToday + todoTime);
   const progress = Number.isNaN(ratio) ? 0 : ratio;

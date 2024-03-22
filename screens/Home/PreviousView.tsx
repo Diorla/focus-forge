@@ -1,10 +1,10 @@
 import { ScrollView } from "react-native";
 import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 
 export default function PreviousView() {
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const previous = schedule.filter((item) => item.doneThisWeek);
   if (previous.length)
     return (

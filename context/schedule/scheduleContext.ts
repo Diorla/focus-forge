@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-const activityContext = createContext({
+const scheduleContext = createContext({
   loading: true,
   time: {
     doneThisWeek: 0,
@@ -20,4 +20,4 @@ const activityContext = createContext({
   schedule: [],
 });
 
-export default activityContext;
+export default scheduleContext;

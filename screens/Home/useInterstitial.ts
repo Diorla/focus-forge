@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { InterstitialAd, AdEventType } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 
 const adUnitId = getAdsId("interstitial");
 
 export default function useInterstitial() {
   const [loaded, setLoaded] = useState(false);
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
 
   const keywords = schedule.map((item) => item.name);
 

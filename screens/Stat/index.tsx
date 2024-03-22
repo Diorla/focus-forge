@@ -7,14 +7,14 @@ import { ButtonGroup } from "@rneui/base";
 import { useState } from "react";
 import WeekRender from "./WeekRender";
 import DayRender from "./DayRender";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import { TimeFormat, Typography } from "../../components";
 import Count from "./Count";
 
 export default function StatScreen() {
   const { theme } = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const high = schedule.filter((activity) => activity.priority === "high");
   const medium = schedule.filter((activity) => activity.priority === "medium");
   const low = schedule.filter((activity) => activity.priority === "low");

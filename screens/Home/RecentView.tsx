@@ -1,10 +1,10 @@
 import { ScrollView } from "react-native";
 import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 
 export default function RecentView() {
-  const { schedule = [] } = useActivity();
+  const { schedule = [] } = useSchedule();
 
   // I used 0.001 instead of 0 because of precision error from floating point
   // that results in stuff like 0.00000000000006 instead of 0

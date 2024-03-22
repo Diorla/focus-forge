@@ -5,14 +5,14 @@ import useNavigate from "./useNavigate";
 import { FontAwesome5 } from "@expo/vector-icons";
 import StopWatch from "../Timer/StopWatch";
 import { useEffect, useState } from "react";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import Picker from "./Picker";
 import { useToast } from "react-native-toast-notifications";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 const StopWatchModal = () => {
   const { user, updateUser, createDone } = useSQLiteQuery();
-  const { schedule = [] } = useActivity();
+  const { schedule = [] } = useSchedule();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
   const [target, setTarget] = useState(schedule[0]?.id);

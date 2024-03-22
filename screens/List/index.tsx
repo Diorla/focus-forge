@@ -9,14 +9,14 @@ import ActivityCard from "./ActivityCard";
 import Sort from "./Sort";
 import Filter from "./Filter";
 import SortFilter from "./SortFilter";
-import useActivity from "../../context/activity/useActivity";
-import Schedule from "../../context/activity/Schedule";
+import useSchedule from "../../context/schedule/useSchedule";
+import Schedule from "../../context/schedule/Schedule";
 
 export default function ListScreen() {
   const [filter, setFilter] = useState<Filter>("all");
   const [sort, setSort] = useState<Sort>("alphabetical");
   const [visible, setVisible] = useState(false);
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
 
   const filterFn = (schedule: Schedule) => {
     if (filter === "archived") return schedule.archived;

@@ -1,7 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Typography } from "../../components";
 import { ScrollView, View } from "react-native";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 import { getContrastColor } from "../../services/color";
 import Time from "./Time";
 import { Card, Divider } from "@rneui/themed";
@@ -13,7 +13,7 @@ import PriorityLabel from "./PriorityLabel";
 export default function ActivityScreen() {
   const { params } = useRoute();
   const { id = "" } = params as { id: string };
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
   const activity = schedule.find((item) => item.id === id);
   const { goBack } = useNavigation();
 

@@ -3,11 +3,11 @@ import * as React from "react";
 import { View } from "react-native";
 import { TimeFormat, Typography } from "../../components";
 import * as Progress from "react-native-progress";
-import useActivity from "../../context/activity/useActivity";
+import useSchedule from "../../context/schedule/useSchedule";
 
 export default function ProgressView() {
   const { theme } = useTheme();
-  const { schedule } = useActivity();
+  const { schedule } = useSchedule();
 
   // Prevent 0 error, yet small enough to be insignificant;
   let lowTop = 0.0000001;
