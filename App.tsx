@@ -18,11 +18,11 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const CustomFallback = (props: { error: Error }) => (
-  <View>
-    <Text>Something happened!</Text>
+const CustomFallback = (props: { error: Error; resetError }) => (
+  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <Text>Something went wrong</Text>
     <Text>{props.error.toString()}</Text>
-    <Button title={"Try again"} />
+    <Button title="Try again" onPress={props.resetError} />
   </View>
 );
 
