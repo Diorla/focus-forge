@@ -1,5 +1,8 @@
 import * as FileSystem from "expo-file-system";
 import logError from "../logError";
+import dbInfo from "../../../constants/db";
+
+const dbPath = dbInfo.db;
 
 export default async function loadFile() {
   try {
@@ -14,6 +17,6 @@ export default async function loadFile() {
     }
     return null;
   } catch (error) {
-    logError("db.db", "get uri", error);
+    logError(dbPath, "get uri", error);
   }
 }

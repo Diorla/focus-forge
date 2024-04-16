@@ -18,8 +18,11 @@ import ActivityModel from "./schema/Activity/Model";
 import deleteRow from "./scripts/deleteRow";
 import DoneModel from "./schema/Done/Model";
 import TaskModel from "./schema/Task/Model";
+import dbInfo from "../../constants/db";
 
 SplashScreen.preventAutoHideAsync();
+
+const dbPath = dbInfo.db;
 
 export default function SQLiteProvider({
   children,
@@ -40,18 +43,17 @@ export default function SQLiteProvider({
   }, [isReady]);
 
   useEffect(() => {
-    const db = SQLite.openDatabase("db.db");
+    const db = SQLite.openDatabase(dbPath);
     setDb(db);
   }, []);
 
   function restartDB(fn: () => Promise<void>) {
     try {
-      db.closeAsync().then(() => {
-        fn().then(() => {
-          const db = SQLite.openDatabase("db.db");
-          setDb(db);
-          setIsReady(true);
-        });
+      db.closeAsync();
+      fn().then(() => {
+        const db = SQLite.openDatabase(dbPath);
+        setDb(db);
+        setIsReady(true);
       });
     } catch (error) {
       logError("", "restart DB", error);
@@ -105,18 +107,22 @@ export default function SQLiteProvider({
     }
   }, [db]);
 
-  async function createUser() {
+  async function createUser({ name, dailyQuota, useWeeklyQuota, weeklyQuota }) {
     const initialUser = new User();
-    const { dailyQuota, useWeeklyQuota } = initialUser.getData();
+    const newData = initialUser.getData();
+    const mergedData = {
+      ...newData,
+      name,
+      dailyQuota: JSON.stringify(dailyQuota),
+      useWeeklyQuota,
+      weeklyQuota,
+    };
+
     insertRow({
       db,
       table: User.tableName,
-      data: {
-        ...initialUser.getData(),
-        dailyQuota: JSON.parse(dailyQuota || "[]"),
-        useWeeklyQuota: useWeeklyQuota,
-      },
-      callback: setUser,
+      data: mergedData,
+      callback: getUser,
       errorCallback: (error) => logError(User.tableName, "create user", error),
     });
   }
@@ -132,13 +138,21 @@ export default function SQLiteProvider({
         useWeeklyQuota: Number(useWeeklyQuota),
         id: User.tableName,
       },
-      callback: setUser,
+      callback: getUser,
       errorCallback: (error) => logError("User", "update user", error),
     });
   }
 
   async function deleteUser() {
-    db.closeAsync().then(() => db.deleteAsync());
+    try {
+      db.closeAsync();
+      db.deleteAsync();
+      const newDb = SQLite.openDatabase(dbPath);
+      setDb(newDb);
+      setIsReady(true);
+    } catch (error) {
+      logError("User", "delete user", error);
+    }
   }
 
   function createActivity(activity: ActivityModel) {
@@ -234,32 +248,34 @@ export default function SQLiteProvider({
     });
   }
 
-  return (
-    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-      <SQLiteContext.Provider
-        value={{
-          restartDB,
-          isReady,
-          user,
-          activityList,
-          doneList,
-          taskList,
-          createUser,
-          updateUser,
-          deleteUser,
-          createActivity,
-          updateActivity,
-          deleteActivity,
-          updateDone,
-          createDone,
-          deleteDone,
-          updateTask,
-          createTask,
-          deleteTask,
-        }}
-      >
-        {children}
-      </SQLiteContext.Provider>
-    </View>
-  );
+  if (isReady)
+    return (
+      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+        <SQLiteContext.Provider
+          value={{
+            restartDB,
+            isReady,
+            user,
+            activityList,
+            doneList,
+            taskList,
+            createUser,
+            updateUser,
+            deleteUser,
+            createActivity,
+            updateActivity,
+            deleteActivity,
+            updateDone,
+            createDone,
+            deleteDone,
+            updateTask,
+            createTask,
+            deleteTask,
+          }}
+        >
+          {children}
+        </SQLiteContext.Provider>
+      </View>
+    );
+  return null;
 }

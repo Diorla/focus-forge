@@ -1,7 +1,7 @@
 import ActivityModel from "../schema/Activity/Model";
 import DoneModel from "../schema/Done/Model";
 import TaskModel from "../schema/Task/Model";
-import UserModel from "../schema/User/Model";
+import UserModel, { DailyQuota } from "../schema/User/Model";
 
 type SQLiteContextType = {
   restartDB: (fn: () => Promise<void>) => void;
@@ -10,7 +10,12 @@ type SQLiteContextType = {
   activityList: ActivityModel[];
   taskList: TaskModel[];
   doneList: DoneModel[];
-  createUser: () => void;
+  createUser: (user: {
+    name: string;
+    dailyQuota: DailyQuota;
+    useWeeklyQuota: boolean;
+    weeklyQuota: number;
+  }) => void;
   updateUser: (data: Partial<UserModel>) => void;
   deleteUser: () => void;
   createActivity: (data: Partial<ActivityModel>) => void;

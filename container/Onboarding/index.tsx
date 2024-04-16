@@ -5,6 +5,9 @@ import Button from "../../components/button";
 import AnimatedBackground from "../../AnimatedBackground";
 import Typography from "../../components/typography";
 import Dots from "./Dots";
+import { loadDB, logError } from "../../services/database";
+import { useToast } from "react-native-toast-notifications";
+import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 
 export default function Onboarding({
   switchRegister,
@@ -18,6 +21,8 @@ export default function Onboarding({
   const [prevColor, setPrevColor] = useState(colors.black);
 
   const colorList = [colors.primary, colors.secondary, colors.accent];
+  const toast = useToast();
+  const { restartDB } = useSQLiteQuery();
 
   if (index === 0)
     return (
@@ -70,6 +75,18 @@ export default function Onboarding({
           <Button block onPress={switchRegister}>
             Get Started
           </Button>
+          <TouchableOpacity
+            onPress={() => {
+              try {
+                restartDB(loadDB);
+                toast.show("Database loaded");
+              } catch (error) {
+                logError("reloading DB", "profile", error);
+              }
+            }}
+          >
+            <Typography color={colors.white}>Log in</Typography>
+          </TouchableOpacity>
         </View>
       </View>
     );

@@ -1,5 +1,8 @@
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import app from "../../../constants/firebaseConfig";
+import dbInfo from "../../../constants/db";
+
+const dbPath = dbInfo.db;
 
 const storage = getStorage(app);
 
@@ -41,7 +44,7 @@ export const uriToBlob = (uri) => {
 export default async function upload({ uri, userID }: handleImageProps) {
   const bytes = await uriToBlob(uri);
   const result = await uploadFile({
-    fileName: "db.db",
+    fileName: dbPath,
     file: bytes as Blob,
     userID,
   });

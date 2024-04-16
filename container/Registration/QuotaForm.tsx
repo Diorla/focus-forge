@@ -8,15 +8,13 @@ import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
 import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 import { DailyQuota } from "../../context/sqlite/schema/User/Model";
+import { logError } from "../../services/database";
 
 function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];
 }
 export function QuotaForm({ name }: { name: string }) {
-  const {
-    user: { id },
-    updateUser,
-  } = useSQLiteQuery();
+  const { createUser } = useSQLiteQuery();
   interface QuotaFormState {
     weeklyQuota: number;
     dailyQuota: DailyQuota;
@@ -39,14 +37,16 @@ export function QuotaForm({ name }: { name: string }) {
 
   const saveQuota = () => {
     const { weeklyQuota, dailyQuota, useWeeklyQuota } = quota;
-
-    updateUser({
-      name,
-      weeklyQuota,
-      dailyQuota,
-      useWeeklyQuota,
-      id,
-    });
+    try {
+      createUser({
+        name,
+        weeklyQuota,
+        dailyQuota,
+        useWeeklyQuota,
+      });
+    } catch (error) {
+      logError("Quotaform", "create user", error);
+    }
   };
   if (!quota.useWeeklyQuota)
     return (

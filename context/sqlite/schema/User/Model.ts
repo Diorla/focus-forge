@@ -10,7 +10,7 @@ export type DailyQuota = [
 
 interface UserModel {
   /**
-   * The user id
+   * The user id, just "user" for someone who is not signed in
    */
   id: string;
   /**
