@@ -7,7 +7,7 @@ import Root from "./Root";
 import "expo-dev-client";
 import ErrorBoundary from "react-native-error-boundary";
 import { logError } from "./services/database";
-import { Button, View, Text } from "react-native";
+import { Button, View, Text, GestureResponderEvent } from "react-native";
 import SQLiteProvider from "./context/sqlite";
 import { ToastProvider } from "react-native-toast-notifications";
 
@@ -19,13 +19,24 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const CustomFallback = (props: { error: Error; resetError }) => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>Something went wrong</Text>
-    <Text>{props.error.toString()}</Text>
-    <Button title="Try again" onPress={props.resetError} />
-  </View>
-);
+const CustomFallback = (props: {
+  error: Error;
+  resetError: (event: GestureResponderEvent) => void;
+}) => {
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>Something went wrong</Text>
+      <Text>{props.error.toString()}</Text>
+      <Button
+        title="Try again"
+        onPress={(event) => {
+          logError("custom fall back", "page load", props.error);
+          props.resetError(event);
+        }}
+      />
+    </View>
+  );
+};
 
 export default function App() {
   return (
