@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import useSchedule from "../../context/schedule/useSchedule";
 import Picker from "./Picker";
 import { useToast } from "react-native-toast-notifications";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
 
 const StopWatchModal = () => {
-  const { user, updateUser, createDone } = useSQLiteQuery();
+  const { user, updateUser, createDone } = useDataQuery();
   const { schedule = [] } = useSchedule();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
@@ -130,7 +130,7 @@ const StopWatchModal = () => {
 export default function TabHeader() {
   const {
     user: { name },
-  } = useSQLiteQuery();
+  } = useDataQuery();
 
   const navigate = useNavigate();
   return (

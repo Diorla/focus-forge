@@ -6,7 +6,7 @@ import { useTheme } from "@rneui/themed";
 import Button from "../../components/button";
 import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
 import { DailyQuota } from "../../context/sqlite/schema/User/Model";
 import { logError } from "../../services/database";
 
@@ -14,7 +14,7 @@ function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];
 }
 export function QuotaForm({ name }: { name: string }) {
-  const { createUser } = useSQLiteQuery();
+  const { createUser } = useDataQuery();
   interface QuotaFormState {
     weeklyQuota: number;
     dailyQuota: DailyQuota;

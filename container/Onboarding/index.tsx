@@ -7,7 +7,7 @@ import Typography from "../../components/typography";
 import Dots from "./Dots";
 import { loadDB, logError } from "../../services/database";
 import { useToast } from "react-native-toast-notifications";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export default function Onboarding({
   switchRegister,
@@ -22,7 +22,7 @@ export default function Onboarding({
 
   const colorList = [colors.primary, colors.secondary, colors.accent];
   const toast = useToast();
-  const { restartDB } = useSQLiteQuery();
+  const { restartDB } = useDataQuery();
 
   if (index === 0)
     return (

@@ -1,13 +1,13 @@
 import { Typography } from "../../components";
+import DoneType from "../../context/data/types/DoneType";
 import { format } from "../../services/datetime";
 import dayjs from "dayjs";
-import DoneModel from "../../services/db/schema/Done/Model";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 interface CardInfoProps {
   type: "completed" | "overflow" | "upcoming" | "previous" | "recent";
-  done: DoneModel[];
+  done: DoneType[];
   lastDone: number;
 }
 

@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
-import DoneModel from "../../sqlite/schema/Done/Model";
+import DoneType from "../../data/types/DoneType";
 
 // time already for this week, excluding today
-export default function getDoneThisWeek(doneList: DoneModel[]) {
+export default function getDoneThisWeek(doneList: DoneType[]) {
   let doneThisWeek = 0;
 
   const timeThisWeek = doneList.filter(

@@ -8,10 +8,9 @@ import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import useSchedule from "../../context/schedule/useSchedule";
-import ActivityModel from "../../context/sqlite/schema/Activity/Model";
-import { Priority } from "../../context/schedule/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
+import ActivityModel from "../../context/data/model/ActivityModel";
 
 export default function EditScreen() {
   const { theme } = useTheme();
@@ -19,7 +18,7 @@ export default function EditScreen() {
   const { goBack } = useNavigation();
   const { id = "" } = params as { id: string };
   const { schedule } = useSchedule();
-  const { updateActivity } = useSQLiteQuery();
+  const { updateActivity } = useDataQuery();
   const [form, setForm] = useState<ActivityModel>(
     schedule.find((item) => item.id === id)
   );
@@ -131,30 +130,30 @@ export default function EditScreen() {
             </Typography>
           ) : null}
           <Picker
-            value={form.priority}
+            value={String(form.priority)}
             onValueChange={(priority) =>
               setForm({
                 ...form,
-                priority: priority as Priority,
+                priority: Number(priority),
               })
             }
             label="Priority"
             list={[
               {
                 label: "High",
-                value: "high",
+                value: "3",
               },
               {
                 label: "Medium",
-                value: "medium",
+                value: "2",
               },
               {
                 label: "Low",
-                value: "low",
+                value: "1",
               },
               {
                 label: "None",
-                value: "none",
+                value: "0",
               },
             ]}
           />

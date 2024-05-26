@@ -3,7 +3,7 @@ import Typography from "../../components/typography";
 import Button from "../../components/button";
 import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
-import { DailyQuota } from "../../services/db/schema/User/Model";
+import { DailyQuota } from "../../context/data/model/UserModel";
 
 function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];

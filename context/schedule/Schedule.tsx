@@ -1,12 +1,8 @@
-import ActivityModel from "../sqlite/schema/Activity/Model";
-import DoneModel from "../sqlite/schema/Done/Model";
-import TaskModel from "../sqlite/schema/Task/Model";
+import ActivityModel from "../data/model/ActivityModel";
 
 export type Priority = "high" | "medium" | "low" | "none";
 
 interface Schedule extends ActivityModel {
-  done: DoneModel[];
-  tasks: TaskModel[];
   doneToday: number;
   doneThisWeek: number;
   todayTime: number;

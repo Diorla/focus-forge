@@ -8,8 +8,8 @@ import "expo-dev-client";
 import ErrorBoundary from "react-native-error-boundary";
 import { logError } from "./services/database";
 import { Button, View, Text, GestureResponderEvent } from "react-native";
-import SQLiteProvider from "./context/sqlite";
 import { ToastProvider } from "react-native-toast-notifications";
+import DataProvider from "./context/data";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -45,18 +45,15 @@ export default function App() {
         onError={(error) => logError("error boundary", "uncaught error", error)}
         FallbackComponent={CustomFallback}
       >
-        <ToastProvider
-        // successColor={successColor}
-        // dangerColor={dangerColor}
-        // warningColor={warningColor}
-        // normalColor={normalColor}
-        >
-          <SQLiteProvider>
+        <ToastProvider>
+          <DataProvider>
             <UserProvider>
-              <Root />
+              <View style={{ height: "100%" }}>
+                <Root />
+              </View>
               <StatusBar style="auto" />
             </UserProvider>
-          </SQLiteProvider>
+          </DataProvider>
         </ToastProvider>
       </ErrorBoundary>
     </ThemeProvider>

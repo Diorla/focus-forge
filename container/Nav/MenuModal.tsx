@@ -7,7 +7,7 @@ import TopSpace from "../../components/topSpace";
 import useNavigate from "./useNavigate";
 import Confirm from "../../components/confirm";
 import { useTheme } from "@rneui/themed";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export default function MenuModal({
   color,
@@ -18,7 +18,7 @@ export default function MenuModal({
 }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate<{ id: string }>();
-  const { updateActivity, deleteActivity } = useSQLiteQuery();
+  const { updateActivity, deleteActivity } = useDataQuery();
   const { theme } = useTheme();
   if (activity) {
     const { archived = "", id = "", name = "" } = activity;

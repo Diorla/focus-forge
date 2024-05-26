@@ -1,16 +1,15 @@
 import { View } from "react-native";
 import { Chip, useTheme } from "@rneui/themed";
-import { Priority } from "../../context/schedule/Schedule";
 
-export default function PriorityLabel({ priority }: { priority: Priority }) {
+export default function PriorityLabel({ priority }: { priority: number }) {
   const { theme } = useTheme();
-  if (priority === "high")
+  if (priority === 3)
     return (
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Chip buttonStyle={{ backgroundColor: theme.colors.error }}>High</Chip>
       </View>
     );
-  if (priority === "medium")
+  if (priority === 2)
     return (
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Chip buttonStyle={{ backgroundColor: theme.colors.warning }}>
@@ -18,7 +17,7 @@ export default function PriorityLabel({ priority }: { priority: Priority }) {
         </Chip>
       </View>
     );
-  if (priority === "low")
+  if (priority === 1)
     return (
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         <Chip buttonStyle={{ backgroundColor: theme.colors.success }}>Low</Chip>

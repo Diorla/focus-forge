@@ -9,6 +9,7 @@ import ChecklistModal from "./ChecklistModal";
 import { useState } from "react";
 import generateCardTime from "./generateCardTime";
 import CardInfo from "./CardInfo";
+import dayjs from "dayjs";
 
 export default function ActivityCard({
   schedule,
@@ -23,7 +24,9 @@ export default function ActivityCard({
   const navigate = useNavigate<{ id: string }>();
   const { done, lastDone } = schedule;
   const [visible, setVisible] = useState(false);
-  const tasks = schedule.tasks.filter((item) => !item.checked);
+  const tasks = Object.keys(schedule.tasks).filter(
+    (item) => !schedule.tasks[item].checked
+  );
 
   return (
     <>
@@ -53,7 +56,16 @@ export default function ActivityCard({
             color={colors.grey3}
             style={{ width: "50%", marginVertical: 4 }}
           />
-          <CardInfo type={type} done={done} lastDone={lastDone} />
+          <CardInfo
+            type={type}
+            done={Object.keys(done).map((item) => {
+              return {
+                ...done[item],
+                datetime: dayjs(item).valueOf(),
+              };
+            })}
+            lastDone={lastDone}
+          />
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography style={{ textTransform: "capitalize" }}>

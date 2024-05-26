@@ -15,14 +15,14 @@ const PriorityRender = ({
   category,
   color,
 }: {
-  priority: "high" | "medium" | "low" | "none";
+  priority: number;
   category: string;
   color: string;
 }) => {
   let icon = null;
-  if (priority === "high") icon = "chevron-up";
-  if (priority === "low") icon = "chevron-down";
-  if (priority === "medium") icon = "dash";
+  if (priority === 3) icon = "chevron-up";
+  if (priority === 2) icon = "dash";
+  if (priority === 1) icon = "chevron-down";
   return (
     <View
       style={{

@@ -11,11 +11,10 @@ import {
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import DoneModel from "../../context/sqlite/schema/Done/Model";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
-import uuid from "react-native-uuid";
 import Comment from "./Comment";
 import Confirm from "../../components/confirm";
+import useDataQuery from "../../context/data/useDataQuery";
+import DoneType from "../../context/data/types/DoneType";
 
 type History = {
   time: string;
@@ -35,23 +34,19 @@ export default function History({ activity }: { activity: Schedule }) {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
   const { theme } = useTheme();
-  const { deleteDone, updateDone, createDone } = useSQLiteQuery();
-  const { done = [] } = activity;
+  const { updateActivity } = useDataQuery();
+  const { done = {} } = activity;
   const [expandIdx, setExpandIdx] = useState("");
-  const [form, setForm] = useState<DoneModel>({
+  const [form, setForm] = useState<DoneType>({
     comment: "",
     datetime: Date.now(),
-    id: "",
-    activityId: activity.id,
     length: 0,
   });
   const [editingComment, setEditingComment] = useState(false);
 
-  const [newTime, setNewTime] = useState<DoneModel>({
+  const [newTime, setNewTime] = useState<DoneType>({
     comment: "",
     datetime: Date.now(),
-    id: String(uuid.v4()),
-    activityId: activity.id,
     length: 0,
   });
 
@@ -59,16 +54,17 @@ export default function History({ activity }: { activity: Schedule }) {
 
   useEffect(() => {
     const tempHistory: { [key: string]: History[] } = {};
-    done?.forEach((item) => {
-      const date = getDateKey(item.datetime);
-      const [hr, mm] = secondsToHrMm(item.length);
+    Object.keys(done).forEach((item) => {
+      const { comment, length } = done[item];
+      const date = getDateKey(item);
+      const [hr, mm] = secondsToHrMm(length);
       const obj = {
-        time: format(item.datetime, "time"),
+        time: format(item, "time"),
         description: `${hr}h ${String(mm).padStart(2, "0")}`,
-        datetime: getDateTimeKey(item.datetime),
-        comment: item.comment,
-        length: item.length,
-        id: item.id,
+        datetime: getDateTimeKey(item),
+        comment: comment,
+        length: length,
+        id: item,
       };
       if (tempHistory[date]) {
         tempHistory[date].push(obj);
@@ -79,6 +75,21 @@ export default function History({ activity }: { activity: Schedule }) {
     setHistory(tempHistory);
     setLoading(false);
   }, [JSON.stringify(done)]);
+
+  const createDone = (data: DoneType) => {
+    const key = getDateTimeKey(data.datetime);
+    updateActivity(activity.id, { done: { ...done, [key]: data } });
+  };
+
+  const updateDone = (key: string, data: DoneType) => {
+    updateActivity(activity.id, { done: { ...done, [key]: data } });
+  };
+
+  const deleteDone = (key: string) => {
+    const temp = { ...done };
+    delete temp[key];
+    updateActivity(activity.id, { done: temp });
+  };
 
   if (loading)
     return (
@@ -127,8 +138,6 @@ export default function History({ activity }: { activity: Schedule }) {
                   setNewTime({
                     comment: "",
                     datetime: Date.now(),
-                    id: String(uuid.v4()),
-                    activityId: activity.id,
                     length: 0,
                   });
                 }
@@ -183,8 +192,6 @@ export default function History({ activity }: { activity: Schedule }) {
                             setForm({
                               comment: "",
                               datetime: 0,
-                              id: "",
-                              activityId: activity.id,
                               length: 0,
                             });
                           } else {
@@ -192,8 +199,6 @@ export default function History({ activity }: { activity: Schedule }) {
                               comment: time.comment,
                               length: time.length,
                               datetime: dayjs(time.datetime).valueOf(),
-                              id: time.id,
-                              activityId: activity.id,
                             });
                             setExpandIdx(time.datetime);
                           }
@@ -267,15 +272,14 @@ export default function History({ activity }: { activity: Schedule }) {
                             >
                               <Button
                                 onPress={() => {
-                                  updateDone(time.id, {
+                                  const key = getDateTimeKey(form.datetime);
+                                  updateDone(key, {
                                     ...form,
                                     datetime: form.datetime,
                                   });
                                   setForm({
                                     comment: "",
                                     datetime: 0,
-                                    id: "",
-                                    activityId: activity.id,
                                     length: 0,
                                   });
                                   setExpandIdx(undefined);
@@ -288,8 +292,6 @@ export default function History({ activity }: { activity: Schedule }) {
                                   setForm({
                                     comment: "",
                                     datetime: 0,
-                                    id: "",
-                                    activityId: activity.id,
                                     length: 0,
                                   });
                                   setExpandIdx(undefined);
@@ -304,7 +306,8 @@ export default function History({ activity }: { activity: Schedule }) {
                               title="Remove time"
                               message="Delete time from history"
                               acceptFn={() => {
-                                deleteDone(form.id);
+                                const key = getDateTimeKey(form.datetime);
+                                deleteDone(key);
                               }}
                               acceptTitle="Delete"
                             >

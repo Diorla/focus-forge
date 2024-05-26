@@ -9,14 +9,14 @@ import { Feather } from "@expo/vector-icons";
 import useNavigate from "../../container/Nav/useNavigate";
 import Item from "./Item";
 import Confirm from "../../components/confirm";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
 import { loadDB, logError, uploadDB } from "../../services/database";
 import { useToast } from "react-native-toast-notifications";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { deleteUser, restartDB } = useSQLiteQuery();
+  const { deleteUser, restartDB } = useDataQuery();
   const toast = useToast();
   return (
     <ScrollView>
@@ -33,11 +33,7 @@ export default function ProfileScreen() {
           <ListItem.Chevron />
         </ListItem>
         <Item title="Help centre" onPress={() => navigate("HelpCentre")}>
-          <Ionicons
-            name="md-help-circle"
-            size={24}
-            color={theme.colors.black}
-          />
+          <Ionicons name="help" size={24} color={theme.colors.black} />
         </Item>
         <Item title="Privacy policy" onPress={() => navigate("PrivacyPolicy")}>
           <AntDesign name="eye" size={24} color={theme.colors.black} />

@@ -15,10 +15,10 @@ export default function StatScreen() {
   const { theme } = useTheme();
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { schedule } = useSchedule();
-  const high = schedule.filter((activity) => activity.priority === "high");
-  const medium = schedule.filter((activity) => activity.priority === "medium");
-  const low = schedule.filter((activity) => activity.priority === "low");
-  const none = schedule.filter((activity) => activity.priority === "none");
+  const high = schedule.filter((activity) => activity.priority === 3);
+  const medium = schedule.filter((activity) => activity.priority === 2);
+  const low = schedule.filter((activity) => activity.priority === 1);
+  const none = schedule.filter((activity) => !activity.priority);
   const time = schedule.reduce((acc, curr) => acc + curr.weeklyTarget, 0);
   return (
     <View>

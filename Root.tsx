@@ -3,10 +3,10 @@ import Registration from "./container/Registration";
 import Nav from "./container/Nav";
 import ScheduleProvider from "./context/schedule";
 import { useState } from "react";
-import useSQLiteQuery from "./context/sqlite/useSQLiteQuery";
+import useDataQuery from "./context/data/useDataQuery";
 
 export default function Root() {
-  const { user } = useSQLiteQuery();
+  const { user } = useDataQuery();
   const [register, setRegister] = useState(false);
 
   if (!user?.name)

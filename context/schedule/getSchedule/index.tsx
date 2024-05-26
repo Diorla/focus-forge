@@ -3,10 +3,8 @@ import getDoneToday from "./getDoneToday";
 import getDoneThisWeek from "./getDoneThisWeek";
 import getTodayQuota from "./getTodayQuota";
 import getTodayTime from "./getTodayTime";
+import ActivityModel from "../../data/model/ActivityModel";
 import dayjs from "dayjs";
-import ActivityModel from "../../sqlite/schema/Activity/Model";
-import DoneModel from "../../sqlite/schema/Done/Model";
-import TaskModel from "../../sqlite/schema/Task/Model";
 
 /**
  * => Activity
@@ -23,14 +21,11 @@ import TaskModel from "../../sqlite/schema/Task/Model";
  * Upcoming time (UT) => FT that is covered
  * Overflow time (OT) => FT that is not covered by AT or UT
  */
-const priority = ["high", "medium", "low", "none"];
 
 type ScheduleProps = {
   activities: ActivityModel[];
   initialTodayRemaining: number;
   initialUpcomingTime: number;
-  done: DoneModel[];
-  tasks: TaskModel[];
 };
 
 /**
@@ -44,8 +39,6 @@ export default function getSchedule({
   activities,
   initialTodayRemaining,
   initialUpcomingTime,
-  done,
-  tasks,
 }: ScheduleProps) {
   const list: Schedule[] = [];
 
@@ -53,22 +46,17 @@ export default function getSchedule({
   let currentUpcomingTime = initialUpcomingTime;
 
   activities
-    ?.sort(
-      (a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority)
-    )
+    ?.sort((a, b) => a.priority - b.priority)
     .forEach((item) => {
-      const doneList = done.filter(
-        (doneItem) => doneItem.activityId === item.id
-      );
+      const doneList = Object.keys(item.done).map((key) => {
+        return {
+          datetime: dayjs(key).valueOf(),
+          length: item.done[key].length,
+          comment: item.done[key].comment,
+        };
+      });
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
-
-      // Remove future time, technically not done yet
-      const lastDone = Math.max(
-        ...doneList
-          .filter((item) => dayjs().isSame(item.datetime, "day"))
-          .map((done) => done.datetime)
-      );
 
       // this week remaining should be greater or equal to 0
       const tempTWR = item.weeklyTarget - doneThisWeek;
@@ -85,9 +73,6 @@ export default function getSchedule({
           todayTime: 0,
           upcomingTime: 0,
           overflowTime: 0,
-          lastDone: Number.isFinite(lastDone) ? lastDone : 0,
-          done: doneList,
-          tasks: tasks.filter((task) => task.activityId === item.id),
         });
         return null;
       }
@@ -156,9 +141,6 @@ export default function getSchedule({
         todayTime: todayTime + additionalTime,
         upcomingTime,
         overflowTime,
-        lastDone: Number.isFinite(lastDone) ? lastDone : 0,
-        done: doneList,
-        tasks: tasks.filter((task) => task.activityId === item.id),
       });
     });
   return list;

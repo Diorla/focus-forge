@@ -6,8 +6,9 @@ import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import Schedule from "./Schedule";
-import useSQLiteQuery from "../sqlite/useSQLiteQuery";
+
 import { Typography } from "../../components";
+import useDataQuery from "../data/useDataQuery";
 
 dayjs.extend(isToday);
 
@@ -16,7 +17,7 @@ export default function ScheduleProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, activityList, doneList, taskList } = useSQLiteQuery();
+  const { user, activityList } = useDataQuery();
   const { time: userTime } = useUser();
   const [prevTime, setPrevTime] = useState(userTime);
   const [schedule, setSchedule] = useState<Schedule[]>([]);
@@ -39,19 +40,16 @@ export default function ScheduleProvider({
   });
 
   // Determine if new stuff is created
-  const doneListString = JSON.stringify(doneList);
+  // const doneListString = JSON.stringify(doneList);
   const activityListString = JSON.stringify(activityList);
-  const taskListString = JSON.stringify(taskList);
 
   function generateSchedule() {
-    const time = getTime(activityList, doneList, user);
+    const time = getTime(activityList, user);
 
     const scheduleList = getSchedule({
       activities: activityList,
       initialTodayRemaining: time.todayRemaining,
       initialUpcomingTime: time.upcomingTime,
-      done: doneList,
-      tasks: taskList,
     });
 
     let todoTime = 0;
@@ -82,7 +80,7 @@ export default function ScheduleProvider({
 
   useEffect(() => {
     generateSchedule();
-  }, [doneListString, activityListString, taskListString]);
+  }, [activityListString]);
 
   if (loading) return <Typography>Loading...</Typography>;
   return (

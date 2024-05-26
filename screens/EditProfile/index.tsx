@@ -5,10 +5,10 @@ import { QuotaForm } from "./QuotaForm";
 import { Button } from "../../components";
 import { useToast } from "react-native-toast-notifications";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export default function EditProfileScreen() {
-  const { user, updateUser } = useSQLiteQuery();
+  const { user, updateUser } = useDataQuery();
 
   const [form, setForm] = useState({
     ...user,
@@ -30,11 +30,10 @@ export default function EditProfileScreen() {
             setForm={(value) => setForm({ ...form, ...value })}
           />
           <Button
-            onPress={() =>
-              updateUser(form).then(() =>
-                toast.show("Profile updated", { type: "success" })
-              )
-            }
+            onPress={() => {
+              updateUser(form);
+              toast.show("Profile updated", { type: "success" });
+            }}
           >
             Save
           </Button>

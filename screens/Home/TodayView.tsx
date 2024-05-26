@@ -9,8 +9,6 @@ import { useInterstitialAd } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
 import ChecklistModal from "./ChecklistModal";
 
-const priority = ["high", "medium", "low", "none"];
-
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useSchedule();
@@ -28,9 +26,7 @@ export default function TodayView() {
       const todo = item.todayTime - item.doneToday;
       return todo > 0.001 || item.timerLength;
     })
-    .sort(
-      (a, b) => priority.indexOf(a.priority) - priority.indexOf(b.priority)
-    );
+    .sort((a, b) => a.priority - b.priority);
 
   if (today.length) {
     const runningActivity = today.find((item) => item.timerStart);

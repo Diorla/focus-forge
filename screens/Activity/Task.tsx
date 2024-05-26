@@ -1,37 +1,75 @@
 import { Button, Typography } from "../../components";
 import { View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckBox, Input } from "@rneui/themed";
 import Schedule from "../../context/schedule/Schedule";
 import { MaterialIcons } from "@expo/vector-icons";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
-import uuid from "react-native-uuid";
 import Confirm from "../../components/confirm";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export default function Task({ activity }: { activity: Schedule }) {
-  const { updateTask, createTask, deleteTask } = useSQLiteQuery();
+  const { updateActivity } = useDataQuery();
   const { tasks } = activity;
-  const [taskList, setTaskList] = useState(tasks);
+  const [taskList, setTaskList] = useState([]);
   const [showAddNewTask, setShowAddNewTask] = useState(false);
   const [task, setTask] = useState({
-    id: String(uuid.v4()),
     title: "",
     checked: 0,
     created: Date.now(),
-    activityId: activity.id,
   });
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    Object.keys(tasks).forEach((key) => {
+      setTaskList((prev) => [...prev, tasks[key]]);
+    });
+  }, [activity.id]);
 
   const checkTask = (id: string) => {
     setTaskList(
       taskList.map((i) => (i.id === id ? { ...i, checked: Date.now() } : i))
     );
-    updateTask(id, { checked: Date.now() });
+    updateActivity(activity.id, {
+      tasks: {
+        ...tasks,
+        [id]: { ...tasks[id], checked: Date.now() },
+      },
+    });
   };
+
   const uncheckTask = (id: string) => {
     setTaskList(taskList.map((i) => (i.id === id ? { ...i, checked: 0 } : i)));
-    updateTask(id, { checked: 0 });
+    updateActivity(activity.id, {
+      tasks: {
+        ...tasks,
+        [id]: { ...tasks[id], checked: 0 },
+      },
+    });
+  };
+
+  const deleteTask = (id: string) => {
+    const tempTask = { ...tasks };
+    delete tempTask[id];
+    updateActivity(activity.id, {
+      tasks: tempTask,
+    });
+  };
+
+  const createTask = () => {
+    setTaskList((prev) => [...prev, task]);
+    updateActivity(activity.id, {
+      tasks: {
+        ...tasks,
+        [task.created]: task,
+      },
+    });
+    setTask({
+      title: "",
+      checked: 0,
+      created: Date.now(),
+    });
+    setShowAddNewTask(false);
   };
 
   return (
@@ -114,13 +152,11 @@ export default function Task({ activity }: { activity: Schedule }) {
             <Button
               disabled={!task}
               onPress={() => {
-                createTask(task);
+                createTask();
                 setTask({
-                  id: String(uuid.v4()),
                   title: "",
                   checked: 0,
                   created: Date.now(),
-                  activityId: activity.id,
                 });
                 setTaskList([...taskList, task]);
                 setShowAddNewTask(!showAddNewTask);

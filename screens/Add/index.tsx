@@ -12,10 +12,9 @@ import { useToast } from "react-native-toast-notifications";
 import { useInterstitialAd } from "react-native-google-mobile-ads";
 import getAdsId from "../../services/utils/getAdsId";
 import dayjs from "dayjs";
-import ActivityModel from "../../context/sqlite/schema/Activity/Model";
-import { Priority } from "../../context/schedule/Schedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import ActivityModel from "../../context/data/model/ActivityModel";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export default function AddScreen() {
   const baseForm: ActivityModel = {
@@ -23,7 +22,7 @@ export default function AddScreen() {
     weeklyTarget: 0,
     dailyLimit: 0,
     startDate: Date.now(),
-    priority: "none",
+    priority: 0,
     color: random(),
     category: "",
     description: "",
@@ -35,14 +34,18 @@ export default function AddScreen() {
     timerStart: 0,
     timerLength: 0,
     timerId: "",
+    occurrence: 0,
+    occurrenceType: "daily",
+    done: {},
+    tasks: {},
   };
   const { theme } = useTheme();
   const {
     user: { createdAt },
-  } = useSQLiteQuery();
+  } = useDataQuery();
   const [form, setForm] = useState<ActivityModel>({ ...baseForm });
   const { schedule } = useSchedule();
-  const { createActivity } = useSQLiteQuery();
+  const { createActivity } = useDataQuery();
   const list = Array.from(new Set(schedule.map((item) => item.category)));
   const toast = useToast();
   const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
@@ -169,30 +172,30 @@ export default function AddScreen() {
             </Typography>
           ) : null}
           <Picker
-            value={form.priority}
+            value={String(form.priority)}
             onValueChange={(priority) =>
               setForm({
                 ...form,
-                priority: priority as Priority,
+                priority: Number(priority),
               })
             }
             label="Priority"
             list={[
               {
                 label: "High",
-                value: "high",
+                value: "3",
               },
               {
                 label: "Medium",
-                value: "medium",
+                value: "2",
               },
               {
                 label: "Low",
-                value: "low",
+                value: "1",
               },
               {
                 label: "None",
-                value: "none",
+                value: "0",
               },
             ]}
           />

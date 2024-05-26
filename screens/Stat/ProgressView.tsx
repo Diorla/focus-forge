@@ -22,13 +22,13 @@ export default function ProgressView() {
     const total = item.weeklyTarget < done ? done : item.weeklyTarget;
     if (item.archived) {
       // do nothing
-    } else if (item.priority === "low") {
+    } else if (item.priority === 1) {
       lowTop += done;
       lowBottom += total;
-    } else if (item.priority === "medium") {
+    } else if (item.priority === 2) {
       mediumTop += done;
       mediumBottom += total;
-    } else if (item.priority === "high") {
+    } else if (item.priority === 3) {
       highTop += done;
       highBottom += total;
     }

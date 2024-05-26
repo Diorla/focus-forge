@@ -13,7 +13,7 @@ import { useToast } from "react-native-toast-notifications";
 import dayjs from "dayjs";
 import { AdShowOptions } from "react-native-google-mobile-ads";
 import { logError } from "../../services/database";
-import useSQLiteQuery from "../../context/sqlite/useSQLiteQuery";
+import useDataQuery from "../../context/data/useDataQuery";
 
 export function TodayCard({
   schedule,
@@ -29,9 +29,7 @@ export function TodayCard({
   const {
     theme: { colors },
   } = useTheme();
-  const { createDone } = useSQLiteQuery();
-  const { updateActivity } = useSQLiteQuery();
-  const { user } = useSQLiteQuery();
+  const { user, updateActivity } = useDataQuery();
 
   const toast = useToast();
   const navigate = useNavigate<{ id: string }>();
@@ -42,6 +40,7 @@ export function TodayCard({
     doneToday = 0,
     timerStart,
     timerLength,
+    done,
   } = schedule;
 
   const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
@@ -49,7 +48,9 @@ export function TodayCard({
   const borderStyle = running
     ? { borderSize: 1, borderColor: colors.primary }
     : {};
-  const tasks = schedule.tasks.filter((item) => !item.checked);
+  const tasks = Object.keys(schedule.tasks).filter(
+    (item) => !schedule.tasks[item].checked
+  );
   const diff = dayjs().diff(user.createdAt, "day");
 
   const isPremium = diff < 21;
@@ -70,14 +71,13 @@ export function TodayCard({
       timerStart: 0,
       timerLength: 0,
       timerId: "",
-    });
-
-    return createDone({
-      id: key,
-      datetime: startTime,
-      comment: "",
-      activityId: id,
-      length,
+      done: {
+        ...done,
+        [key]: {
+          length,
+          comment: "",
+        },
+      },
     });
   };
 

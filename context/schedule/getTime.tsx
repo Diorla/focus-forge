@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
-import ActivityModel from "../sqlite/schema/Activity/Model";
-import DoneModel from "../sqlite/schema/Done/Model";
-import UserModel from "../sqlite/schema/User/Model";
+import ActivityModel from "../data/model/ActivityModel";
+import UserModel from "../data/model/UserModel";
 
 /**
  * => User
@@ -17,11 +16,7 @@ import UserModel from "../sqlite/schema/User/Model";
  * Today remaining (TR) => The time still available for assigning task today, it's TQ - DT
  */
 
-export default function getTime(
-  activities: ActivityModel[],
-  done: DoneModel[],
-  user: UserModel
-) {
+export default function getTime(activities: ActivityModel[], user: UserModel) {
   const { weeklyQuota: WQ, useWeeklyQuota, dailyQuota } = user;
   /**
    * Total time set aside for the week
@@ -73,7 +68,13 @@ export default function getTime(
     weeklyQuota = dailyQuota.reduce((prev, curr) => prev + curr, 0);
   }
   activities?.forEach((item) => {
-    const doneList = done.filter((doneItem) => doneItem.activityId === item.id);
+    const doneList = Object.keys(item.done).map((key) => {
+      return {
+        datetime: key,
+        length: item.done[key].length,
+        comment: item.done[key].comment,
+      };
+    });
     const timeToday = doneList.filter((done) => dayjs(done.datetime).isToday());
     const timeThisWeek = doneList.filter(
       (done) =>
