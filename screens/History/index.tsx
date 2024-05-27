@@ -25,10 +25,9 @@ export default function HistoryScreen() {
     const history = {};
     schedule?.forEach((item) => {
       const { done } = item;
-      Object.keys(done)?.forEach((item) => {
-        const { comment } = done[item];
-        const date = getDateKey(item);
-        const length = item.length;
+      Object.keys(done)?.forEach((timeItem) => {
+        const { comment, length } = done[timeItem];
+        const date = getDateKey(timeItem);
         const [hr, mm, ss] = secondsToHrMm(length);
         const description = comment
           ? `${comment || ""}
@@ -36,18 +35,19 @@ export default function HistoryScreen() {
           : `\t  ${timeFormat(hr)}:${timeFormat(mm)}:${timeFormat(ss)}`;
         if (history[date]) {
           history[date].push({
-            time: format(item, "time"),
+            time: format(timeItem, "time"),
             description,
             length,
-            datetime: item,
+            datetime: timeItem,
+            title: item.name,
           });
         } else {
           history[date] = [
             {
-              time: format(item, "time"),
+              time: format(timeItem, "time"),
               description,
               length,
-              datetime: item,
+              datetime: timeItem,
             },
           ];
         }
