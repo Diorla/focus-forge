@@ -173,9 +173,10 @@ export default function EditScreen() {
             setValue={(category) => setForm({ ...form, category })}
             list={["None", ...list]}
           />
-          <View style={{ marginBottom: 16, alignItems: "center" }}>
+          <View style={{ marginBottom: 64, alignItems: "center" }}>
             <Button onPress={saveActivity}>Save</Button>
           </View>
+          <View style={{ height: 32 }} />
         </View>
       </ScrollView>
     </KeyboardWrapper>

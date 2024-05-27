@@ -89,6 +89,7 @@ export default function AddScreen() {
     try {
       createActivity({
         ...form,
+        id: Date.now().toString(),
       });
       setForm({ ...baseForm });
       toast.show("New activity added");

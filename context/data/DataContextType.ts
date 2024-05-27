@@ -1,17 +1,11 @@
 import ActivityModel from "./model/ActivityModel";
-import UserModel, { DailyQuota } from "./model/UserModel";
+import UserModel from "./model/UserModel";
 
 type DataContextType = {
-  restartDB: (fn: () => Promise<void>) => void;
   isReady: boolean;
   user: UserModel;
   activityList: ActivityModel[];
-  createUser: (user: {
-    name: string;
-    dailyQuota: DailyQuota;
-    useWeeklyQuota: boolean;
-    weeklyQuota: number;
-  }) => void;
+  createUser: (user: UserModel) => void;
   updateUser: (data: Partial<UserModel>) => void;
   deleteUser: () => void;
   createActivity: (data: Partial<ActivityModel>) => void;

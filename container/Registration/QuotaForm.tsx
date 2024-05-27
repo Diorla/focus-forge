@@ -7,8 +7,8 @@ import Button from "../../components/button";
 import { TimeInput } from "../../components";
 import { secondsToHrMm } from "../../services/datetime";
 import useDataQuery from "../../context/data/useDataQuery";
-import { DailyQuota } from "../../context/sqlite/schema/User/Model";
 import { logError } from "../../services/database";
+import { DailyQuota } from "../../context/data/model/UserModel";
 
 function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];
@@ -43,6 +43,10 @@ export function QuotaForm({ name }: { name: string }) {
         weeklyQuota,
         dailyQuota,
         useWeeklyQuota,
+        id: "",
+        updatedAt: Date.now(),
+        startTime: 0,
+        createdAt: Date.now(),
       });
     } catch (error) {
       logError("Quotaform", "create user", error);
