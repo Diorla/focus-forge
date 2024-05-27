@@ -1,13 +1,12 @@
 import * as React from "react";
-import { ScrollView, TouchableOpacity, View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
-import { CheckBox, Input, useTheme } from "@rneui/themed";
+import { Input, useTheme } from "@rneui/themed";
 import { useState } from "react";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
 import SelectCategory from "../../components/selectCategory";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import useSchedule from "../../context/schedule/useSchedule";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
 import useDataQuery from "../../context/data/useDataQuery";
 import ActivityModel from "../../context/data/model/ActivityModel";
@@ -17,12 +16,12 @@ export default function EditScreen() {
   const { params } = useRoute();
   const { goBack } = useNavigation();
   const { id = "" } = params as { id: string };
-  const { schedule } = useSchedule();
+  const { activityList } = useDataQuery();
   const { updateActivity } = useDataQuery();
   const [form, setForm] = useState<ActivityModel>(
-    schedule.find((item) => item.id === id)
+    activityList.find((item) => item.id === id)
   );
-  const list = Array.from(new Set(schedule.map((item) => item.category)));
+  const list = Array.from(new Set(activityList.map((item) => item.category)));
 
   const [errorMSG, setErrorMSG] = useState({
     name: "",
@@ -70,6 +69,7 @@ export default function EditScreen() {
   const daysToFinish = form.dailyLimit
     ? form.weeklyTarget / form.dailyLimit
     : 0;
+
   return (
     <KeyboardWrapper>
       <ScrollView style={{ backgroundColor: form.color }}>
@@ -95,19 +95,6 @@ export default function EditScreen() {
             }
             errorMessage={errorMSG.name}
           />
-          <TouchableOpacity
-            onPress={() =>
-              setForm({
-                ...form,
-                isOccurrence: !form.isOccurrence,
-              })
-            }
-          >
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <CheckBox checked={!form.isOccurrence} />
-              <Typography>Use timer</Typography>
-            </View>
-          </TouchableOpacity>
           {form.isOccurrence ? (
             <View style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}>
               <Input
