@@ -8,37 +8,6 @@ import useNavigate from "../../container/Nav/useNavigate";
 import Schedule from "../../context/schedule/Schedule";
 import { secondsToHrMm } from "../../services/datetime";
 
-// <Octicons name="dash" size={24} color="black" />
-// <Entypo name="arrow-bold-up" size={24} color="black" />
-const PriorityRender = ({
-  priority,
-  category,
-  color,
-}: {
-  priority: number;
-  category: string;
-  color: string;
-}) => {
-  let icon = null;
-  if (priority === 3) icon = "chevron-up";
-  if (priority === 2) icon = "dash";
-  if (priority === 1) icon = "chevron-down";
-  return (
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      {icon && <Octicons name={icon} size={24} color={color} />}
-      <Typography style={{ textTransform: "capitalize" }} color={color}>
-        {" "}
-        {category || "None"}
-      </Typography>
-    </View>
-  );
-};
 const getProgress = ({
   overflowTime,
   archived,
@@ -62,8 +31,16 @@ const getProgress = ({
   return "Completed";
 };
 export default function ActivityCard({ activity }: { activity: Schedule }) {
-  const { doneThisWeek, doneToday, weeklyTarget, overflowTime, archived, id } =
-    activity;
+  const {
+    doneThisWeek,
+    doneToday,
+    weeklyTarget,
+    overflowTime,
+    archived,
+    id,
+    priority,
+    category,
+  } = activity;
   const bgColor = activity.color;
   const color = getContrastColor(bgColor);
 
@@ -71,13 +48,17 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
   const [hr, mm] = secondsToHrMm(weeklyTarget);
 
   const progress = ((doneToday + doneThisWeek) / weeklyTarget) * 100;
+  let icon = null;
+  if (priority === 3) icon = "chevron-up";
+  if (priority === 2) icon = "dash";
+  if (priority === 1) icon = "chevron-down";
 
   return (
     <TouchableOpacity onPress={() => navigate("Activity", { id })}>
       <Card containerStyle={{ backgroundColor: bgColor, borderRadius: 4 }}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography color={color} style={{ fontWeight: "bold" }}>
-            {activity.name}
+            {activity.name}{" "}
           </Typography>
           <Typography color={color}>
             {hr}h {String(mm).padStart(2, "0")}
@@ -101,6 +82,7 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography color={color}>{progress.toFixed(2)}%</Typography>
+          {icon && <Octicons name={icon} size={24} color={color} />}
           <View
             style={{
               flexDirection: "row",
@@ -108,11 +90,9 @@ export default function ActivityCard({ activity }: { activity: Schedule }) {
               alignItems: "center",
             }}
           >
-            <PriorityRender
-              priority={activity.priority}
-              category={activity.category}
-              color={color}
-            />
+            <Typography style={{ textTransform: "capitalize" }} color={color}>
+              {category || "None"}
+            </Typography>
           </View>
         </View>
       </Card>

@@ -11,6 +11,7 @@ import generateCardTime from "./generateCardTime";
 import CardInfo from "./CardInfo";
 import dayjs from "dayjs";
 
+const priority = ["None", "Low", "Medium", "High"];
 export default function ActivityCard({
   schedule,
   type,
@@ -69,7 +70,7 @@ export default function ActivityCard({
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography style={{ textTransform: "capitalize" }}>
-            {schedule.priority}
+            {priority[schedule.priority] || "None"}
           </Typography>
 
           <TouchableOpacity onPress={() => setVisible(!visible)}>

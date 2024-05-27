@@ -15,6 +15,7 @@ import { AdShowOptions } from "react-native-google-mobile-ads";
 import { logError } from "../../services/database";
 import useDataQuery from "../../context/data/useDataQuery";
 
+const priority = ["None", "Low", "Medium", "High"];
 export function TodayCard({
   schedule,
   isLoadedAd,
@@ -144,7 +145,7 @@ export function TodayCard({
         </View>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Typography style={{ textTransform: "capitalize" }}>
-            {schedule.priority}
+            {priority[schedule.priority] || "None"}
           </Typography>
 
           <TouchableOpacity onPress={() => setCurrentSchedule(schedule)}>
