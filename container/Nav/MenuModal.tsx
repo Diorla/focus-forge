@@ -2,19 +2,19 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { Modal, View } from "react-native";
 import { Button, Typography } from "../../components";
-import Schedule from "../../context/schedule/Schedule";
 import TopSpace from "../../components/topSpace";
 import useNavigate from "./useNavigate";
 import Confirm from "../../components/confirm";
 import { useTheme } from "@rneui/themed";
 import useDataQuery from "../../context/data/useDataQuery";
+import ActivityModel from "../../context/data/model/ActivityModel";
 
 export default function MenuModal({
   color,
   activity,
 }: {
   color: string;
-  activity: Schedule;
+  activity: ActivityModel;
 }) {
   const [visible, setVisible] = useState(false);
   const navigate = useNavigate<{ id: string }>();

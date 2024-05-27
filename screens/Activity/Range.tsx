@@ -2,12 +2,13 @@ import { Typography } from "../../components";
 import { View } from "react-native";
 import Schedule from "../../context/schedule/Schedule";
 import { format, secondsToHrMm } from "../../services/datetime";
+import Checklist from "../../context/schedule/Checklist";
 
 export default function Range({
   activity,
   color,
 }: {
-  activity: Schedule;
+  activity: Schedule | Checklist;
   color: string;
 }) {
   const { startDate, archived, weeklyTarget, category } = activity;

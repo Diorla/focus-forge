@@ -7,8 +7,9 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Confirm from "../../components/confirm";
 import KeyboardWrapper from "../../container/KeyboardWrapper";
 import useDataQuery from "../../context/data/useDataQuery";
+import Checklist from "../../context/schedule/Checklist";
 
-export default function Task({ activity }: { activity: Schedule }) {
+export default function Task({ activity }: { activity: Schedule | Checklist }) {
   const { updateActivity } = useDataQuery();
   const { tasks } = activity;
   const [taskList, setTaskList] = useState([]);

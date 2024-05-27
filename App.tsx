@@ -19,6 +19,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
+// TODO: Add drawer for things like history, stats, profile etc and collapse the history
 const CustomFallback = (props: {
   error: Error;
   resetError: (event: GestureResponderEvent) => void;

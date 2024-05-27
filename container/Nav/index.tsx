@@ -8,7 +8,6 @@ import ActivityScreen from "../../screens/Activity";
 import RootStackParamList from "./RootStackParamList";
 import ViewStatScreen from "../../screens/ViewStat";
 import { Typography } from "../../components";
-import useSchedule from "../../context/schedule/useSchedule";
 import { getContrastColor } from "../../services/color";
 import MenuModal from "./MenuModal";
 import EditScreen from "../../screens/Edit";
@@ -22,7 +21,7 @@ const PlaceholderScreen = () => {
   return <Typography>Placeholder screen</Typography>;
 };
 function Nav() {
-  const { schedule } = useSchedule();
+  const { activityList } = useDataQuery();
   const { theme } = useTheme();
   const { user } = useDataQuery();
   return (
@@ -51,7 +50,7 @@ function Nav() {
               route: { params },
             } = props || { route: { params: { id: "" } } };
             const { id } = params;
-            const activity = schedule.find((item) => item.id === id);
+            const activity = activityList.find((item) => item.id === id);
             const color = getContrastColor(
               activity?.color || theme.colors.white
             );
@@ -89,7 +88,7 @@ function Nav() {
               route: { params },
             } = props || { route: { params: { id: "" } } };
             const { id } = params;
-            const activity = schedule.find((item) => item.id === id);
+            const activity = activityList.find((item) => item.id === id);
             const color = getContrastColor(activity.color);
             return {
               headerTitle: "Edit",

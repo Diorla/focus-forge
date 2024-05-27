@@ -1,7 +1,6 @@
 import { Button, DatePicker, TimeInput, Typography } from "../../components";
 import { ActivityIndicator, Modal, TouchableOpacity, View } from "react-native";
 import { Card, Input, useTheme } from "@rneui/themed";
-import Schedule from "../../context/schedule/Schedule";
 import {
   format,
   getDateKey,
@@ -15,6 +14,7 @@ import Comment from "./Comment";
 import Confirm from "../../components/confirm";
 import useDataQuery from "../../context/data/useDataQuery";
 import DoneType from "../../context/data/types/DoneType";
+import Checklist from "../../context/schedule/Checklist";
 import generateHistoryHeader from "./generateHistoryHeader";
 
 type History = {
@@ -26,7 +26,7 @@ type History = {
   id: string;
 };
 
-export default function History({ activity }: { activity: Schedule }) {
+export default function Checked({ activity }: { activity: Checklist }) {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
   const { theme } = useTheme();
@@ -36,14 +36,14 @@ export default function History({ activity }: { activity: Schedule }) {
   const [form, setForm] = useState<DoneType>({
     comment: "",
     datetime: Date.now(),
-    length: 0,
+    length: 1,
   });
   const [editingComment, setEditingComment] = useState(false);
 
   const [newTime, setNewTime] = useState<DoneType>({
     comment: "",
     datetime: Date.now(),
-    length: 0,
+    length: 1,
   });
 
   const [showAddTime, setShowAddTime] = useState(false);
@@ -104,10 +104,6 @@ export default function History({ activity }: { activity: Schedule }) {
     <Card>
       <Modal visible={showAddTime}>
         <View style={{ justifyContent: "center", flex: 1 }}>
-          <TimeInput
-            value={newTime.length}
-            onChange={(length) => setNewTime({ ...newTime, length })}
-          />
           <Input
             label="Note"
             value={newTime.comment}
@@ -134,7 +130,7 @@ export default function History({ activity }: { activity: Schedule }) {
                   setNewTime({
                     comment: "",
                     datetime: Date.now(),
-                    length: 0,
+                    length: 1,
                   });
                 }
               }}
@@ -188,7 +184,7 @@ export default function History({ activity }: { activity: Schedule }) {
                             setForm({
                               comment: "",
                               datetime: 0,
-                              length: 0,
+                              length: 1,
                             });
                           } else {
                             setForm({
@@ -200,22 +196,21 @@ export default function History({ activity }: { activity: Schedule }) {
                           }
                         }}
                       >
+                        <Comment
+                          showComment={expandIdx !== time.datetime}
+                          comment={time.comment}
+                        />
                         <View
                           style={{
-                            justifyContent: "space-between",
+                            justifyContent: "flex-end",
                             flexDirection: "row",
                             paddingVertical: 8,
                             alignItems: "center",
                           }}
                         >
                           <Typography>{time.time}</Typography>
-                          <Typography>{time.description}</Typography>
                         </View>
                       </TouchableOpacity>
-                      <Comment
-                        showComment={expandIdx !== time.datetime}
-                        comment={time.comment}
-                      />
                       {expandIdx === time.datetime ? (
                         <View>
                           <View>
@@ -276,7 +271,7 @@ export default function History({ activity }: { activity: Schedule }) {
                                   setForm({
                                     comment: "",
                                     datetime: 0,
-                                    length: 0,
+                                    length: 1,
                                   });
                                   setExpandIdx(undefined);
                                 }}
@@ -288,7 +283,7 @@ export default function History({ activity }: { activity: Schedule }) {
                                   setForm({
                                     comment: "",
                                     datetime: 0,
-                                    length: 0,
+                                    length: 1,
                                   });
                                   setExpandIdx(undefined);
                                 }}

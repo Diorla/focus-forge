@@ -1,2 +1,2 @@
-type path = "home" | "list" | "history" | "stat";
+type path = "home" | "list" | "checklist" | "stat";
 export default path;

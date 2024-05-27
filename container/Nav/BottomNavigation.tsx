@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@rneui/themed";
 import { Octicons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 import { Typography } from "../../components";
 import path from "./path";
 import useNavigate from "./useNavigate";
@@ -57,6 +58,22 @@ export default function BottomNavigation({
       </TouchableOpacity>
       <TouchableOpacity
         style={{ alignItems: "center" }}
+        onPress={() => onToggle("checklist")}
+      >
+        <MaterialIcons
+          name="checklist"
+          size={24}
+          color={route === "checklist" ? colors.primary : colors.black}
+        />
+        <Typography
+          color={route === "checklist" ? colors.primary : colors.black}
+          type="small"
+        >
+          History
+        </Typography>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ alignItems: "center" }}
         onPress={() => onToggle("list")}
       >
         <MaterialCommunityIcons
@@ -80,22 +97,6 @@ export default function BottomNavigation({
           <Typography type="small">Create</Typography>
         </TouchableOpacity>
       ) : null}
-      <TouchableOpacity
-        style={{ alignItems: "center" }}
-        onPress={() => onToggle("history")}
-      >
-        <MaterialCommunityIcons
-          name="history"
-          size={24}
-          color={route === "history" ? colors.primary : colors.black}
-        />
-        <Typography
-          color={route === "history" ? colors.primary : colors.black}
-          type="small"
-        >
-          History
-        </Typography>
-      </TouchableOpacity>
       <TouchableOpacity
         style={{ alignItems: "center" }}
         onPress={() => onToggle("stat")}
