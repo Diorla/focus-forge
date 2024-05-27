@@ -9,6 +9,7 @@ import useSchedule from "../../context/schedule/useSchedule";
 import Picker from "./Picker";
 import { useToast } from "react-native-toast-notifications";
 import useDataQuery from "../../context/data/useDataQuery";
+import useUser from "../../context/user/useUser";
 
 const StopWatchModal = () => {
   const { user, updateUser, updateActivity, activityList } = useDataQuery();
@@ -134,6 +135,7 @@ export default function TabHeader() {
   const {
     user: { name },
   } = useDataQuery();
+  const { time } = useUser();
 
   const navigate = useNavigate();
   return (
@@ -155,7 +157,7 @@ export default function TabHeader() {
       >
         <View>
           <Typography type="big">{name}</Typography>
-          <Typography>{format()}</Typography>
+          <Typography>{format(time)}</Typography>
         </View>
       </TouchableOpacity>
       <StopWatchModal />
