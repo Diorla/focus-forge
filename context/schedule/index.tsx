@@ -9,6 +9,8 @@ import Schedule from "./Schedule";
 
 import { Typography } from "../../components";
 import useDataQuery from "../data/useDataQuery";
+import Checklist from "./Checklist";
+import getChecklist from "./getChecklist";
 
 dayjs.extend(isToday);
 
@@ -21,6 +23,7 @@ export default function ScheduleProvider({
   const { time: userTime } = useUser();
   const [prevTime, setPrevTime] = useState(userTime);
   const [schedule, setSchedule] = useState<Schedule[]>([]);
+  const [checklist, setChecklist] = useState<Checklist[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [time, setTime] = useState({
@@ -43,11 +46,19 @@ export default function ScheduleProvider({
   // const doneListString = JSON.stringify(doneList);
   const activityListString = JSON.stringify(activityList);
 
+  function generateChecklist() {
+    const checklist = activityList.filter((item) => item.isOccurrence);
+    setChecklist(getChecklist(checklist));
+  }
   function generateSchedule() {
-    const time = getTime(activityList, user);
+    const scheduledActivityList = activityList.filter(
+      (item) => !item.isOccurrence
+    );
+
+    const time = getTime(scheduledActivityList, user);
 
     const scheduleList = getSchedule({
-      activities: activityList,
+      activities: scheduledActivityList,
       initialTodayRemaining: time.todayRemaining,
       initialUpcomingTime: time.upcomingTime,
     });
@@ -75,11 +86,13 @@ export default function ScheduleProvider({
   useEffect(() => {
     if (!dayjs(prevTime).isSame(userTime, "date")) {
       generateSchedule();
+      generateChecklist();
     }
   }, [userTime]);
 
   useEffect(() => {
     generateSchedule();
+    generateChecklist();
   }, [activityListString]);
 
   if (loading) return <Typography>Loading...</Typography>;
@@ -89,6 +102,7 @@ export default function ScheduleProvider({
         loading,
         time,
         schedule,
+        checklist,
       }}
     >
       {children}

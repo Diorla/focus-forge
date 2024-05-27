@@ -18,6 +18,7 @@ const scheduleContext = createContext({
     taskLeft: 0,
   },
   schedule: [],
+  checklist: [],
 });
 
 export default scheduleContext;

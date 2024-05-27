@@ -1,7 +1,7 @@
 import * as React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, TouchableOpacity, View } from "react-native";
 import { Button, TimeInput, Typography } from "../../components";
-import { Input, useTheme } from "@rneui/themed";
+import { CheckBox, Input, useTheme } from "@rneui/themed";
 import { useState } from "react";
 import Picker from "../../components/picker";
 import ColorPicker from "../../components/colorPicker";
@@ -28,6 +28,7 @@ export default function EditScreen() {
     name: "",
     weeklyTarget: "",
     dailyLimit: "",
+    occurrence: "",
   });
   const saveActivity = () => {
     if (!form.name) {
@@ -37,19 +38,29 @@ export default function EditScreen() {
       });
       return;
     }
-    if (!form.weeklyTarget) {
-      setErrorMSG({
-        ...errorMSG,
-        weeklyTarget: "Please provide a weekly target",
-      });
-      return;
-    }
-    if (!form.dailyLimit) {
-      setErrorMSG({
-        ...errorMSG,
-        dailyLimit: "Please provide a daily limit",
-      });
-      return;
+    if (form.isOccurrence) {
+      if (form.occurrence <= 0) {
+        setErrorMSG({
+          ...errorMSG,
+          occurrence: "Please provide a valid number",
+        });
+        return;
+      }
+    } else {
+      if (!form.weeklyTarget) {
+        setErrorMSG({
+          ...errorMSG,
+          weeklyTarget: "Please provide a weekly target",
+        });
+        return;
+      }
+      if (!form.dailyLimit) {
+        setErrorMSG({
+          ...errorMSG,
+          dailyLimit: "Please provide a daily limit",
+        });
+        return;
+      }
     }
 
     updateActivity(form.id, form);
@@ -84,46 +95,109 @@ export default function EditScreen() {
             }
             errorMessage={errorMSG.name}
           />
-          <Typography
-            style={{
-              marginLeft: 8,
-              color: theme.colors.grey3,
-              fontWeight: "bold",
-            }}
-          >
-            Weekly target
-          </Typography>
-          <TimeInput
-            value={form.weeklyTarget}
-            onChange={(weeklyTarget) => setForm({ ...form, weeklyTarget })}
-            errorMessage={errorMSG.weeklyTarget}
-            onFocus={() =>
-              setErrorMSG({
-                ...errorMSG,
-                weeklyTarget: "",
+          <TouchableOpacity
+            onPress={() =>
+              setForm({
+                ...form,
+                isOccurrence: !form.isOccurrence,
               })
             }
-          />
-          <Typography
-            style={{
-              marginLeft: 8,
-              color: theme.colors.grey3,
-              fontWeight: "bold",
-            }}
           >
-            Daily limit
-          </Typography>
-          <TimeInput
-            value={form.dailyLimit}
-            onChange={(dailyLimit) => setForm({ ...form, dailyLimit })}
-            errorMessage={errorMSG.dailyLimit}
-            onFocus={() =>
-              setErrorMSG({
-                ...errorMSG,
-                dailyLimit: "",
-              })
-            }
-          />
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <CheckBox checked={!form.isOccurrence} />
+              <Typography>Use timer</Typography>
+            </View>
+          </TouchableOpacity>
+          {form.isOccurrence ? (
+            <View style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}>
+              <Input
+                label="How many times"
+                value={String(form.occurrence)}
+                onChangeText={(occurrence) =>
+                  setForm({
+                    ...form,
+                    occurrence: Number(occurrence),
+                  })
+                }
+                errorMessage={errorMSG.occurrence}
+              />
+              <Picker
+                value={form.occurrenceType}
+                onValueChange={(occurrenceType) =>
+                  setForm({
+                    ...form,
+                    occurrenceType: occurrenceType as
+                      | "daily"
+                      | "weekly"
+                      | "monthly"
+                      | "yearly",
+                  })
+                }
+                label="Occurrence"
+                list={[
+                  {
+                    label: "Daily",
+                    value: "daily",
+                  },
+                  {
+                    label: "Weekly",
+                    value: "weekly",
+                  },
+                  {
+                    label: "Monthly",
+                    value: "monthly",
+                  },
+                  {
+                    label: "Yearly",
+                    value: "yearly",
+                  },
+                ]}
+              />
+            </View>
+          ) : (
+            <View style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}>
+              <Typography
+                style={{
+                  marginLeft: 8,
+                  color: theme.colors.grey3,
+                  fontWeight: "bold",
+                }}
+              >
+                Weekly target
+              </Typography>
+              <TimeInput
+                value={form.weeklyTarget}
+                onChange={(weeklyTarget) => setForm({ ...form, weeklyTarget })}
+                errorMessage={errorMSG.weeklyTarget}
+                onFocus={() =>
+                  setErrorMSG({
+                    ...errorMSG,
+                    weeklyTarget: "",
+                  })
+                }
+              />
+              <Typography
+                style={{
+                  marginLeft: 8,
+                  color: theme.colors.grey3,
+                  fontWeight: "bold",
+                }}
+              >
+                Daily limit
+              </Typography>
+              <TimeInput
+                value={form.dailyLimit}
+                onChange={(dailyLimit) => setForm({ ...form, dailyLimit })}
+                errorMessage={errorMSG.dailyLimit}
+                onFocus={() =>
+                  setErrorMSG({
+                    ...errorMSG,
+                    dailyLimit: "",
+                  })
+                }
+              />
+            </View>
+          )}
           {daysToFinish ? (
             <Typography style={{ paddingLeft: 8 }}>
               {Math.ceil(daysToFinish)} days per week

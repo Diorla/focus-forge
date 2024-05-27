@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import scheduleContext from "./scheduleContext";
 import Schedule from "./Schedule";
+import Checklist from "./Checklist";
 
 export default function useSchedule() {
   interface TaskContext {
@@ -24,7 +25,9 @@ export default function useSchedule() {
       taskDone: number;
       taskLeft: number;
     };
+
     schedule: Schedule[];
+    checklist: Checklist[];
   }
 
   return useContext<TaskContext>(scheduleContext);

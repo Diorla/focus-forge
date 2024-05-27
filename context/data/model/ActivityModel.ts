@@ -6,7 +6,7 @@ interface ActivityModel {
    */
   weeklyTarget: number;
   /**
-   * Applicable if occurence is 0
+   * Applicable if occurrence is 0
    */
   dailyLimit: number;
   startDate: number;
@@ -21,6 +21,10 @@ interface ActivityModel {
   timerLength: number;
   timerId: string;
   lastDone: number;
+  /**
+   * To be used in case of occurrence
+   */
+  isOccurrence: boolean;
   /**
    * How many times this activity has should occur
    */
