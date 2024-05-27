@@ -35,10 +35,26 @@ export default function SortFilter({
             selectedValue={sort}
             onValueChange={(itemValue) => setSort(itemValue)}
           >
-            <Picker.Item label="Alphabetical" value="alphabetical" />
-            <Picker.Item label="Created" value="created" />
-            <Picker.Item label="Updated" value="updated" />
-            <Picker.Item label="Last done" value="done" />
+            <Picker.Item
+              label="Alphabetical"
+              value="alphabetical"
+              style={{ fontSize: 16 }}
+            />
+            <Picker.Item
+              label="Created"
+              value="created"
+              style={{ fontSize: 16 }}
+            />
+            <Picker.Item
+              label="Updated"
+              value="updated"
+              style={{ fontSize: 16 }}
+            />
+            <Picker.Item
+              label="Last done"
+              value="done"
+              style={{ fontSize: 16 }}
+            />
           </Picker>
         </View>
         <Typography type="big">Filter</Typography>

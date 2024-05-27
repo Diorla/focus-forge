@@ -30,7 +30,7 @@ export default function Picker({
         </Typography>
         <RNPicker selectedValue={value} onValueChange={onValueChange}>
           {list.map((item, idx) => (
-            <RNPicker.Item key={idx} {...item} />
+            <RNPicker.Item key={idx} {...item} style={{ fontSize: 16 }} />
           ))}
         </RNPicker>
       </View>
@@ -73,7 +73,7 @@ export default function Picker({
           </Typography>
           <RNPicker selectedValue={value} onValueChange={onValueChange}>
             {list.map((item, idx) => (
-              <RNPicker.Item key={idx} {...item} />
+              <RNPicker.Item key={idx} {...item} style={{ fontSize: 16 }} />
             ))}
           </RNPicker>
           <Button onPress={() => setShowPicker(!showPicker)}>Close</Button>
