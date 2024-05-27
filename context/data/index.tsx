@@ -68,6 +68,16 @@ export default function DataProvider({
     });
   };
 
+  const restartDB = () => {
+    getUser().then((user) => {
+      setUser(user);
+      setIsReady(true);
+    });
+
+    getActivityList().then((list) => {
+      setActivityList(list);
+    });
+  };
   return (
     <DataContext.Provider
       value={{
@@ -80,6 +90,7 @@ export default function DataProvider({
         createActivity,
         updateActivity,
         deleteActivity,
+        restartDB,
       }}
     >
       {children}

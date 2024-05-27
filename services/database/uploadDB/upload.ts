@@ -24,28 +24,16 @@ interface handleImageProps {
   userID: string;
 }
 
-export const uriToBlob = (uri) => {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.onload = function () {
-      // return the blob
-      resolve(xhr.response);
-    };
-    xhr.onerror = function () {
-      reject(new Error("uriToBlob failed"));
-    };
-    xhr.responseType = "blob";
-    xhr.open("GET", uri, true);
-
-    xhr.send(null);
-  });
+export const uriToBlob = (uri: string) => {
+  const blob = new Blob([uri], { type: "text/plain" });
+  return blob;
 };
 
 export default async function upload({ uri, userID }: handleImageProps) {
   const bytes = await uriToBlob(uri);
   const result = await uploadFile({
     fileName: dbPath,
-    file: bytes as Blob,
+    file: bytes,
     userID,
   });
   return result;

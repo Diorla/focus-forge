@@ -1,19 +1,14 @@
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import * as FileSystem from "expo-file-system";
 import logError from "./logError";
 
 const storage = getStorage();
 
-export default async function loadDB() {
+export default async function loadDB(userId: string) {
   try {
-    return getDownloadURL(ref(storage, "user/userID/db.db")).then(
-      async (url) => {
-        await FileSystem.downloadAsync(
-          url,
-          FileSystem.documentDirectory + "SQLite/db.db"
-        );
-      }
-    );
+    const url = await getDownloadURL(ref(storage, `user/${userId}/db.txt`));
+    const response = await fetch(url);
+    const text = await response.text();
+    return text;
   } catch (error) {
     logError("userID", "loadDB", error);
   }

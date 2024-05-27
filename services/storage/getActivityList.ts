@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { logError } from "../database";
 import ActivityModel from "../../context/data/model/ActivityModel";
+import logError from "../database/logError";
 
 export default async function getActivityList(): Promise<ActivityModel[]> {
   try {

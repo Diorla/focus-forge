@@ -12,11 +12,17 @@ import Confirm from "../../components/confirm";
 import { loadDB, logError, uploadDB } from "../../services/database";
 import { useToast } from "react-native-toast-notifications";
 import useDataQuery from "../../context/data/useDataQuery";
+import storeUser from "../../services/storage/storeUser";
+import storeActivityList from "../../services/storage/storeActivityList";
 
 export default function ProfileScreen() {
   const { theme } = useTheme();
   const navigate = useNavigate();
-  const { deleteUser, restartDB } = useDataQuery();
+  const {
+    deleteUser,
+    user: { id = "userID" },
+    restartDB,
+  } = useDataQuery();
   const toast = useToast();
   return (
     <ScrollView>
@@ -54,7 +60,7 @@ export default function ProfileScreen() {
           title="Back up"
           message="This will override your remote storage, do you wish to continue?"
           acceptFn={() => {
-            uploadDB("userID");
+            uploadDB(id);
             toast.show("Database uploaded");
           }}
         >
@@ -67,8 +73,14 @@ export default function ProfileScreen() {
           message="This will override your local storage, do you wish to continue?"
           acceptFn={() => {
             try {
-              restartDB(loadDB);
-              toast.show("Database loaded");
+              loadDB(id)
+                .then((value) => {
+                  const { user, activityList } = JSON.parse(value);
+                  storeUser(user);
+                  storeActivityList(activityList);
+                })
+                .then(restartDB)
+                .then(() => toast.show("Database loaded"));
             } catch (error) {
               logError("reloading DB", "profile", error);
             }
