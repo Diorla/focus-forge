@@ -39,8 +39,9 @@ export default function DataProvider({
   };
 
   const updateUser = (value: Partial<UserModel>) => {
-    const user = saveUser(value);
-    setUser(user);
+    saveUser({ ...user, ...value }).then((user) => {
+      setUser(user);
+    });
   };
 
   const deleteUser = () => {

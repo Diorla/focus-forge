@@ -11,7 +11,7 @@ import { useToast } from "react-native-toast-notifications";
 import useDataQuery from "../../context/data/useDataQuery";
 
 const StopWatchModal = () => {
-  const { user, updateUser, createDone } = useDataQuery();
+  const { user, updateUser, updateActivity, activityList } = useDataQuery();
   const { schedule = [] } = useSchedule();
   const running = !!user.startTime;
   const [visible, setVisible] = useState(false);
@@ -20,16 +20,19 @@ const StopWatchModal = () => {
 
   const endTimer = async (id: string, startTime: number) => {
     const key = getDateTimeKey(startTime);
+    const activity = activityList.find((item) => item.id === id);
 
-    createDone({
-      id: key,
-      datetime: startTime,
-      comment: "",
-      activityId: id,
-      length: (Date.now() - startTime) / 1000,
+    updateActivity(activity.id, {
+      done: {
+        ...activity.done,
+        [key]: {
+          length: (Date.now() - startTime) / 1000,
+          comment: "",
+        },
+      },
     });
 
-    return updateUser({
+    updateUser({
       startTime: 0,
     });
   };
