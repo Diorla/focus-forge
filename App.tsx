@@ -20,6 +20,14 @@ Notifications.setNotificationHandler({
 });
 
 // TODO: Add drawer for things like history, stats, profile etc and collapse the history
+// TODO: Add time and date to uploaded data, so that you can check which is the latest
+/**
+ * This will mean you can decide whether to override local data after the data
+ * has been fetched from the server.
+ * If you want to upload as well, it will download first and then let you know
+ * if the data is newer or older
+ */
+// TODO: Encrypt data that is being synced, for more security
 const CustomFallback = (props: {
   error: Error;
   resetError: (event: GestureResponderEvent) => void;

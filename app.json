@@ -2,7 +2,7 @@
   "expo": {
     "name": "Focus Forge",
     "slug": "focus-forge",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.diorla.focusforge",
@@ -39,20 +41,25 @@
       [
         "expo-notifications",
         {
-          "sounds": ["./assets/tone.wav"]
+          "sounds": [
+            "./assets/tone.wav"
+          ]
         }
       ],
       [
         "expo-build-properties",
         {
           "ios": {
-            "useFrameworks": "static"
+            "useFrameworks": "static",
+            "newArchEnabled": true
           },
           "android": {
-            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }"
+            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }",
+            "newArchEnabled": true
           }
         }
-      ]
+      ],
+      "expo-asset"
     ]
   },
   "react-native-google-mobile-ads": {
