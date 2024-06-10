@@ -46,7 +46,8 @@ export default function getSchedule({
   let currentUpcomingTime = initialUpcomingTime;
 
   activities
-    ?.sort((a, b) => a.priority - b.priority)
+    ?.sort((a, b) => b.updatedAt - a.updatedAt)
+    ?.sort((a, b) => b.priority - a.priority)
     .forEach((item) => {
       const doneList = Object.keys(item.done).map((key) => {
         return {
@@ -57,6 +58,9 @@ export default function getSchedule({
       });
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
+
+      const lastDone = doneList.sort((a, b) => a.datetime - b.datetime)[0]
+        ?.datetime;
 
       // this week remaining should be greater or equal to 0
       const tempTWR = item.weeklyTarget - doneThisWeek;
@@ -73,6 +77,7 @@ export default function getSchedule({
           todayTime: 0,
           upcomingTime: 0,
           overflowTime: 0,
+          lastDone,
         });
         return null;
       }
@@ -141,6 +146,7 @@ export default function getSchedule({
         todayTime: todayTime + additionalTime,
         upcomingTime,
         overflowTime,
+        lastDone,
       });
     });
   return list;

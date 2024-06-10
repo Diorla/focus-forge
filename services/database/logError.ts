@@ -2,7 +2,6 @@
 import { setDoc, Timestamp } from "firebase/firestore";
 import uuid from "react-native-uuid";
 import { doc } from "./firestore";
-import { SQLError } from "expo-sqlite";
 
 /**
  * It will be used to save errors to database
@@ -13,7 +12,7 @@ import { SQLError } from "expo-sqlite";
 export default function logError(
   identifier: string,
   event: string,
-  err: Error | SQLError
+  err: Error
 ) {
   const { name = "", stack = null } = { ...err };
   try {

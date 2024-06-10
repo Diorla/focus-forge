@@ -1,5 +1,5 @@
 const dbInfo = {
-  db: "db.txt",
+  db: "db.db",
 };
 
 export default dbInfo;

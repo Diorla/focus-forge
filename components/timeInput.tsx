@@ -1,7 +1,9 @@
 import { Input } from "@rneui/themed";
-import { View } from "react-native";
-import Typography from "./typography";
 import { hrMmToSeconds, secondsToHrMm } from "../services/datetime";
+import { ThemedText } from "./ThemedText";
+import { ThemedView } from "./ThemedView";
+import ThemedInput from "./ThemedInput";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function TimeInput({
   value,
@@ -9,46 +11,67 @@ export default function TimeInput({
   onChange,
   errorMessage,
   onFocus,
+  label,
 }: {
   value: number;
   color?: string;
   onChange: (value: number) => void;
   errorMessage?: string;
   onFocus?: () => void;
+  label?: string;
 }) {
   const [hh, mm, ss] = secondsToHrMm(value);
+  const theme = useThemeColor();
 
+  const currentColor = color || theme.grey0;
   return (
-    <View style={{ flexDirection: "row" }}>
-      <View style={{ flex: 1 }}>
-        <Input
-          value={String(hh)}
-          rightIcon={<Typography style={{ color }}>hr</Typography>}
-          style={{ color }}
-          onChangeText={(text) => {
-            const value = Number(text);
-            if (Number.isNaN(value)) return 0;
-            onChange(hrMmToSeconds(value, mm, ss));
+    <ThemedView>
+      {label && (
+        <ThemedText
+          style={{
+            color: currentColor,
+            marginLeft: 8,
+            fontWeight: "bold",
           }}
-          keyboardType="numbers-and-punctuation"
-          errorMessage={errorMessage}
-          onFocus={onFocus}
-        />
-      </View>
-      <View style={{ flex: 1 }}>
-        <Input
-          value={String(mm)}
-          rightIcon={<Typography style={{ color }}>mm</Typography>}
-          style={{ color }}
-          onChangeText={(text) => {
-            const value = Number(text);
-            if (Number.isNaN(value)) return 0;
-            onChange(hrMmToSeconds(hh, value, ss));
-          }}
-          keyboardType="numbers-and-punctuation"
-          onFocus={onFocus}
-        />
-      </View>
-    </View>
+        >
+          {label}
+        </ThemedText>
+      )}
+      <ThemedView style={{ flexDirection: "row" }}>
+        <ThemedView style={{ flex: 1 }}>
+          <ThemedInput
+            value={String(hh)}
+            rightIcon={
+              <ThemedText style={{ color: currentColor }}>hr</ThemedText>
+            }
+            style={{ color: currentColor }}
+            onChangeText={(text) => {
+              const value = Number(text);
+              if (Number.isNaN(value)) return 0;
+              onChange(hrMmToSeconds(value, mm, ss));
+            }}
+            keyboardType="numbers-and-punctuation"
+            errorMessage={errorMessage}
+            onFocus={onFocus}
+          />
+        </ThemedView>
+        <ThemedView style={{ flex: 1 }}>
+          <Input
+            value={String(mm)}
+            rightIcon={
+              <ThemedText style={{ color: currentColor }}>mm</ThemedText>
+            }
+            style={{ color: currentColor }}
+            onChangeText={(text) => {
+              const value = Number(text);
+              if (Number.isNaN(value)) return 0;
+              onChange(hrMmToSeconds(hh, value, ss));
+            }}
+            keyboardType="numbers-and-punctuation"
+            onFocus={onFocus}
+          />
+        </ThemedView>
+      </ThemedView>
+    </ThemedView>
   );
 }

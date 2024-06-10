@@ -1,8 +1,8 @@
 import * as React from "react";
 import { secondsToHrMm } from "../services/datetime";
-import Typography, { TypographyProps } from "./typography";
+import { ThemedText, type ThemedTextProps } from "./ThemedText";
 
-interface TimeFormatProps extends Partial<TypographyProps> {
+interface TimeFormatProps extends Partial<ThemedTextProps> {
   value: number;
   color?: string;
 }
@@ -14,8 +14,8 @@ export default function TimeFormat({
 }: TimeFormatProps) {
   const [h, m] = secondsToHrMm(value);
   return (
-    <Typography color={color} {...props}>
+    <ThemedText color={color} {...props}>
       {h}h {String(m).padStart(2, "0")}
-    </Typography>
+    </ThemedText>
   );
 }

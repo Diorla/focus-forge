@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import UserModel from "../../context/data/model/UserModel";
 import logError from "../database/logError";
+import { initialUser } from "@/context/user/initialUser";
 
 export default async function storeUser(value: UserModel): Promise<UserModel> {
   try {
@@ -8,6 +9,7 @@ export default async function storeUser(value: UserModel): Promise<UserModel> {
     await AsyncStorage.setItem("@user", data);
     return value;
   } catch (err) {
-    logError(value.id, "storeUser", err);
+    logError(value.id, "storeUser", err as Error);
+    return initialUser;
   }
 }

@@ -1,9 +1,12 @@
-import { Input, useTheme } from "@rneui/themed";
+import { Input } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
-import { View, TextInput } from "react-native";
+import { TextInput } from "react-native";
 import ModalSelector from "react-native-modal-selector";
-import Button from "./button";
-import Typography from "./typography";
+import { ThemedText } from "./ThemedText";
+import { ThemedButton } from "./ThemedButton";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "./ThemedView";
+import ThemedInput from "./ThemedInput";
 
 export default function SelectCategory({
   value,
@@ -15,9 +18,9 @@ export default function SelectCategory({
   list: string[];
 }) {
   const [label, setLabel] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<{ label: string; key: string }[]>([]);
+  const theme = useThemeColor();
 
-  const { theme } = useTheme();
   useEffect(() => {
     const uniqueList = [...new Set([...list, value])];
     setData(
@@ -29,31 +32,32 @@ export default function SelectCategory({
   }, [list, value]);
 
   return (
-    <View style={{ padding: 8 }}>
-      <Typography type="label">Select category</Typography>
+    <ThemedView style={{ padding: 8 }}>
+      <ThemedText type="defaultSemiBold">Select category</ThemedText>
       <ModalSelector
         data={data.sort((a, b) => (a.label > b.label ? 1 : -1))}
         initValue={value}
         onChange={(option) => {
           setValue(option.label);
         }}
-        selectedItemTextStyle={{ color: theme.colors.secondary }}
-        optionTextStyle={{ color: theme.colors.grey0 }}
+        selectedItemTextStyle={{ color: theme.secondary }}
+        optionTextStyle={{ color: theme.text }}
+        optionStyle={{ backgroundColor: theme.background }}
+        optionContainerStyle={{ backgroundColor: theme.background }}
+        sectionTextStyle={{ color: theme.text }}
         style={{ flex: 1 }}
         header={
-          <View>
-            <TextInput
+          <ThemedView>
+            <ThemedInput
               value={label}
               onChangeText={setLabel}
-              style={{
-                borderColor: "silver",
-                borderWidth: 1,
-                padding: 8,
-                margin: 4,
-              }}
+              placeholder="New category"
             />
-            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-              <Button
+            <ThemedView
+              style={{ flexDirection: "row", justifyContent: "center" }}
+            >
+              <ThemedButton
+                outlined
                 title="Add"
                 onPress={() => {
                   if (label) {
@@ -68,13 +72,14 @@ export default function SelectCategory({
                     setLabel("");
                   }
                 }}
+                color={theme.text}
               />
-            </View>
-          </View>
+            </ThemedView>
+          </ThemedView>
         }
       >
-        <Input value={value} />
+        <ThemedInput value={value} />
       </ModalSelector>
-    </View>
+    </ThemedView>
   );
 }

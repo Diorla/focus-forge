@@ -1,0 +1,115 @@
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
+import ActivityScreen from "@/containers/Activity";
+import ActivityModel from "@/context/data/model/ActivityModel";
+import useDataQuery from "@/context/data/useDataQuery";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
+import { ScrollView, View } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { getContrastColor } from "@/services/color";
+import { ThemedButton } from "@/components/ThemedButton";
+import { Divider } from "@rneui/themed";
+import EditModal from "@/containers/EditModal";
+import Confirm from "@/components/Confirm";
+
+export default function Activity() {
+  const { id } = useLocalSearchParams();
+  const { activityList, updateActivity, deleteActivity } = useDataQuery();
+
+  const [activity, setActivity] = useState<ActivityModel | null>(null);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [showEdit, setShowEdit] = useState(false);
+
+  useEffect(() => {
+    const activity = activityList.find((activity) => activity.id === id);
+    if (activity) setActivity(activity);
+    else setActivity(null);
+  }, [JSON.stringify(activityList)]);
+
+  if (activity?.id) {
+    const archiveActivity = () => {
+      updateActivity(activity.id, { archived: Date.now() });
+    };
+
+    const unarchiveActivity = () => {
+      updateActivity(activity.id, { archived: 0 });
+    };
+    const archive = activity.archived ? unarchiveActivity : archiveActivity;
+
+    const color = getContrastColor(activity?.color);
+
+    return (
+      <ScrollView style={{ backgroundColor: activity.color }}>
+        <View style={{ height: 36 }} />
+        <View
+          style={{
+            padding: 8,
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Ionicons
+            name="close"
+            size={36}
+            color={color}
+            onPress={() => router.back()}
+          />
+          <Ionicons
+            name={showMenu ? "caret-down-circle" : "caret-up-circle"}
+            size={48}
+            color={color}
+            onPress={() => setShowMenu(!showMenu)}
+          />
+        </View>
+        {showMenu && (
+          <View style={{ marginVertical: 8 }}>
+            <View style={{ alignItems: "center" }}>
+              <ThemedButton
+                title="Edit"
+                color={color}
+                onPress={() => setShowEdit(!showEdit)}
+              />
+              <ThemedButton
+                title={activity.archived ? "Unarchive" : "Archive"}
+                color={color}
+                style={{ marginVertical: 12 }}
+                onPress={archive}
+              />
+              <Confirm
+                title="Delete"
+                message="You can't undo this action. Perhaps you want to archive it."
+                acceptFn={() => deleteActivity(activity.id)}
+                acceptTitle="Delete"
+              >
+                <ThemedText color={color} style={{ fontWeight: "600" }}>
+                  Delete
+                </ThemedText>
+              </Confirm>
+            </View>
+            <Divider color={color} style={{ marginVertical: 12 }} />
+          </View>
+        )}
+        <ActivityScreen id={activity.id} />
+        <EditModal
+          activity={activity}
+          visible={showEdit}
+          closeModal={() => setShowEdit(!showEdit)}
+        />
+      </ScrollView>
+    );
+  }
+  return (
+    <ParallaxScrollView name="alert-circle">
+      <ThemedView style={{ padding: 8, alignItems: "center" }}>
+        <ThemedText type="title">Activity not found</ThemedText>
+        <ThemedText style={{ marginVertical: 12 }}>
+          This activity has been deleted or some unknown error has occurred.
+        </ThemedText>
+        <ThemedButton title="Back" onPress={() => router.back()}></ThemedButton>
+      </ThemedView>
+    </ParallaxScrollView>
+  );
+}

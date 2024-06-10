@@ -14,6 +14,7 @@ export default async function removeActivity(
     await AsyncStorage.setItem("@activityList", data);
     return activityList;
   } catch (err) {
-    logError(id, "removeActivity", err);
+    logError(id, "removeActivity", err as Error);
+    return [];
   }
 }

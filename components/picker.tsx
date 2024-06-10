@@ -1,9 +1,10 @@
 import { Picker as RNPicker } from "@react-native-picker/picker";
 import { Modal, Platform, View } from "react-native";
-import Typography from "./typography";
-import Button from "./button";
 import { useState } from "react";
-import { useTheme } from "@rneui/themed";
+import { ThemedText } from "./ThemedText";
+import { ThemedButton } from "./ThemedButton";
+import { ThemedView } from "./ThemedView";
+import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function Picker({
   label,
@@ -16,21 +17,25 @@ export default function Picker({
   onValueChange: (value: string) => void;
   list: Array<{ label: string; value: string }>;
 }) {
+  const theme = useThemeColor();
   const [showPicker, setShowPicker] = useState(false);
-  const { theme } = useTheme();
   if (Platform.OS === "android")
     return (
       <View>
-        <Typography
+        <ThemedText
           style={{
             marginLeft: 8,
-            color: theme.colors.grey3,
+            color: theme.grey0,
             fontWeight: "bold",
           }}
         >
           {label}
-        </Typography>
-        <RNPicker selectedValue={value} onValueChange={onValueChange}>
+        </ThemedText>
+        <RNPicker
+          selectedValue={value}
+          onValueChange={onValueChange}
+          style={{ color: theme.grey0 }}
+        >
           {list.map((item, idx) => (
             <RNPicker.Item key={idx} {...item} style={{ fontSize: 16 }} />
           ))}
@@ -38,15 +43,16 @@ export default function Picker({
       </View>
     );
 
-  const labelValue = list.find((item) => item.value === value).label;
+  const labelValue =
+    list.find((item) => item.value === value)?.label || "No label";
   return (
     <View>
-      <Typography
-        type="big"
-        style={{ marginLeft: 8, color: theme.colors.grey3, fontWeight: "bold" }}
+      <ThemedText
+        type="subtitle"
+        style={{ marginLeft: 8, color: theme.grey2, fontWeight: "bold" }}
       >
         {label}
-      </Typography>
+      </ThemedText>
       <View
         style={{
           alignItems: "flex-start",
@@ -55,9 +61,11 @@ export default function Picker({
           marginTop: 4,
         }}
       >
-        <Button onPress={() => setShowPicker(!showPicker)} type="outline">
-          {labelValue}
-        </Button>
+        <ThemedButton
+          onPress={() => setShowPicker(!showPicker)}
+          outlined
+          title={labelValue}
+        />
       </View>
       <Modal visible={showPicker}>
         <View
@@ -66,21 +74,29 @@ export default function Picker({
             flex: 1,
           }}
         >
-          <Typography
+          <ThemedText
             style={{
               marginLeft: 8,
-              color: theme.colors.grey3,
+              color: theme.grey2,
               fontWeight: "bold",
             }}
           >
             {label}
-          </Typography>
+          </ThemedText>
           <RNPicker selectedValue={value} onValueChange={onValueChange}>
             {list.map((item, idx) => (
               <RNPicker.Item key={idx} {...item} style={{ fontSize: 16 }} />
             ))}
           </RNPicker>
-          <Button onPress={() => setShowPicker(!showPicker)}>Close</Button>
+          <ThemedView
+            style={{ flexDirection: "row", justifyContent: "center" }}
+          >
+            <ThemedButton
+              onPress={() => setShowPicker(!showPicker)}
+              title="Close"
+              outlined
+            />
+          </ThemedView>
         </View>
       </Modal>
     </View>

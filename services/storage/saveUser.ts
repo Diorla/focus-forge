@@ -2,6 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logError } from "../database";
 import UserModel from "../../context/data/model/UserModel";
 import getUser from "./getUser";
+import { initialUser } from "@/context/user/initialUser";
 
 export default async function saveUser(
   value: Partial<UserModel>
@@ -12,6 +13,7 @@ export default async function saveUser(
     const newValue = await getUser();
     return newValue;
   } catch (err) {
-    logError(value.id, "saveUser", err);
+    logError(value.id || "", "saveUser", err as Error);
+    return initialUser;
   }
 }

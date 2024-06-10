@@ -1,12 +1,13 @@
-import { Modal, TouchableOpacity, View } from "react-native";
-import Typography from "./typography";
-import Button from "./button";
+import { Modal, TouchableOpacity } from "react-native";
 import { useState } from "react";
-import { useTheme } from "@rneui/themed";
 import { getContrastColor, random } from "../services/color";
 import Slider from "@react-native-community/slider";
 import hexToRGB from "../services/color/hexToRGB";
 import RGBToHex from "../services/color/RGBToHex";
+import { ThemedButton } from "./ThemedButton";
+import { ThemedText } from "./ThemedText";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "./ThemedView";
 
 export default function ColorPicker({
   label,
@@ -18,23 +19,23 @@ export default function ColorPicker({
   onValueChange: (value: string) => void;
 }) {
   const [showPicker, setShowPicker] = useState(false);
-  const { theme } = useTheme();
   const textColor = getContrastColor(value);
+  const theme = useThemeColor();
 
   const [red, green, blue] = hexToRGB(value);
 
   return (
-    <View>
-      <Typography
+    <ThemedView>
+      <ThemedText
         style={{
           marginLeft: 8,
-          color: theme.colors.grey3,
+          color: theme.grey0,
           fontWeight: "bold",
         }}
       >
         {label}
-      </Typography>
-      <View
+      </ThemedText>
+      <ThemedView
         style={{
           alignItems: "flex-start",
           marginLeft: 36,
@@ -46,11 +47,11 @@ export default function ColorPicker({
           onPress={() => setShowPicker(!showPicker)}
           style={{ backgroundColor: value, padding: 8 }}
         >
-          <Typography color={textColor}>{value}</Typography>
+          <ThemedText color={textColor}>{value}</ThemedText>
         </TouchableOpacity>
-      </View>
+      </ThemedView>
       <Modal visible={showPicker}>
-        <View
+        <ThemedView
           style={{
             justifyContent: "space-evenly",
             flex: 1,
@@ -58,18 +59,18 @@ export default function ColorPicker({
             padding: 8,
           }}
         >
-          <View>
-            <Typography color={textColor} type="header">
+          <ThemedView>
+            <ThemedText color={textColor} type="title">
               Color: {value}
-            </Typography>
-          </View>
-          <View style={{ padding: 8 }}>
+            </ThemedText>
+          </ThemedView>
+          <ThemedView style={{ padding: 8 }}>
             <Slider
               minimumValue={0}
               maximumValue={255}
               value={red}
-              minimumTrackTintColor={theme.colors.white}
-              maximumTrackTintColor={theme.colors.black}
+              minimumTrackTintColor={theme.background}
+              maximumTrackTintColor={theme.text}
               thumbTintColor={`rgb(${red}, 0, 0)`}
               onValueChange={(value) =>
                 onValueChange(RGBToHex([Math.floor(value), green, blue]))
@@ -79,8 +80,8 @@ export default function ColorPicker({
               minimumValue={0}
               maximumValue={255}
               value={green}
-              minimumTrackTintColor={theme.colors.white}
-              maximumTrackTintColor={theme.colors.black}
+              minimumTrackTintColor={theme.background}
+              maximumTrackTintColor={theme.text}
               thumbTintColor={`rgb(0, ${green}, 0)`}
               onValueChange={(value) =>
                 onValueChange(RGBToHex([red, Math.floor(value), blue]))
@@ -91,24 +92,31 @@ export default function ColorPicker({
               minimumValue={0}
               maximumValue={255}
               value={blue}
-              minimumTrackTintColor={theme.colors.white}
-              maximumTrackTintColor={theme.colors.black}
+              minimumTrackTintColor={theme.background}
+              maximumTrackTintColor={theme.text}
               thumbTintColor={`rgb(0, 0, ${blue})`}
               onValueChange={(value) =>
                 onValueChange(RGBToHex([red, green, Math.floor(value)]))
               }
             />
-          </View>
-          <View style={{ alignItems: "center" }}>
-            <Button block onPress={() => onValueChange(random())}>
-              Randomise
-            </Button>
-            <Button block onPress={() => setShowPicker(!showPicker)}>
-              Close
-            </Button>
-          </View>
-        </View>
+          </ThemedView>
+          <ThemedView style={{ alignItems: "center" }}>
+            <ThemedButton
+              onPress={() => onValueChange(random())}
+              title="Randomise"
+              outlined
+              style={{ marginVertical: 8 }}
+              color={textColor}
+            />
+            <ThemedButton
+              onPress={() => setShowPicker(!showPicker)}
+              title="Close"
+              outlined
+              color={textColor}
+            />
+          </ThemedView>
+        </ThemedView>
       </Modal>
-    </View>
+    </ThemedView>
   );
 }

@@ -1,6 +1,7 @@
 import { createContext } from "react";
+import { ScheduleContext } from "./useSchedule";
 
-const scheduleContext = createContext({
+const scheduleContext = createContext<ScheduleContext>({
   loading: true,
   time: {
     doneThisWeek: 0,

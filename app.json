@@ -1,70 +1,57 @@
 {
   "expo": {
-    "name": "Focus Forge",
+    "name": "focus-forge",
     "slug": "focus-forge",
-    "version": "0.0.21",
+    "version": "0.0.22",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.diorla.focusforge",
-      "config": {
-        "usesNonExemptEncryption": false
-      }
+      "bundleIdentifier": "com.diorla.focusforge"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.diorla.focusforge"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "experiments": {
+      "typedRoutes": true
     },
     "extra": {
+      "router": {
+        "origin": false
+      },
       "eas": {
         "projectId": "e0e861f3-9a98-45cb-84de-6076162cbe29"
       }
-    },
-    "owner": "diorla",
-    "plugins": [
-      [
-        "expo-notifications",
-        {
-          "sounds": [
-            "./assets/tone.wav"
-          ]
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "useFrameworks": "static",
-            "newArchEnabled": true
-          },
-          "android": {
-            "extraProguardRules": "-keep class com.google.android.gms.internal.consent_sdk.** { *; }",
-            "newArchEnabled": true
-          }
-        }
-      ],
-      "expo-asset"
-    ]
+    }
   },
-  "react-native-google-mobile-ads": {
-    "android_app_id": "ca-app-pub-6242148548602613~2751646601",
-    "ios_app_id": "ca-app-pub-6242148548602613~9209243748",
-    "delay_app_measurement_init": true
+  "config": {
+    "firebase": {
+      "apiKey": "AIzaSyCL1YZcWoQm1ktHg8P2eAGtIvMiTvPgeDA",
+      "authDomain": "focus-forge.firebaseapp.com",
+      "projectId": "focus-forge",
+      "storageBucket": "focus-forge.appspot.com",
+      "messagingSenderId": "99760921486",
+      "appId": "1:99760921486:web:14d37c77d3c78614ae22df",
+      "measurementId": "G-WHWS2DZF1J"
+    }
   }
 }

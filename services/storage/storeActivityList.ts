@@ -10,6 +10,7 @@ export default async function storeActivityList(
     await AsyncStorage.setItem("@activityList", data);
     return value;
   } catch (err) {
-    logError("storeActivityList", "activityList", err);
+    logError("storeActivityList", "activityList", err as Error);
+    return [];
   }
 }

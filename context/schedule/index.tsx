@@ -7,10 +7,10 @@ import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import Schedule from "./Schedule";
 
-import { Typography } from "../../components";
 import useDataQuery from "../data/useDataQuery";
 import Checklist from "./Checklist";
 import getChecklist from "./getChecklist";
+import { ThemedText } from "@/components/ThemedText";
 
 dayjs.extend(isToday);
 
@@ -19,8 +19,8 @@ export default function ScheduleProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const { user, activityList } = useDataQuery();
-  const { time: userTime } = useUser();
+  const { activityList, time: userTime } = useDataQuery();
+  const { user } = useUser();
   const [prevTime, setPrevTime] = useState(userTime);
   const [schedule, setSchedule] = useState<Schedule[]>([]);
   const [checklist, setChecklist] = useState<Checklist[]>([]);
@@ -95,7 +95,7 @@ export default function ScheduleProvider({
     generateChecklist();
   }, [activityListString]);
 
-  if (loading) return <Typography>Loading...</Typography>;
+  if (loading) return <ThemedText>Loading...</ThemedText>;
   return (
     <ActivityContext.Provider
       value={{

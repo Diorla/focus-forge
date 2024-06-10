@@ -9,6 +9,7 @@ export default async function getActivityList(): Promise<ActivityModel[]> {
       return JSON.parse(value);
     } else return [];
   } catch (err) {
-    logError("getActivityList", "getActivityList", err);
+    logError("getActivityList", "getActivityList", err as Error);
+    return [];
   }
 }

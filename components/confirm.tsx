@@ -22,7 +22,7 @@ export default function Confirm({
     Alert.alert(title, message, [
       {
         text: cancelTitle || "Cancel",
-        onPress: cancelFn || null,
+        onPress: cancelFn,
         style: "cancel",
       },
       { text: acceptTitle || "OK", onPress: acceptFn },
