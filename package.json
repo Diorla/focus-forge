@@ -12,7 +12,7 @@
     "lint": "expo lint",
     "pkg_upgrade": "bash upgrade_package.sh",
     "check-install": "npx expo install --check",
-    "build": "npm run pkg_upgrade && eas build",
+    "build": "npm run pkg_upgrade && eas build && vercel",
     "doctor": "npx expo-doctor",
     "dev": "npx expo start --dev-client"
   },
