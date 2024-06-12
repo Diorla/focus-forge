@@ -10,9 +10,12 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import signUp from "@/services/auth/signUp";
 import signIn from "@/services/auth/signIn";
 import useUser from "@/context/user/useUser";
+import upload from "@/services/database/uploadDB/upload";
+import useDataQuery from "@/context/data/useDataQuery";
 
 export default function FormScreen() {
-  const { updateUser } = useUser();
+  const { updateUser, user } = useUser();
+  const { activityList } = useDataQuery();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -53,7 +56,17 @@ export default function FormScreen() {
         return;
       }
       signUp(email, password)
-        .then((auth) => updateUser({ id: auth.user.uid }))
+        .then((auth) => {
+          updateUser({ id: auth.user.uid });
+          return auth.user.uid;
+        })
+        .then((userId) => {
+          const data = JSON.stringify({
+            user: { ...user, id: userId },
+            activityList,
+          });
+          upload({ uri: data, userId });
+        })
         .then(() => router.back())
         .catch((err) => console.log(err));
     }

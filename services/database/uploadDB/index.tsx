@@ -1,7 +1,7 @@
-import getActivityList from "../../storage/getActivityList";
-import getUser from "../../storage/getUser";
-import logError from "../logError";
+import getUser from "@/services/storage/getUser";
 import upload from "./upload";
+import getActivityList from "@/services/storage/getActivityList";
+import logError from "../logError";
 
 // TODO: Enable login
 /**
@@ -10,14 +10,14 @@ import upload from "./upload";
  * Right now, I'm just using "userID", which applies to anyone
  * @param userID
  */
-export default async function uploadDB(userID: string) {
+export default async function uploadDB(userId: string) {
   try {
     const user = await getUser();
     const activityList = await getActivityList();
     const data = { activityList, user };
     const uri = JSON.stringify(data);
-    upload({ uri, userID });
+    upload({ uri, userId });
   } catch (error) {
-    logError(userID, "upload db", error);
+    logError(userId, "upload db", error as Error);
   }
 }

@@ -56,6 +56,7 @@ interface ActivityModel {
       checked: number;
     };
   };
+  deletedAt: number;
 }
 
 export default ActivityModel;

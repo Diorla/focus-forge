@@ -1,6 +1,6 @@
+import dbInfo from "@/constants/db";
+import app from "@/constants/firebaseConfig";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import app from "../../../constants/firebaseConfig";
-import dbInfo from "../../../constants/db";
 
 const dbPath = dbInfo.db;
 
@@ -8,20 +8,20 @@ const storage = getStorage(app);
 
 async function uploadFile({
   fileName,
-  userID,
+  userId,
   file,
 }: {
   fileName: string;
-  userID: string;
+  userId: string;
   file: Blob | File;
 }) {
-  const storageRef = ref(storage, `user/${userID}/${fileName}`);
+  const storageRef = ref(storage, `user/${userId}/${fileName}`);
   return (await uploadBytes(storageRef, file)).ref.fullPath;
 }
 
 interface handleImageProps {
   uri: string;
-  userID: string;
+  userId: string;
 }
 
 export const uriToBlob = (uri: string) => {
@@ -29,12 +29,12 @@ export const uriToBlob = (uri: string) => {
   return blob;
 };
 
-export default async function upload({ uri, userID }: handleImageProps) {
+export default async function upload({ uri, userId }: handleImageProps) {
   const bytes = await uriToBlob(uri);
   const result = await uploadFile({
     fileName: dbPath,
     file: bytes,
-    userID,
+    userId,
   });
   return result;
 }
