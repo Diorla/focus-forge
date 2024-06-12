@@ -28,7 +28,7 @@ export default function UserProvider({
   };
 
   const updateUser = (value: Partial<UserModel>) => {
-    saveUser({ ...user, ...value }).then((user) => {
+    saveUser({ ...user, ...value, updatedAt: Date.now() }).then((user) => {
       setUser(user);
     });
   };
