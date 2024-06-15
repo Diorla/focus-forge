@@ -1,4 +1,4 @@
-import { View, Image, useColorScheme } from "react-native";
+import { View, Image } from "react-native";
 import { useState } from "react";
 import Dots from "./Dots";
 import { logError } from "../../services/database";
@@ -12,7 +12,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 export default function Onboarding({
   switchRegister,
 }: {
-  switchRegister: () => void;
+  switchRegister: (value: "onboarding" | "register" | "login") => void;
 }) {
   const [index, setIndex] = useState(0);
 
@@ -74,18 +74,11 @@ export default function Onboarding({
           />
           <ThemedButton
             color={theme.background}
-            onPress={switchRegister}
+            onPress={() => switchRegister("register")}
             title="Get Started"
           />
           <ThemedButton
-            onPress={() => {
-              try {
-                restartDB();
-                toast.show("Database loaded");
-              } catch (error) {
-                logError("reloading DB", "profile", error as Error);
-              }
-            }}
+            onPress={() => switchRegister("login")}
             color={theme.background}
             title="Log in"
             outlined
@@ -158,18 +151,11 @@ export default function Onboarding({
           />
           <ThemedButton
             color={theme.background}
-            onPress={switchRegister}
+            onPress={() => switchRegister("register")}
             title="Get Started"
           />
           <ThemedButton
-            onPress={() => {
-              try {
-                restartDB();
-                toast.show("Database loaded");
-              } catch (error) {
-                logError("reloading DB", "profile", error as Error);
-              }
-            }}
+            onPress={() => switchRegister("login")}
             color={theme.background}
             title="Log in"
             outlined
@@ -233,18 +219,11 @@ export default function Onboarding({
         />
         <ThemedButton
           color={theme.background}
-          onPress={switchRegister}
+          onPress={() => switchRegister("register")}
           title="Get Started"
         />
         <ThemedButton
-          onPress={() => {
-            try {
-              restartDB();
-              toast.show("Database loaded");
-            } catch (error) {
-              logError("reloading DB", "profile", error as Error);
-            }
-          }}
+          onPress={() => switchRegister("login")}
           color={theme.background}
           title="Log in"
           outlined

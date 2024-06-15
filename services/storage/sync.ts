@@ -18,7 +18,7 @@ export default async function sync(userId: string) {
   const user = await getUser();
   const activityList = await getActivityList();
   const { user: remoteUser, activityList: remoteActivityList } = json;
-  const mergedUser = mergeObj(user, remoteUser);
+  const mergedUser = { ...mergeObj(user, remoteUser), id: userId };
   const mergedActivityKeys = Array.from(
     new Set([
       ...activityList.map((a) => a.id),
@@ -36,8 +36,8 @@ export default async function sync(userId: string) {
     user: mergedUser,
     activityList: mergedActivityList,
   });
-  upload({ uri: stringifiedData, userId });
-  saveUser(mergedUser);
-  storeActivityList(mergedActivityList);
+  await upload({ uri: stringifiedData, userId });
+  await saveUser(mergedUser);
+  await storeActivityList(mergedActivityList);
   return { user: mergedUser, activityList: mergedActivityList };
 }

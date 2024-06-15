@@ -7,8 +7,8 @@ import logError from "../logError";
 /**
  * So, I need a way to uniquely identify a user which means they need to login
  * in order to be able to back up their data.
- * Right now, I'm just using "userID", which applies to anyone
- * @param userID
+ * Right now, I'm just using "userId", which applies to anyone
+ * @param userId
  */
 export default async function uploadDB(userId: string) {
   try {

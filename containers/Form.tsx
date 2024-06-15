@@ -1,4 +1,3 @@
-import { Pressable } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
@@ -7,35 +6,30 @@ import ThemedInput from "@/components/ThemedInput";
 import { useEffect, useState } from "react";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import signUp from "@/services/auth/signUp";
 import signIn from "@/services/auth/signIn";
 import useUser from "@/context/user/useUser";
-import upload from "@/services/database/uploadDB/upload";
-import useDataQuery from "@/context/data/useDataQuery";
 import sync from "@/services/storage/sync";
 
-export default function FormScreen() {
+export default function FormContainer({
+  closeScreen,
+}: {
+  closeScreen: () => void;
+}) {
   const { updateUser, user } = useUser();
-  const { activityList } = useDataQuery();
-  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
-    repassword: "",
   });
 
   const [formError, setFormError] = useState({
     email: "",
     password: "",
-    repassword: "",
   });
 
-  const [isNew, setIsNew] = useState(false);
   const theme = useThemeColor();
 
   const submit = () => {
     const { email, password } = form;
-    setLoading(true);
     if (!form.email) {
       setFormError({
         ...formError,
@@ -50,42 +44,20 @@ export default function FormScreen() {
       });
       return;
     }
-    if (isNew) {
-      if (form.password !== form.repassword) {
-        setFormError({
-          ...formError,
-          repassword: "Password does not match",
-        });
-        return;
-      }
-      signUp(email, password)
-        .then((auth) => {
-          updateUser({ id: auth.user.uid });
-          return auth.user.uid;
-        })
-        .then((userId) => {
-          const data = JSON.stringify({
-            user: { ...user, id: userId },
-            activityList,
-          });
-          upload({ uri: data, userId });
-        })
-        .catch((err) => console.log(err));
-    }
+
     signIn(email, password)
       .then((auth) => {
+        console.log("hello sign in");
         sync(auth.user.uid).then((value) => {
           const { user } = value;
-          console.log("user", user);
-          updateUser(user);
+          updateUser({ ...user, id: auth.user.uid });
         });
       })
       .catch((err) => console.log(err));
-    setLoading(false);
   };
 
   useEffect(() => {
-    if (user.id && user.id !== "user") router.back();
+    if (user.id && user.id !== "user") router.push("/");
   }, [user]);
 
   return (
@@ -120,20 +92,6 @@ export default function FormScreen() {
           errorMessage={formError.password}
           secureTextEntry
         />
-        {isNew && (
-          <ThemedInput
-            label=" Confirm Password"
-            value={form.repassword}
-            onChangeText={(repassword) =>
-              setForm({
-                ...form,
-                repassword,
-              })
-            }
-            errorMessage={formError.repassword}
-            secureTextEntry
-          />
-        )}
       </ThemedView>
       <ThemedView
         style={{
@@ -144,25 +102,15 @@ export default function FormScreen() {
       >
         <ThemedButton
           title="Forgot password"
-          onPress={() => setIsNew(!isNew)}
+          onPress={() => console.log("forgot password")}
           color={theme.grey0}
-        />
-        <ThemedButton
-          title={isNew ? "Login" : "Create Account"}
-          onPress={() => setIsNew(!isNew)}
-          color={theme.primary}
         />
       </ThemedView>
       <ThemedView style={{ alignItems: "center", marginVertical: 12 }}>
-        <ThemedButton
-          title="Submit"
-          outlined
-          onPress={submit}
-          loading={loading}
-        />
+        <ThemedButton title="Submit" outlined onPress={submit} />
       </ThemedView>
       <ThemedView style={{ alignItems: "center", marginTop: 40 }}>
-        <ThemedButton title="Back" onPress={() => router.back()} />
+        <ThemedButton title="Back" onPress={() => closeScreen()} />
       </ThemedView>
     </ParallaxScrollView>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert, Platform, TouchableOpacity } from "react-native";
 
 export default function Confirm({
   children,
@@ -28,5 +28,12 @@ export default function Confirm({
       { text: acceptTitle || "OK", onPress: acceptFn },
     ]);
 
+  const prompt = () => {
+    const result = confirm(`${title}: ${message}`);
+    if (result) acceptFn();
+    else cancelFn && cancelFn();
+  };
+  if (Platform.OS === "web")
+    return <TouchableOpacity onPress={prompt}>{children}</TouchableOpacity>;
   return <TouchableOpacity onPress={openAlert}>{children}</TouchableOpacity>;
 }

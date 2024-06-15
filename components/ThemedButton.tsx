@@ -5,6 +5,7 @@ import {
   type ButtonProps,
   type ViewStyle,
   View,
+  ActivityIndicator,
 } from "react-native";
 
 import { useThemeColor } from "@/hooks/useThemeColor";
@@ -16,6 +17,7 @@ export type ThemedButtonProps = ButtonProps & {
   style?: ViewStyle;
   color?: string;
   outlined?: boolean;
+  loading?: boolean;
 };
 
 export function ThemedButton({
@@ -27,15 +29,17 @@ export function ThemedButton({
   color: currenColor,
   outlined,
   disabled,
+  loading,
   ...rest
 }: ThemedButtonProps) {
   const theme = useThemeColor();
   const color = currenColor || theme.secondary;
 
   return (
-    <Pressable>
+    <Pressable disabled={disabled || loading}>
       <View
         style={[
+          { flexDirection: "row", alignItems: "center" },
           style,
           outlined
             ? {
@@ -47,6 +51,7 @@ export function ThemedButton({
             : undefined,
         ]}
       >
+        {loading ? <ActivityIndicator /> : null}
         <Text
           style={[
             { color: color || theme.text },
