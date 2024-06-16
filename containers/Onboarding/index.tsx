@@ -1,9 +1,7 @@
 import { View, Image } from "react-native";
 import { useState } from "react";
 import Dots from "./Dots";
-import { logError } from "../../services/database";
 import { useToast } from "react-native-toast-notifications";
-import useDataQuery from "../../context/data/useDataQuery";
 import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -12,7 +10,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 export default function Onboarding({
   switchRegister,
 }: {
-  switchRegister: (value: "onboarding" | "register" | "login") => void;
+  switchRegister: (value: "onboarding" | "register") => void;
 }) {
   const [index, setIndex] = useState(0);
 
@@ -22,7 +20,6 @@ export default function Onboarding({
   const colorList = [theme.primary, theme.secondary, theme.accent];
 
   const toast = useToast();
-  const { restartDB } = useDataQuery();
 
   if (index === 0)
     return (
@@ -76,12 +73,6 @@ export default function Onboarding({
             color={theme.background}
             onPress={() => switchRegister("register")}
             title="Get Started"
-          />
-          <ThemedButton
-            onPress={() => switchRegister("login")}
-            color={theme.background}
-            title="Log in"
-            outlined
           />
         </View>
       </View>
@@ -154,12 +145,6 @@ export default function Onboarding({
             onPress={() => switchRegister("register")}
             title="Get Started"
           />
-          <ThemedButton
-            onPress={() => switchRegister("login")}
-            color={theme.background}
-            title="Log in"
-            outlined
-          />
         </View>
       </View>
     );
@@ -221,12 +206,6 @@ export default function Onboarding({
           color={theme.background}
           onPress={() => switchRegister("register")}
           title="Get Started"
-        />
-        <ThemedButton
-          onPress={() => switchRegister("login")}
-          color={theme.background}
-          title="Log in"
-          outlined
         />
       </View>
     </View>

@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import UserContext from "./userContext";
-import getUser from "@/services/storage/getUser";
-import removeUser from "@/services/storage/removeUser";
-import saveUser from "@/services/storage/saveUser";
-import storeUser from "@/services/storage/storeUser";
-import UserModel from "../data/model/UserModel";
+import UserModel from "./UserModel";
 import { initialUser } from "./initialUser";
+import { onAuthStateChanged, Unsubscribe, Auth, getAuth } from "firebase/auth";
+import app from "@/constants/firebaseConfig";
+import { logError } from "@/services/database";
+import watchUser from "@/services/database/watchUser";
+import saveUser from "@/services/storage/saveUser";
+import saveUserCred from "@/services/database/saveUserCred";
+import getUserCred from "@/services/database/getUserCred";
+import signIn from "@/services/auth/signIn";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const generateAuth = () => {
+  return getAuth(app);
+};
+const auth = getAuth(app);
 
 export default function UserProvider({
   children,
@@ -16,33 +26,35 @@ export default function UserProvider({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getUser().then((user) => {
-      setUser(user);
+    let unsubscribe: Unsubscribe;
+    try {
+      unsubscribe = onAuthStateChanged(auth as Auth, (currentUser) => {
+        if (currentUser) {
+          watchUser(currentUser.uid, (user) => {
+            setUser({ ...user, id: currentUser.uid });
+            setLoading(false);
+          });
+        } else {
+          getUserCred().then((userCred) => {
+            if (userCred.email) {
+              signIn(userCred.email, userCred.password);
+            } else {
+              setLoading(false);
+            }
+          });
+        }
+      });
+    } catch (error) {
+      logError(user?.id, "auth user context", error as Error);
       setLoading(false);
-    });
-  }, []);
-
-  const createUser = (user: UserModel) => {
-    storeUser(user);
-    setUser(user);
-  };
-
-  const updateUser = (value: Partial<UserModel>) => {
-    saveUser({ ...user, ...value, updatedAt: Date.now() }).then((user) => {
-      setUser(user);
-    });
-  };
-
-  const deleteUser = () => {
-    removeUser().then(() => {
-      setUser(initialUser);
-    });
-  };
+    }
+    return () => {
+      unsubscribe && unsubscribe();
+    };
+  }, [user?.id]);
 
   return (
-    <UserContext.Provider
-      value={{ createUser, deleteUser, updateUser, user, loading }}
-    >
+    <UserContext.Provider value={{ user, loading }}>
       {children}
     </UserContext.Provider>
   );

@@ -35,6 +35,8 @@ interface UserModel {
   updatedAt: number;
   startTime: number;
   createdAt: number;
+  email: string;
+  registered: boolean;
 }
 
 export default UserModel;

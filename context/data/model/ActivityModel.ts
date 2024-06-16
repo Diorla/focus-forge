@@ -57,6 +57,7 @@ interface ActivityModel {
     };
   };
   deletedAt: number;
+  userId: string;
 }
 
 export default ActivityModel;

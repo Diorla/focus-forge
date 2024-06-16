@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, useColorScheme } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -21,7 +21,11 @@ export default function ParallaxScrollView({
 }: IconProps<ComponentProps<typeof Ionicons>["name"]>) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
+  const colorScheme = useColorScheme();
   const theme = useThemeColor();
+  const oppositeTheme = useThemeColor(
+    colorScheme === "dark" ? "light" : "dark"
+  );
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -50,14 +54,14 @@ export default function ParallaxScrollView({
         <Animated.View
           style={[
             styles.header,
-            { backgroundColor: theme.primary },
+            { backgroundColor: oppositeTheme.primary },
             headerAnimatedStyle,
           ]}
         >
           <Ionicons
             size={310}
             name={name}
-            style={[styles.headerImage, { color: theme.background + "77" }]}
+            style={[styles.headerImage, { color: theme.primary + 80 }]}
           />
         </Animated.View>
         <ThemedView style={styles.content}>{children}</ThemedView>

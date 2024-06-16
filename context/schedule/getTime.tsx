@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import ActivityModel from "../data/model/ActivityModel";
-import UserModel from "../data/model/UserModel";
+import UserModel from "../user/UserModel";
 
 /**
  * => User

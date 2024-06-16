@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logError } from "../database";
 import getUser from "./getUser";
-import UserModel from "../../context/data/model/UserModel";
+import UserModel from "../../context/user/UserModel";
 import { initialUser } from "@/context/user/initialUser";
 
 export default async function removeUser(): Promise<UserModel> {

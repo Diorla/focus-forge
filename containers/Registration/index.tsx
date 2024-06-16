@@ -1,16 +1,28 @@
 import { View } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@rneui/themed";
 import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { QuotaForm } from "./QuotaForm";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
+import { router } from "expo-router";
+import FormContainer from "../Form";
 
 export default function Registration() {
   const [name, setName] = useState("");
   const [showQuotaForm, setShowQuotaForm] = useState(false);
   const theme = useThemeColor();
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (user.registered) {
+      router.push("/");
+    }
+  }, [user]);
+
+  if (!user.id) return <FormContainer />;
 
   if (showQuotaForm) return <QuotaForm name={name} />;
   return (

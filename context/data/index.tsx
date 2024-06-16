@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import DataContext from "./DataContext";
 import ActivityModel from "./model/ActivityModel";
-import { initialActivity } from "./initialActivity";
 import useInterval from "@/hooks/useTimeInterval";
-import getActivityList from "@/services/storage/getActivityList";
-import removeActivity from "@/services/storage/removeActivity";
-import saveActivity from "@/services/storage/saveActivity";
-import updateActivityList from "@/services/storage/updateActivityList";
 import useUser from "../user/useUser";
+import watchActivityList from "@/services/database/watchActivityList";
 
 export default function DataProvider({
   children,
@@ -23,49 +19,15 @@ export default function DataProvider({
   }, 15000);
 
   useEffect(() => {
-    getActivityList().then((list) => {
-      setActivityList(list.filter((item) => !item.deletedAt));
-    });
-  }, [user.id + user.updatedAt]);
+    if (!user.id) return;
 
-  const createActivity = (activity: Partial<ActivityModel>) => {
-    const newActivity: ActivityModel =
-      activityList.find((item) => item.id === activity.id) || initialActivity;
-
-    saveActivity({ ...newActivity, ...activity }).then((list) => {
-      setActivityList(list.filter((item) => !item.deletedAt));
+    watchActivityList(user.id, (list) => {
+      setActivityList(list);
     });
-  };
-
-  const updateActivity = (id: string, activity: Partial<ActivityModel>) => {
-    updateActivityList(id, activity).then((list) => {
-      setActivityList(list.filter((item) => !item.deletedAt));
-    });
-  };
-
-  const deleteActivity = (id: string) => {
-    removeActivity(id).then((list) => {
-      setActivityList(list.filter((item) => !item.deletedAt));
-    });
-  };
-
-  const restartDB = () => {
-    getActivityList().then((list) => {
-      setActivityList(list.filter((item) => !item.deletedAt));
-    });
-  };
+  }, [user.id]);
 
   return (
-    <DataContext.Provider
-      value={{
-        activityList,
-        createActivity,
-        updateActivity,
-        deleteActivity,
-        restartDB,
-        time,
-      }}
-    >
+    <DataContext.Provider value={{ activityList, time }}>
       {children}
     </DataContext.Provider>
   );

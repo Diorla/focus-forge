@@ -28,8 +28,12 @@ export default function mergeObj<type>(
         // recursion for nested object
         merged[key] = mergeObj(json1[key], json2[key]);
       } else if (Array.isArray(json1[key]) && Array.isArray(json2[key])) {
+        const newArray = [...json1[key], ...json2[key]];
+        if (typeof newArray[0] === "object") {
+          merged[key] = getLatest(json1, json2) ? json1[key] : json2[key];
+        }
         // merge two arrays
-        merged[key] = Array.from(new Set([...json1[key], ...json2[key]]));
+        else merged[key] = Array.from(new Set(newArray));
       } else {
         // select the latest key
         merged[key] = getLatest(json1, json2) ? json1[key] : json2[key];

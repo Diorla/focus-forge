@@ -7,9 +7,11 @@ import { ThemedButton } from "@/components/ThemedButton";
 import useUser from "@/context/user/useUser";
 import sync from "@/services/storage/sync";
 import { useToast } from "react-native-toast-notifications";
+import { logError } from "@/services/database";
+import updateUser from "@/services/database/updateUser";
 
 export default function SyncScreen() {
-  const { user, updateUser } = useUser();
+  const { user } = useUser();
   const toast = useToast();
   return (
     <ParallaxScrollView name="server">
@@ -28,11 +30,13 @@ export default function SyncScreen() {
           <ThemedButton
             title="Sync"
             onPress={() =>
-              sync(user.id).then((value) => {
-                const { user } = value;
-                updateUser(user);
-                toast.show("Synced");
-              })
+              sync(user.id)
+                .then((value) => {
+                  const { user } = value;
+                  updateUser(user);
+                  toast.show("Synced");
+                })
+                .catch((err) => logError(user.id, "syncing", err))
             }
             outlined
           />
@@ -44,16 +48,3 @@ export default function SyncScreen() {
     </ParallaxScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  headerImage: {
-    color: "#808080",
-    bottom: -90,
-    left: -35,
-    position: "absolute",
-  },
-  titleContainer: {
-    flexDirection: "row",
-    gap: 8,
-  },
-});

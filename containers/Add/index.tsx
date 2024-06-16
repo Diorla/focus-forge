@@ -16,8 +16,13 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import ThemedInput from "@/components/ThemedInput";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
+import createActivity from "@/services/database/createActivity";
 
 export default function AddScreen() {
+  const {
+    user: { id },
+  } = useUser();
   const baseForm: ActivityModel = {
     name: "",
     weeklyTarget: 0,
@@ -40,12 +45,13 @@ export default function AddScreen() {
     done: {},
     tasks: {},
     isOccurrence: false,
+    userId: id,
+    deletedAt: 0,
   };
 
   const theme = useThemeColor();
   const [form, setForm] = useState<ActivityModel>({ ...baseForm });
   const { schedule } = useSchedule();
-  const { createActivity } = useDataQuery();
   const list = Array.from(new Set(schedule.map((item) => item.category)));
   const toast = useToast();
 
@@ -88,12 +94,9 @@ export default function AddScreen() {
       }
     }
     try {
-      createActivity({
-        ...form,
-        id: Date.now().toString(),
-      });
-      setForm({ ...baseForm, isOccurrence: form.isOccurrence });
-      toast.show("New activity added");
+      createActivity(form)
+        .then(() => setForm({ ...baseForm, isOccurrence: form.isOccurrence }))
+        .then(() => toast.show("New activity added"));
     } catch (error) {
       const { message } = error as Error;
       toast.show("Adding new activity failed: " + message);

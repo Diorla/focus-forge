@@ -2,7 +2,7 @@ import { initialUser } from "@/context/user/initialUser";
 import { loadDB } from "../database";
 import getUser from "./getUser";
 import getActivityList from "./getActivityList";
-import UserModel from "@/context/data/model/UserModel";
+import UserModel from "@/context/user/UserModel";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import { initialActivity } from "@/context/data/initialActivity";
 import upload from "../database/uploadDB/upload";
@@ -11,6 +11,7 @@ import storeActivityList from "./storeActivityList";
 import mergeObj from "./mergeDB";
 
 export default async function sync(userId: string) {
+  // fetch DB data
   const db = await loadDB(userId);
   const json: { user: UserModel; activityList: ActivityModel[] } = db
     ? JSON.parse(db)

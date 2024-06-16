@@ -2,7 +2,7 @@ import { ScrollView, View } from "react-native";
 import { useState } from "react";
 import { secondsToHrMm } from "../../services/datetime";
 import { logError } from "../../services/database";
-import { DailyQuota } from "../../context/data/model/UserModel";
+import { DailyQuota } from "../../context/user/UserModel";
 import useUser from "@/context/user/useUser";
 import AnimatedBackground from "../AnimatedBackground";
 import TimeInput from "@/components/TimeInput";

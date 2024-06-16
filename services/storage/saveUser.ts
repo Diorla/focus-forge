@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logError } from "../database";
-import UserModel from "../../context/data/model/UserModel";
+import UserModel from "../../context/user/UserModel";
 import getUser from "./getUser";
 import { initialUser } from "@/context/user/initialUser";
 

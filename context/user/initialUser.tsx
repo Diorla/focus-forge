@@ -1,4 +1,4 @@
-import UserModel from "../data/model/UserModel";
+import UserModel from "./UserModel";
 
 export const initialUser: UserModel = {
   id: "",
@@ -9,4 +9,6 @@ export const initialUser: UserModel = {
   updatedAt: 0,
   startTime: 0,
   createdAt: 0,
+  email: "",
+  registered: false,
 };
