@@ -23,4 +23,5 @@ export const initialActivity: ActivityModel = {
   done: {},
   tasks: {},
   deletedAt: 0,
+  userId: "",
 };

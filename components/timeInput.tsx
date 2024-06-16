@@ -4,6 +4,7 @@ import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import ThemedInput from "./ThemedInput";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ViewStyle } from "react-native";
 
 export default function TimeInput({
   value,
@@ -12,6 +13,7 @@ export default function TimeInput({
   errorMessage,
   onFocus,
   label,
+  containerStyle,
 }: {
   value: number;
   color?: string;
@@ -19,13 +21,14 @@ export default function TimeInput({
   errorMessage?: string;
   onFocus?: () => void;
   label?: string;
+  containerStyle?: ViewStyle;
 }) {
   const [hh, mm, ss] = secondsToHrMm(value);
   const theme = useThemeColor();
 
   const currentColor = color || theme.grey0;
   return (
-    <ThemedView>
+    <ThemedView style={containerStyle}>
       {label && (
         <ThemedText
           style={{

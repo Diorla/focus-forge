@@ -4,16 +4,15 @@ import { CheckBox, Input } from "@rneui/themed";
 import { MaterialIcons } from "@expo/vector-icons";
 import Confirm from "@/components/Confirm";
 import KeyboardWrapper from "@/components/KeyboardWrapper";
-import useDataQuery from "@/context/data/useDataQuery";
 import Checklist from "@/context/schedule/Checklist";
 import Schedule from "@/context/schedule/Schedule";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import updateActivity from "@/services/database/updateActivity";
 
 export default function Task({ activity }: { activity: Schedule | Checklist }) {
   const theme = useThemeColor();
-  const { updateActivity } = useDataQuery();
   const { tasks } = activity;
   const [taskList, setTaskList] = useState<
     { title: string; checked: number; created: number }[]
@@ -38,7 +37,8 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
         i.created === id ? { ...i, checked: Date.now() } : i
       )
     );
-    updateActivity(activity.id, {
+    updateActivity({
+      id: activity.id,
       tasks: {
         ...tasks,
         [id]: { ...tasks[id], checked: Date.now() },
@@ -50,7 +50,8 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
     setTaskList(
       taskList.map((i) => (i.created === id ? { ...i, checked: 0 } : i))
     );
-    updateActivity(activity.id, {
+    updateActivity({
+      id: activity.id,
       tasks: {
         ...tasks,
         [id]: { ...tasks[id], checked: 0 },
@@ -61,14 +62,13 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
   const deleteTask = (id: number) => {
     const tempTask = { ...tasks };
     delete tempTask[id];
-    updateActivity(activity.id, {
-      tasks: tempTask,
-    });
+    updateActivity({ id: activity.id, tasks: tempTask });
   };
 
   const createTask = () => {
     setTaskList((prev) => [...prev, task]);
-    updateActivity(activity.id, {
+    updateActivity({
+      id: activity.id,
       tasks: {
         ...tasks,
         [task.created]: task,

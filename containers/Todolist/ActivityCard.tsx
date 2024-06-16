@@ -14,6 +14,7 @@ import DatePicker from "@/components/DateTimePicker";
 import { ThemedButton } from "@/components/ThemedButton";
 import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import updateActivity from "@/services/database/updateActivity";
 
 export default function ActivityCard({ activity }: { activity: Checklist }) {
   const { id, remaining, occurrence, occurrenceType } = activity;
@@ -24,7 +25,6 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
     (item) => !activity.tasks[item].checked
   );
 
-  const { updateActivity } = useDataQuery();
   const { done = {} } = activity;
 
   const [newTime, setNewTime] = useState<DoneType>({
@@ -37,7 +37,7 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
 
   const createDone = (data: DoneType) => {
     const key = getDateTimeKey(data.datetime);
-    updateActivity(activity.id, { done: { ...done, [key]: data } });
+    updateActivity({ id: activity.id, done: { ...done, [key]: data } });
   };
 
   let dateRemaining = "";

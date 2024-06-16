@@ -1,5 +1,5 @@
 import { Picker as RNPicker } from "@react-native-picker/picker";
-import { Modal, Platform, View } from "react-native";
+import { Modal, Platform } from "react-native";
 import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
@@ -21,7 +21,7 @@ export default function Picker({
   const [showPicker, setShowPicker] = useState(false);
   if (Platform.OS === "android")
     return (
-      <View>
+      <ThemedView>
         <ThemedText
           style={{
             marginLeft: 8,
@@ -40,20 +40,20 @@ export default function Picker({
             <RNPicker.Item key={idx} {...item} style={{ fontSize: 16 }} />
           ))}
         </RNPicker>
-      </View>
+      </ThemedView>
     );
 
   const labelValue =
     list.find((item) => item.value === value)?.label || "No label";
   return (
-    <View>
+    <ThemedView>
       <ThemedText
         type="subtitle"
         style={{ marginLeft: 8, color: theme.grey2, fontWeight: "bold" }}
       >
         {label}
       </ThemedText>
-      <View
+      <ThemedView
         style={{
           alignItems: "flex-start",
           marginLeft: 36,
@@ -66,9 +66,9 @@ export default function Picker({
           outlined
           title={labelValue}
         />
-      </View>
+      </ThemedView>
       <Modal visible={showPicker}>
-        <View
+        <ThemedView
           style={{
             justifyContent: "center",
             flex: 1,
@@ -97,8 +97,8 @@ export default function Picker({
               outlined
             />
           </ThemedView>
-        </View>
+        </ThemedView>
       </Modal>
-    </View>
+    </ThemedView>
   );
 }

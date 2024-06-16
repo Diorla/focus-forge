@@ -13,6 +13,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import Timer from "@/components/Timer";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import updateActivity from "@/services/database/updateActivity";
 
 const priority = ["None", "Low", "Medium", "High"];
 export function TodayCard({
@@ -22,8 +23,6 @@ export function TodayCard({
   schedule: Schedule;
   setCurrentSchedule: any;
 }) {
-  const { updateActivity } = useDataQuery();
-
   const theme = useThemeColor();
 
   const toast = useToast();
@@ -47,7 +46,8 @@ export function TodayCard({
   );
 
   const startTimer = (id: string, length: number, notificationId: string) => {
-    return updateActivity(id, {
+    return updateActivity({
+      id,
       timerStart: Date.now(),
       timerLength: length,
       timerId: notificationId,
@@ -58,7 +58,8 @@ export function TodayCard({
     const length = (Date.now() - startTime) / 1000;
     const key = getDateTimeKey(startTime);
 
-    updateActivity(id, {
+    updateActivity({
+      id,
       timerStart: 0,
       timerLength: 0,
       timerId: "",

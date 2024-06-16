@@ -8,8 +8,8 @@ import dayjs from "dayjs";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
-
-const isIOS = Platform.OS === "ios";
+import { ThemedView } from "./ThemedView";
+import WebDateTimePicker from "./WebDateTimePicker";
 
 export default function DatePicker({
   date,
@@ -44,7 +44,7 @@ export default function DatePicker({
     });
   };
 
-  if (isIOS)
+  if (Platform.OS === "ios")
     return (
       <View style={{ alignItems: "flex-start", marginVertical: 8 }}>
         <ThemedText
@@ -65,35 +65,44 @@ export default function DatePicker({
         />
       </View>
     );
-  return (
-    <View
-      style={{ alignItems: "flex-start", marginVertical: 8, marginLeft: 8 }}
-    >
-      <ThemedText
-        style={{
-          color: theme.grey2,
-          fontWeight: "bold",
-          marginBottom: 8,
-        }}
+  if (Platform.OS === "android")
+    return (
+      <View
+        style={{ alignItems: "flex-start", marginVertical: 8, marginLeft: 8 }}
       >
-        {label}
-      </ThemedText>
-      <View style={{ marginLeft: 24, flexDirection: "row" }}>
-        {mode.includes("date") && (
-          <ThemedButton
-            outlined
-            onPress={showDate}
-            title={format(date, "date")}
-          />
-        )}
-        {mode.includes("time") && (
-          <ThemedButton
-            outlined
-            onPress={showTime}
-            title={format(date, "time")}
-          />
-        )}
+        <ThemedText
+          style={{
+            color: theme.grey2,
+            fontWeight: "bold",
+            marginBottom: 8,
+          }}
+        >
+          {label}
+        </ThemedText>
+        <View style={{ marginLeft: 24, flexDirection: "row" }}>
+          {mode.includes("date") && (
+            <ThemedButton
+              outlined
+              onPress={showDate}
+              title={format(date, "date")}
+            />
+          )}
+          {mode.includes("time") && (
+            <ThemedButton
+              outlined
+              onPress={showTime}
+              title={format(date, "time")}
+            />
+          )}
+        </View>
       </View>
-    </View>
+    );
+  return (
+    <ThemedView style={{ flexDirection: "row" }}>
+      <WebDateTimePicker
+        value={date}
+        onValueChange={(value) => setDate(value)}
+      />
+    </ThemedView>
   );
 }

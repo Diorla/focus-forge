@@ -1,5 +1,5 @@
 import { ActivityIndicator, Modal, TouchableOpacity, View } from "react-native";
-import { Card, Input, useTheme } from "@rneui/themed";
+import { Card, Input } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,7 +11,6 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
 import Confirm from "@/components/Confirm";
 import DoneType from "@/context/data/types/DoneType";
-import useDataQuery from "@/context/data/useDataQuery";
 import Schedule from "@/context/schedule/Schedule";
 import {
   getDateKey,
@@ -20,6 +19,7 @@ import {
   getDateTimeKey,
 } from "@/services/datetime";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import updateActivity from "@/services/database/updateActivity";
 
 type History = {
   time: string;
@@ -34,7 +34,6 @@ export default function History({ activity }: { activity: Schedule }) {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
   const theme = useThemeColor();
-  const { updateActivity } = useDataQuery();
   const { done = {} } = activity;
   const [expandIdx, setExpandIdx] = useState("");
   const [form, setForm] = useState<DoneType>({
@@ -78,17 +77,17 @@ export default function History({ activity }: { activity: Schedule }) {
 
   const createDone = (data: DoneType) => {
     const key = getDateTimeKey(data.datetime);
-    updateActivity(activity.id, { done: { ...done, [key]: data } });
+    updateActivity({ id: activity.id, done: { ...done, [key]: data } });
   };
 
   const updateDone = (key: string, data: DoneType) => {
-    updateActivity(activity.id, { done: { ...done, [key]: data } });
+    updateActivity({ id: activity.id, done: { ...done, [key]: data } });
   };
 
   const deleteDone = (key: string) => {
     const temp = { ...done };
     delete temp[key];
-    updateActivity(activity.id, { done: temp });
+    updateActivity({ id: activity.id, done: temp });
   };
 
   if (loading)

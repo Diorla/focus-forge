@@ -2,17 +2,16 @@ import { useEffect, useState } from "react";
 import { CheckBox, Input } from "@rneui/themed";
 import { MaterialIcons } from "@expo/vector-icons";
 import Schedule from "@/context/schedule/Schedule";
-import useDataQuery from "@/context/data/useDataQuery";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
 import Confirm from "./Confirm";
 import KeyboardWrapper from "./KeyboardWrapper";
 import { ThemedView } from "./ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import updateActivity from "@/services/database/updateActivity";
 
 export default function Task({ activity }: { activity: Schedule }) {
   const theme = useThemeColor();
-  const { updateActivity } = useDataQuery();
   const { tasks } = activity;
   const [taskList, setTaskList] = useState<
     { title: string; checked: number; created: number }[]
@@ -37,11 +36,12 @@ export default function Task({ activity }: { activity: Schedule }) {
         i.created === id ? { ...i, checked: Date.now() } : i
       )
     );
-    updateActivity(activity.id, {
+    updateActivity({
       tasks: {
         ...tasks,
         [id]: { ...tasks[id], checked: Date.now() },
       },
+      id: activity.id,
     });
   };
 
@@ -49,30 +49,34 @@ export default function Task({ activity }: { activity: Schedule }) {
     setTaskList(
       taskList.map((i) => (i.created === id ? { ...i, checked: 0 } : i))
     );
-    updateActivity(activity.id, {
+    updateActivity({
       tasks: {
         ...tasks,
         [id]: { ...tasks[id], checked: 0 },
       },
+      id: activity.id,
     });
   };
 
   const deleteTask = (id: number) => {
     const tempTask = { ...tasks };
     delete tempTask[id];
-    updateActivity(activity.id, {
+    updateActivity({
       tasks: tempTask,
+      id: activity.id,
     });
   };
 
   const createTask = () => {
     setTaskList((prev) => [...prev, { ...task, id: String(task.created) }]);
-    updateActivity(activity.id, {
+    updateActivity({
       tasks: {
         ...tasks,
         [task.created]: task,
       },
+      id: activity.id,
     });
+
     setTask({
       title: "",
       checked: 0,

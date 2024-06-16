@@ -29,9 +29,9 @@ export default function ColorPicker({
       <ThemedText
         style={{
           marginLeft: 8,
-          color: theme.grey0,
           fontWeight: "bold",
         }}
+        color={textColor}
       >
         {label}
       </ThemedText>
@@ -47,7 +47,7 @@ export default function ColorPicker({
           onPress={() => setShowPicker(!showPicker)}
           style={{ backgroundColor: value, padding: 8 }}
         >
-          <ThemedText color={textColor}>{value}</ThemedText>
+          <ThemedText color={theme.text}>{value}</ThemedText>
         </TouchableOpacity>
       </ThemedView>
       <Modal visible={showPicker}>
@@ -59,18 +59,23 @@ export default function ColorPicker({
             padding: 8,
           }}
         >
-          <ThemedView>
-            <ThemedText color={textColor} type="title">
-              Color: {value}
-            </ThemedText>
-          </ThemedView>
-          <ThemedView style={{ padding: 8 }}>
+          <ThemedText color={textColor} type="title">
+            Color: {value}
+          </ThemedText>
+          <ThemedView
+            style={{
+              padding: 8,
+              backgroundColor: "transparent",
+              borderWidth: 1,
+              borderColor: theme.background,
+            }}
+          >
             <Slider
               minimumValue={0}
               maximumValue={255}
               value={red}
-              minimumTrackTintColor={theme.background}
-              maximumTrackTintColor={theme.text}
+              minimumTrackTintColor={theme.grey0}
+              maximumTrackTintColor={theme.grey5}
               thumbTintColor={`rgb(${red}, 0, 0)`}
               onValueChange={(value) =>
                 onValueChange(RGBToHex([Math.floor(value), green, blue]))
@@ -80,8 +85,8 @@ export default function ColorPicker({
               minimumValue={0}
               maximumValue={255}
               value={green}
-              minimumTrackTintColor={theme.background}
-              maximumTrackTintColor={theme.text}
+              minimumTrackTintColor={theme.grey0}
+              maximumTrackTintColor={theme.grey5}
               thumbTintColor={`rgb(0, ${green}, 0)`}
               onValueChange={(value) =>
                 onValueChange(RGBToHex([red, Math.floor(value), blue]))
@@ -92,20 +97,26 @@ export default function ColorPicker({
               minimumValue={0}
               maximumValue={255}
               value={blue}
-              minimumTrackTintColor={theme.background}
-              maximumTrackTintColor={theme.text}
+              minimumTrackTintColor={theme.grey0}
+              maximumTrackTintColor={theme.grey5}
               thumbTintColor={`rgb(0, 0, ${blue})`}
               onValueChange={(value) =>
                 onValueChange(RGBToHex([red, green, Math.floor(value)]))
               }
             />
           </ThemedView>
-          <ThemedView style={{ alignItems: "center" }}>
+          <ThemedView
+            style={{
+              alignItems: "center",
+              padding: 8,
+              backgroundColor: "transparent",
+            }}
+          >
             <ThemedButton
               onPress={() => onValueChange(random())}
               title="Randomise"
               outlined
-              style={{ marginVertical: 8 }}
+              style={{ marginVertical: 16 }}
               color={textColor}
             />
             <ThemedButton

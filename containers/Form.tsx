@@ -8,7 +8,6 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import signUp from "@/services/auth/signUp";
 import signIn from "@/services/auth/signIn";
 import useUser from "@/context/user/useUser";
-import useDataQuery from "@/context/data/useDataQuery";
 import saveUserCred from "@/services/database/saveUserCred";
 
 export default function FormScreen() {

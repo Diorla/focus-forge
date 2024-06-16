@@ -5,7 +5,6 @@ import { useState } from "react";
 import useSchedule from "../../context/schedule/useSchedule";
 import { useToast } from "react-native-toast-notifications";
 import ActivityModel from "../../context/data/model/ActivityModel";
-import useDataQuery from "../../context/data/useDataQuery";
 import { ThemedText } from "@/components/ThemedText";
 import TimeInput from "@/components/TimeInput";
 import Picker from "@/components/Picker";
@@ -13,6 +12,7 @@ import ColorPicker from "@/components/ColorPicker";
 import SelectCategory from "@/components/SelectCategory";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import updateActivity from "@/services/database/updateActivity";
 
 export default function EditModal({
   activity,
@@ -26,7 +26,6 @@ export default function EditModal({
   const theme = useThemeColor();
   const [form, setForm] = useState<ActivityModel>({ ...activity });
   const { schedule } = useSchedule();
-  const { updateActivity } = useDataQuery();
   const list = Array.from(new Set(schedule.map((item) => item.category)));
   const toast = useToast();
 
@@ -69,8 +68,9 @@ export default function EditModal({
       }
     }
     try {
-      updateActivity(activity.id, {
+      updateActivity({
         ...form,
+        id: activity.id,
       });
       toast.show("Activity updated");
       closeModal();

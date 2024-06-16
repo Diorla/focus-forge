@@ -1,7 +1,6 @@
 import { View, Image } from "react-native";
 import { useState } from "react";
 import Dots from "./Dots";
-import { useToast } from "react-native-toast-notifications";
 import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -18,8 +17,6 @@ export default function Onboarding({
   const [prevColor, setPrevColor] = useState(theme.text);
 
   const colorList = [theme.primary, theme.secondary, theme.accent];
-
-  const toast = useToast();
 
   if (index === 0)
     return (

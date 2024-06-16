@@ -13,10 +13,12 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { Divider } from "@rneui/themed";
 import EditModal from "@/containers/EditModal";
 import Confirm from "@/components/Confirm";
+import deleteActivity from "@/services/database/deleteActivity";
+import updateActivity from "@/services/database/updateActivity";
 
 export default function Activity() {
   const { id } = useLocalSearchParams();
-  const { activityList, updateActivity, deleteActivity } = useDataQuery();
+  const { activityList } = useDataQuery();
 
   const [activity, setActivity] = useState<ActivityModel | null>(null);
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -30,11 +32,11 @@ export default function Activity() {
 
   if (activity?.id) {
     const archiveActivity = () => {
-      updateActivity(activity.id, { archived: Date.now() });
+      updateActivity({ archived: Date.now(), id: activity.id });
     };
 
     const unarchiveActivity = () => {
-      updateActivity(activity.id, { archived: 0 });
+      updateActivity({ archived: 0, id: activity.id });
     };
     const archive = activity.archived ? unarchiveActivity : archiveActivity;
 
@@ -52,7 +54,7 @@ export default function Activity() {
           }}
         >
           <Ionicons
-            name="close"
+            name="arrow-back"
             size={36}
             color={color}
             onPress={() => router.back()}

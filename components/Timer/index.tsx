@@ -9,6 +9,7 @@ import useInterval from "@/hooks/useTimeInterval";
 import Clock from "./Clock";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "../ThemedView";
+import updateActivity from "@/services/database/updateActivity";
 
 export default function Timer({
   startTime,
@@ -28,7 +29,7 @@ export default function Timer({
   useKeepAwake();
   const theme = useThemeColor();
 
-  const { updateActivity, activityList } = useDataQuery();
+  const { activityList } = useDataQuery();
   const [count, setCount] = useState((Date.now() - startTime) / 1000);
 
   const createDone = (currentDone: {
@@ -38,16 +39,17 @@ export default function Timer({
   }) => {
     const done = activityList.filter((activity) => activity.id === id)[0].done;
     const datetime = getDateTimeKey(currentDone.startTime);
-    updateActivity(id, { done: { ...done, [datetime]: currentDone } });
+    updateActivity({ done: { ...done, [datetime]: currentDone }, id });
   };
   const endTimer = (id: string, startTime: number) => {
     const key = getDateTimeKey(startTime);
 
     // reset the activity time to 0
-    updateActivity(id, {
+    updateActivity({
       timerStart: 0,
       timerLength: 0,
       timerId: "",
+      id,
     });
 
     // Create info about done task

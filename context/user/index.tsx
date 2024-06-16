@@ -6,11 +6,8 @@ import { onAuthStateChanged, Unsubscribe, Auth, getAuth } from "firebase/auth";
 import app from "@/constants/firebaseConfig";
 import { logError } from "@/services/database";
 import watchUser from "@/services/database/watchUser";
-import saveUser from "@/services/storage/saveUser";
-import saveUserCred from "@/services/database/saveUserCred";
 import getUserCred from "@/services/database/getUserCred";
 import signIn from "@/services/auth/signIn";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const generateAuth = () => {
   return getAuth(app);
