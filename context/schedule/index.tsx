@@ -11,6 +11,7 @@ import useDataQuery from "../data/useDataQuery";
 import Checklist from "./Checklist";
 import getChecklist from "./getChecklist";
 import { ThemedText } from "@/components/ThemedText";
+import { logError } from "@/services/database";
 
 dayjs.extend(isToday);
 
@@ -48,6 +49,7 @@ export default function ScheduleProvider({
 
   function generateChecklist() {
     const checklist = activityList.filter((item) => item.isOccurrence);
+    if (!checklist.length) return null;
     setChecklist(getChecklist(checklist));
   }
   function generateSchedule() {
@@ -55,6 +57,10 @@ export default function ScheduleProvider({
       (item) => !item.isOccurrence
     );
 
+    if (!scheduledActivityList.length) {
+      setLoading(false);
+      return null;
+    }
     const time = getTime(scheduledActivityList, user);
 
     const scheduleList = getSchedule({
@@ -91,8 +97,12 @@ export default function ScheduleProvider({
   }, [userTime]);
 
   useEffect(() => {
-    generateSchedule();
-    generateChecklist();
+    try {
+      generateSchedule();
+      generateChecklist();
+    } catch (error) {
+      logError(String(activityList.length), "use effect", error as Error);
+    }
   }, [activityListString]);
 
   if (loading) return <ThemedText>Loading...</ThemedText>;

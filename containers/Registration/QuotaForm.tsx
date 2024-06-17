@@ -266,6 +266,7 @@ export default function Quotaform() {
         flex: 1,
       }}
     >
+      <AnimatedBackground />
       <ThemedView
         style={{
           flex: 1,
@@ -305,7 +306,7 @@ export default function Quotaform() {
               }
             />
             <ThemedButton
-              title="Update"
+              title="Save"
               disabled={!quota.weeklyQuota}
               onPress={saveQuota}
             />

@@ -1,7 +1,7 @@
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { Profile } from "@/containers/Profile";
 
-export default function TabTwoScreen() {
+export default function ProfileScreen() {
   return (
     <ParallaxScrollView name="person">
       <Profile />
