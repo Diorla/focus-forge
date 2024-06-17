@@ -35,6 +35,7 @@ export default function TodolistScreen() {
         </ThemedText>
       </View>
       {todo
+        .sort((a, b) => b.priority - a.priority)
         .sort((a, b) => b.remaining - a.remaining)
         .sort(
           (a, b) =>
