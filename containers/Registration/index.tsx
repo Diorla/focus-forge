@@ -4,15 +4,15 @@ import { Input } from "@rneui/themed";
 import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
-import { QuotaForm } from "./QuotaForm";
+import QuotaForm from "./QuotaForm";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import useUser from "@/context/user/useUser";
 import { router } from "expo-router";
 import FormContainer from "../Form";
+import updateUser from "@/services/database/updateUser";
 
 export default function Registration() {
   const [name, setName] = useState("");
-  const [showQuotaForm, setShowQuotaForm] = useState(false);
   const theme = useThemeColor();
   const { user } = useUser();
 
@@ -24,7 +24,7 @@ export default function Registration() {
 
   if (!user.id) return <FormContainer />;
 
-  if (showQuotaForm) return <QuotaForm name={name} />;
+  if (user.name) return <QuotaForm />;
   return (
     <View
       style={{
@@ -67,7 +67,7 @@ export default function Registration() {
               color={theme.background}
               disabled={name.length <= 2}
               onPress={() => {
-                setShowQuotaForm(true);
+                updateUser({ name: name.trim(), id: user.id });
               }}
             />
           </View>

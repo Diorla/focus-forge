@@ -41,7 +41,7 @@ export default function AccountScreen() {
             <Confirm
               title="Log out"
               message="You will not be able to sync data while logged out"
-              acceptFn={() => signOut().then(() => removeUserCred())}
+              acceptFn={() => removeUserCred().then(() => signOut())}
             >
               <ThemedView style={{ flexDirection: "row", paddingVertical: 8 }}>
                 <ThemedText type="link" style={{ marginRight: 20 }}>

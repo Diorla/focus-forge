@@ -36,6 +36,7 @@ export default function UserProvider({
             if (userCred.email) {
               signIn(userCred.email, userCred.password);
             } else {
+              setUser(initialUser);
               setLoading(false);
             }
           });
