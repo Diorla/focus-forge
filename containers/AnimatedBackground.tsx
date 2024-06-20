@@ -1,5 +1,6 @@
+import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { View, Dimensions } from "react-native";
+import { Dimensions } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 const windowWidth = Dimensions.get("window").width;
@@ -35,7 +36,7 @@ export default function AnimatedBackground({
   const theme = useThemeColor();
   return (
     <>
-      <View
+      <ThemedView
         style={{
           height: windowHeight * 2,
           width: windowWidth,
@@ -44,7 +45,7 @@ export default function AnimatedBackground({
           top: 0,
           left: 0,
         }}
-      ></View>
+      ></ThemedView>
       <Animatable.View
         key={id}
         animation={enlarge}

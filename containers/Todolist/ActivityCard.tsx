@@ -1,12 +1,11 @@
 import * as React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Card, Input } from "@rneui/themed";
 import Checklist from "../../context/schedule/Checklist";
 import { useState } from "react";
 import DoneType from "../../context/data/types/DoneType";
 import { Modal } from "react-native";
 import { getDateTimeKey } from "../../services/datetime";
-import useDataQuery from "../../context/data/useDataQuery";
 import { MaterialIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
@@ -15,6 +14,7 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function ActivityCard({ activity }: { activity: Checklist }) {
   const { id, remaining, occurrence, occurrenceType } = activity;
@@ -55,7 +55,7 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
   return (
     <TouchableOpacity onPress={() => router.push(`/activity/${id}`)}>
       <Modal visible={showAddTime}>
-        <View style={{ justifyContent: "center", flex: 1 }}>
+        <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <Input
             label="Note"
             value={newTime.comment}
@@ -68,7 +68,7 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
             label="Date time"
             mode="datetime"
           />
-          <View
+          <ThemedView
             style={{
               flexDirection: "row",
               justifyContent: "flex-end",
@@ -96,8 +96,8 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
               outlined
               style={{ marginRight: 10 }}
             />
-          </View>
-        </View>
+          </ThemedView>
+        </ThemedView>
       </Modal>
       <Card
         containerStyle={{
@@ -106,13 +106,15 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
           backgroundColor: theme.background,
         }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText style={{ fontWeight: "bold" }}>
             {activity.name}{" "}
           </ThemedText>
           <ThemedText>{dateRemaining}</ThemedText>
-        </View>
-        <View
+        </ThemedView>
+        <ThemedView
           style={{
             alignItems: "center",
             justifyContent: "center",
@@ -134,14 +136,16 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
             style={{ marginVertical: 10 }}
           />
           <ThemedText>{occurrence} total</ThemedText>
-        </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        </ThemedView>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText style={{ textTransform: "capitalize" }}>
             {priority[activity.priority] || "None"}
           </ThemedText>
 
           <TouchableOpacity onPress={() => setVisible(!visible)}>
-            <View
+            <ThemedView
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -150,9 +154,9 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
             >
               <MaterialIcons name="list" size={24} color={theme.text} />
               <ThemedText>{tasks.length}</ThemedText>
-            </View>
+            </ThemedView>
           </TouchableOpacity>
-        </View>
+        </ThemedView>
       </Card>
     </TouchableOpacity>
   );

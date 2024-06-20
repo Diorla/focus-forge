@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TodayCard } from "./TodayCard";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import Schedule from "@/context/schedule/Schedule";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
@@ -39,7 +39,7 @@ export default function TodayView() {
     const rest = runningActivity ? notRunning : today.slice(1);
 
     return (
-      <View style={{ marginVertical: 16 }}>
+      <ThemedView style={{ marginVertical: 16 }}>
         {currentSchedule ? (
           <ChecklistModal
             activity={currentSchedule}
@@ -47,7 +47,7 @@ export default function TodayView() {
             closeModal={() => setCurrentSchedule(null)}
           />
         ) : null}
-        <View
+        <ThemedView
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
@@ -62,8 +62,8 @@ export default function TodayView() {
               title={expanded ? "Collapse" : "Expand"}
             />
           ) : null}
-        </View>
-        <View>
+        </ThemedView>
+        <ThemedView>
           <TodayCard
             schedule={first}
             setCurrentSchedule={() => setCurrentSchedule(first)}
@@ -89,18 +89,20 @@ export default function TodayView() {
                 ))}
             </>
           ) : null}
-        </View>
+        </ThemedView>
         {rest.length ? (
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <ThemedView
+            style={{ flexDirection: "row", justifyContent: "center" }}
+          >
             <MaterialIcons
               name={expanded ? "keyboard-arrow-up" : "keyboard-arrow-down"}
               size={36}
               color={theme.text}
               onPress={() => setExpanded(!expanded)}
             />
-          </View>
+          </ThemedView>
         ) : null}
-      </View>
+      </ThemedView>
     );
   }
   return null;

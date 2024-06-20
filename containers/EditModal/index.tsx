@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, ScrollView, View } from "react-native";
+import { Modal, ScrollView } from "react-native";
 import { Input } from "@rneui/themed";
 import { useState } from "react";
 import useSchedule from "../../context/schedule/useSchedule";
@@ -13,6 +13,7 @@ import SelectCategory from "@/components/SelectCategory";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function EditModal({
   activity,
@@ -109,7 +110,9 @@ export default function EditModal({
         />
 
         {form.isOccurrence ? (
-          <View style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}>
+          <ThemedView
+            style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}
+          >
             <Input
               label="How many times"
               value={String(form.occurrence)}
@@ -153,9 +156,11 @@ export default function EditModal({
                 },
               ]}
             />
-          </View>
+          </ThemedView>
         ) : (
-          <View style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}>
+          <ThemedView
+            style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}
+          >
             <ThemedText
               style={{
                 marginLeft: 8,
@@ -196,14 +201,14 @@ export default function EditModal({
                 })
               }
             />
-            <View>
+            <ThemedView>
               {daysToFinish ? (
                 <ThemedText style={{ paddingLeft: 8, marginBottom: 8 }}>
                   {Math.ceil(daysToFinish)} days per week
                 </ThemedText>
               ) : null}
-            </View>
-          </View>
+            </ThemedView>
+          </ThemedView>
         )}
 
         <Picker
@@ -250,7 +255,7 @@ export default function EditModal({
           setValue={(category) => setForm({ ...form, category })}
           list={["None", ...list]}
         />
-        <View style={{ marginBottom: 16, alignItems: "center" }}>
+        <ThemedView style={{ marginBottom: 16, alignItems: "center" }}>
           <ThemedButton
             onPress={saveActivity}
             title="Update"
@@ -261,7 +266,7 @@ export default function EditModal({
             title="Close"
             style={{ marginBottom: 32 }}
           />
-        </View>
+        </ThemedView>
       </ScrollView>
     </Modal>
   );

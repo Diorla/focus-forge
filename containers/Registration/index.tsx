@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { useEffect, useState } from "react";
 import { Input } from "@rneui/themed";
 import AnimatedBackground from "../AnimatedBackground";
@@ -10,6 +9,7 @@ import useUser from "@/context/user/useUser";
 import { router } from "expo-router";
 import FormContainer from "../Form";
 import updateUser from "@/services/database/updateUser";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function Registration() {
   const [name, setName] = useState("");
@@ -26,21 +26,21 @@ export default function Registration() {
 
   if (user.name) return <QuotaForm />;
   return (
-    <View
+    <ThemedView
       style={{
         flex: 1,
       }}
     >
       <AnimatedBackground prevColor={theme.background} externalKey="primary" />
-      <View
+      <ThemedView
         style={{
           flex: 1,
           justifyContent: "space-evenly",
           backgroundColor: "transparent",
         }}
       >
-        <View style={{ alignItems: "center" }}></View>
-        <View style={{ padding: 8 }}>
+        <ThemedView style={{ alignItems: "center" }}></ThemedView>
+        <ThemedView style={{ padding: 8 }}>
           <ThemedText
             type="title"
             style={{
@@ -56,7 +56,7 @@ export default function Registration() {
             onChangeText={(name) => setName(name)}
             style={{ color: theme.background, textAlign: "center" }}
           />
-          <View
+          <ThemedView
             style={{
               justifyContent: "center",
               alignItems: "center",
@@ -70,10 +70,10 @@ export default function Registration() {
                 updateUser({ name: name.trim(), id: user.id });
               }}
             />
-          </View>
-        </View>
-        <View />
-      </View>
-    </View>
+          </ThemedView>
+        </ThemedView>
+        <ThemedView />
+      </ThemedView>
+    </ThemedView>
   );
 }

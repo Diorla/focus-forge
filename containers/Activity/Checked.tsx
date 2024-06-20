@@ -20,6 +20,7 @@ import {
 } from "@/services/datetime";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import { ThemedView } from "@/components/ThemedView";
 
 type History = {
   time: string;
@@ -92,7 +93,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
 
   if (loading)
     return (
-      <View
+      <ThemedView
         style={{
           flex: 1,
           justifyContent: "center",
@@ -101,7 +102,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
         }}
       >
         <ActivityIndicator size="large" />
-      </View>
+      </ThemedView>
     );
   return (
     <Card
@@ -110,7 +111,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
       }}
     >
       <Modal visible={showAddTime}>
-        <View style={{ justifyContent: "center", flex: 1 }}>
+        <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <Input
             label="Note"
             value={newTime.comment}
@@ -123,7 +124,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
             label="Date time"
             mode="datetime"
           />
-          <View
+          <ThemedView
             style={{
               flexDirection: "row",
               justifyContent: "flex-end",
@@ -147,10 +148,10 @@ export default function Checked({ activity }: { activity: Checklist }) {
               onPress={() => setShowAddTime(false)}
               title="Cancel"
             />
-          </View>
-        </View>
+          </ThemedView>
+        </ThemedView>
       </Modal>
-      <View
+      <ThemedView
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -164,23 +165,23 @@ export default function Checked({ activity }: { activity: Checklist }) {
           History
         </ThemedText>
         <ThemedButton onPress={() => setShowAddTime(true)} title="Add time" />
-      </View>
+      </ThemedView>
       {Object.keys(history)
         ?.sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
         .map((item) => {
           return (
-            <View key={item}>
+            <ThemedView key={item}>
               <ThemedText type="title">
                 {generateHistoryHeader(item)}
               </ThemedText>
-              <View>
+              <ThemedView>
                 {history[item]
                   ?.sort(
                     (a, b) =>
                       dayjs(b.datetime).valueOf() - dayjs(a.datetime).valueOf()
                   )
                   .map((time, idx) => (
-                    <View
+                    <ThemedView
                       style={{
                         backgroundColor: theme.grey5,
                         marginBottom: 4,
@@ -212,7 +213,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
                           showComment={expandIdx !== time.datetime}
                           comment={time.comment}
                         />
-                        <View
+                        <ThemedView
                           style={{
                             justifyContent: "flex-end",
                             flexDirection: "row",
@@ -221,11 +222,11 @@ export default function Checked({ activity }: { activity: Checklist }) {
                           }}
                         >
                           <ThemedText>{time.time}</ThemedText>
-                        </View>
+                        </ThemedView>
                       </TouchableOpacity>
                       {expandIdx === time.datetime ? (
-                        <View>
-                          <View>
+                        <ThemedView>
+                          <ThemedView>
                             {editingComment ? (
                               <Input
                                 value={form.comment}
@@ -235,7 +236,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                 multiline
                               />
                             ) : (
-                              <View>
+                              <ThemedView>
                                 <TimeInput
                                   value={form.length}
                                   onChange={(length) =>
@@ -250,10 +251,10 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                   label="Date time"
                                   mode="datetime"
                                 />
-                              </View>
+                              </ThemedView>
                             )}
-                          </View>
-                          <View
+                          </ThemedView>
+                          <ThemedView
                             style={{
                               flexDirection: "row",
                               justifyContent: "space-between",
@@ -266,8 +267,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
                               color={theme.text}
                               onPress={() => setEditingComment(!editingComment)}
                             />
-
-                            <View
+                            <ThemedView
                               style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
@@ -300,9 +300,9 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                 }}
                                 title="Cancel"
                               ></ThemedButton>
-                            </View>
-                          </View>
-                          <View>
+                            </ThemedView>
+                          </ThemedView>
+                          <ThemedView>
                             <Confirm
                               title="Remove time"
                               message="Delete time from history"
@@ -321,13 +321,13 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                 Delete
                               </ThemedText>
                             </Confirm>
-                          </View>
-                        </View>
+                          </ThemedView>
+                        </ThemedView>
                       ) : null}
-                    </View>
+                    </ThemedView>
                   ))}
-              </View>
-            </View>
+              </ThemedView>
+            </ThemedView>
           );
         })}
     </Card>

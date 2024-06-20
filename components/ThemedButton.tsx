@@ -4,11 +4,11 @@ import {
   Pressable,
   type ButtonProps,
   type ViewStyle,
-  View,
   ActivityIndicator,
 } from "react-native";
 
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "./ThemedView";
 
 export type ThemedButtonProps = ButtonProps & {
   lightColor?: string;
@@ -37,9 +37,13 @@ export function ThemedButton({
 
   return (
     <Pressable disabled={disabled || loading}>
-      <View
+      <ThemedView
         style={[
-          { flexDirection: "row", alignItems: "center" },
+          {
+            flexDirection: "row",
+            alignItems: "center",
+            backgroundColor: "transparent",
+          },
           style,
           outlined
             ? {
@@ -65,7 +69,7 @@ export function ThemedButton({
         >
           {title}
         </Text>
-      </View>
+      </ThemedView>
     </Pressable>
   );
 }

@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { CheckBox, Input } from "@rneui/themed";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -10,6 +9,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function Task({ activity }: { activity: Schedule | Checklist }) {
   const theme = useThemeColor();
@@ -84,7 +84,7 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
 
   return (
     <>
-      <View
+      <ThemedView
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
@@ -96,7 +96,7 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
           onPress={() => setShowAll(!showAll)}
           title={showAll ? "Hide completed" : "Show all"}
         ></ThemedButton>
-      </View>
+      </ThemedView>
       {taskList
         .filter((item) => {
           if (showAll) return true;
@@ -105,7 +105,7 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
         .sort((a, b) => a.created - b.created)
         .map((item) => {
           return (
-            <View
+            <ThemedView
               key={item.created}
               style={{
                 flexDirection: "row",
@@ -114,7 +114,7 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
                 flex: 1,
               }}
             >
-              <View style={{ flex: 1 }}>
+              <ThemedView style={{ flex: 1 }}>
                 <CheckBox
                   checked={!!item.checked}
                   onPress={() => {
@@ -128,9 +128,14 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
                   checkedIcon="checkbox-marked"
                   uncheckedIcon="checkbox-blank-outline"
                   title={item.title}
-                  textStyle={{ flexWrap: "wrap" }}
+                  textStyle={{ flexWrap: "wrap", color: theme.text }}
+                  containerStyle={{
+                    backgroundColor: theme.background,
+                    borderWidth: 0,
+                    marginLeft: 0,
+                  }}
                 />
-              </View>
+              </ThemedView>
               <Confirm
                 title="Remove task"
                 message="Delete task from checklist"
@@ -144,11 +149,11 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
               >
                 <MaterialIcons name="delete" size={28} color={theme.text} />
               </Confirm>
-            </View>
+            </ThemedView>
           );
         })}
       {showAddNewTask ? (
-        <View>
+        <ThemedView>
           <KeyboardWrapper>
             <Input
               value={task.title}
@@ -161,7 +166,9 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
               multiline
             />
           </KeyboardWrapper>
-          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+          <ThemedView
+            style={{ flexDirection: "row", justifyContent: "flex-end" }}
+          >
             <ThemedButton
               disabled={!task}
               onPress={() => {
@@ -183,16 +190,16 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
               onPress={() => setShowAddNewTask(!showAddNewTask)}
               title="Cancel"
             ></ThemedButton>
-          </View>
-        </View>
+          </ThemedView>
+        </ThemedView>
       ) : null}
       {showAddNewTask ? null : (
-        <View>
+        <ThemedView>
           <ThemedButton
             onPress={() => setShowAddNewTask(!showAddNewTask)}
             title="New task"
           ></ThemedButton>
-        </View>
+        </ThemedView>
       )}
     </>
   );

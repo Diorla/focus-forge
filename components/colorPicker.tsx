@@ -47,7 +47,7 @@ export default function ColorPicker({
           onPress={() => setShowPicker(!showPicker)}
           style={{ backgroundColor: value, padding: 8 }}
         >
-          <ThemedText color={theme.text}>{value}</ThemedText>
+          <ThemedText color={textColor}>{value}</ThemedText>
         </TouchableOpacity>
       </ThemedView>
       <Modal visible={showPicker}>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Card } from "@rneui/themed";
 import Checklist from "../../context/schedule/Checklist";
 import { useState } from "react";
@@ -8,6 +8,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
 import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function DoneCard({ activity }: { activity: Checklist }) {
   const { id, occurrence, occurrenceType } = activity;
@@ -39,13 +40,15 @@ export default function DoneCard({ activity }: { activity: Checklist }) {
           backgroundColor: theme.background,
         }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText style={{ fontWeight: "bold" }}>
             {activity.name}{" "}
           </ThemedText>
           <ThemedText>{dateRemaining}</ThemedText>
-        </View>
-        <View
+        </ThemedView>
+        <ThemedView
           style={{
             alignItems: "center",
             justifyContent: "center",
@@ -53,14 +56,16 @@ export default function DoneCard({ activity }: { activity: Checklist }) {
           }}
         >
           <ThemedText>{occurrence} total</ThemedText>
-        </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        </ThemedView>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText style={{ textTransform: "capitalize" }}>
             {priority[activity.priority] || "None"}
           </ThemedText>
 
           <TouchableOpacity onPress={() => setVisible(!visible)}>
-            <View
+            <ThemedView
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -69,9 +74,9 @@ export default function DoneCard({ activity }: { activity: Checklist }) {
             >
               <MaterialIcons name="list" size={24} color={theme.text} />
               <ThemedText>{tasks.length}</ThemedText>
-            </View>
+            </ThemedView>
           </TouchableOpacity>
-        </View>
+        </ThemedView>
       </Card>
     </TouchableOpacity>
   );

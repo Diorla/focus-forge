@@ -12,6 +12,7 @@ import { getContrastColor } from "@/services/color";
 import useSchedule from "@/context/schedule/useSchedule";
 import goBack from "@/services/routing";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function ActivityScreen({ id }: { id: string }) {
   const theme = useThemeColor();
@@ -25,7 +26,11 @@ export default function ActivityScreen({ id }: { id: string }) {
       <ScrollView
         style={{ flex: 1, backgroundColor: timedActivity.color, padding: 2 }}
       >
-        <ThemedText type="title" color={color} style={{ textAlign: "center" }}>
+        <ThemedText
+          type="title"
+          color={color}
+          style={{ textAlign: "center", backgroundColor: "transparent" }}
+        >
           {timedActivity.name}
         </ThemedText>
         <Time activity={timedActivity} color={color} />
@@ -41,7 +46,7 @@ export default function ActivityScreen({ id }: { id: string }) {
           <Task activity={timedActivity} />
         </Card>
         <History activity={timedActivity} />
-        <View style={{ height: 50 }} />
+        <ThemedView style={{ height: 50 }} />
       </ScrollView>
     );
   }
@@ -70,14 +75,16 @@ export default function ActivityScreen({ id }: { id: string }) {
           <Task activity={activity} />
         </Card>
         <Checked activity={activity} />
-        <View style={{ height: 50 }} />
+        <ThemedView style={{ height: 50 }} />
       </ScrollView>
     );
   }
   return (
-    <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
+    <ThemedView
+      style={{ justifyContent: "center", alignItems: "center", flex: 1 }}
+    >
       <ThemedText>Activity not found</ThemedText>
       <ThemedButton onPress={() => goBack()} title="Go back" />
-    </View>
+    </ThemedView>
   );
 }

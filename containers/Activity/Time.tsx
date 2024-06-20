@@ -1,9 +1,9 @@
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import TimeFormat from "@/components/TimeFormat";
 import Schedule from "@/context/schedule/Schedule";
 import { secondsToHrMm } from "@/services/datetime";
 import React from "react";
-import { View } from "react-native";
 
 export default function Time({
   activity,
@@ -28,9 +28,10 @@ export default function Time({
   const dayPercent = (doneToday / allTodoToday) * 100;
 
   return (
-    <View
+    <ThemedView
       style={{
         marginTop: 20,
+        backgroundColor: "transparent",
       }}
     >
       <ThemedText
@@ -40,15 +41,19 @@ export default function Time({
       >
         Todo
       </ThemedText>
-      <View
+      <ThemedView
         style={{
+          backgroundColor: "transparent",
           flexDirection: "row",
           flexWrap: "wrap",
           justifyContent: "space-evenly",
         }}
       >
-        <View>
-          <ThemedText color={color} style={{ textAlign: "center" }}>
+        <ThemedView style={{ backgroundColor: "transparent" }}>
+          <ThemedText
+            color={color}
+            style={{ backgroundColor: "transparent", textAlign: "center" }}
+          >
             This week
           </ThemedText>
           <ThemedText
@@ -70,8 +75,8 @@ export default function Time({
           >
             {weekPercent.toFixed(2)}%
           </ThemedText>
-        </View>
-        <View>
+        </ThemedView>
+        <ThemedView style={{ backgroundColor: "transparent" }}>
           <ThemedText color={color} style={{ textAlign: "center" }}>
             Today
           </ThemedText>
@@ -94,8 +99,8 @@ export default function Time({
           >
             {dayPercent.toFixed(2)}%
           </ThemedText>
-        </View>
-      </View>
-    </View>
+        </ThemedView>
+      </ThemedView>
+    </ThemedView>
   );
 }

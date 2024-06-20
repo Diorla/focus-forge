@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Card, Divider } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -13,6 +13,7 @@ import { Link } from "expo-router";
 import Schedule from "@/context/schedule/Schedule";
 import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function ActivityCard({
   schedule,
@@ -42,7 +43,9 @@ export default function ActivityCard({
           backgroundColor: theme.background,
         }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText type="defaultSemiBold">{schedule.name}</ThemedText>
           <Link href={`/activity/${schedule.id}`}>
             <MaterialCommunityIcons
@@ -51,8 +54,8 @@ export default function ActivityCard({
               color={theme.text}
             />
           </Link>
-        </View>
-        <View
+        </ThemedView>
+        <ThemedView
           style={{
             alignItems: "center",
             marginVertical: 10,
@@ -73,14 +76,16 @@ export default function ActivityCard({
             })}
             lastDone={lastDone}
           />
-        </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        </ThemedView>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText style={{ textTransform: "capitalize" }}>
             {priority[schedule.priority] || "None"}
           </ThemedText>
 
           <TouchableOpacity onPress={() => setVisible(!visible)}>
-            <View
+            <ThemedView
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -89,9 +94,9 @@ export default function ActivityCard({
             >
               <MaterialIcons name="list" size={24} color={theme.text} />
               <ThemedText>{tasks.length}</ThemedText>
-            </View>
+            </ThemedView>
           </TouchableOpacity>
-        </View>
+        </ThemedView>
       </Card>
     </>
   );

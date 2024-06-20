@@ -1,4 +1,4 @@
-import { ActivityIndicator, Modal, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Modal, TouchableOpacity } from "react-native";
 import { Card, Input } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -20,6 +20,7 @@ import {
 } from "@/services/datetime";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import { ThemedView } from "@/components/ThemedView";
 
 type History = {
   time: string;
@@ -92,7 +93,7 @@ export default function History({ activity }: { activity: Schedule }) {
 
   if (loading)
     return (
-      <View
+      <ThemedView
         style={{
           flex: 1,
           justifyContent: "center",
@@ -101,7 +102,7 @@ export default function History({ activity }: { activity: Schedule }) {
         }}
       >
         <ActivityIndicator size="large" />
-      </View>
+      </ThemedView>
     );
   return (
     <Card
@@ -110,7 +111,7 @@ export default function History({ activity }: { activity: Schedule }) {
       }}
     >
       <Modal visible={showAddTime}>
-        <View style={{ justifyContent: "center", flex: 1 }}>
+        <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <TimeInput
             value={newTime.length}
             onChange={(length) => setNewTime({ ...newTime, length })}
@@ -127,7 +128,7 @@ export default function History({ activity }: { activity: Schedule }) {
             label="Date time"
             mode="datetime"
           />
-          <View
+          <ThemedView
             style={{
               flexDirection: "row",
               justifyContent: "flex-end",
@@ -153,10 +154,10 @@ export default function History({ activity }: { activity: Schedule }) {
               style={{ marginHorizontal: 8 }}
               title="Cancel"
             ></ThemedButton>
-          </View>
-        </View>
+          </ThemedView>
+        </ThemedView>
       </Modal>
-      <View
+      <ThemedView
         style={{
           flexDirection: "row",
           alignItems: "center",
@@ -173,23 +174,23 @@ export default function History({ activity }: { activity: Schedule }) {
           onPress={() => setShowAddTime(true)}
           title="Add time"
         ></ThemedButton>
-      </View>
+      </ThemedView>
       {Object.keys(history)
         ?.sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
         .map((item) => {
           return (
-            <View key={item}>
+            <ThemedView key={item}>
               <ThemedText type="title">
                 {generateHistoryHeader(item)}
               </ThemedText>
-              <View>
+              <ThemedView>
                 {history[item]
                   ?.sort(
                     (a, b) =>
                       dayjs(b.datetime).valueOf() - dayjs(a.datetime).valueOf()
                   )
                   .map((time, idx) => (
-                    <View
+                    <ThemedView
                       style={{
                         backgroundColor: theme.grey5,
                         marginBottom: 4,
@@ -217,7 +218,7 @@ export default function History({ activity }: { activity: Schedule }) {
                           }
                         }}
                       >
-                        <View
+                        <ThemedView
                           style={{
                             justifyContent: "space-between",
                             flexDirection: "row",
@@ -227,15 +228,15 @@ export default function History({ activity }: { activity: Schedule }) {
                         >
                           <ThemedText>{time.time}</ThemedText>
                           <ThemedText>{time.description}</ThemedText>
-                        </View>
+                        </ThemedView>
                       </TouchableOpacity>
                       <Comment
                         showComment={expandIdx !== time.datetime}
                         comment={time.comment}
                       />
                       {expandIdx === time.datetime ? (
-                        <View>
-                          <View>
+                        <ThemedView>
+                          <ThemedView>
                             {editingComment ? (
                               <Input
                                 value={form.comment}
@@ -245,7 +246,7 @@ export default function History({ activity }: { activity: Schedule }) {
                                 multiline
                               />
                             ) : (
-                              <View>
+                              <ThemedView>
                                 <TimeInput
                                   value={form.length}
                                   onChange={(length) =>
@@ -260,10 +261,10 @@ export default function History({ activity }: { activity: Schedule }) {
                                   label="Date time"
                                   mode="datetime"
                                 />
-                              </View>
+                              </ThemedView>
                             )}
-                          </View>
-                          <View
+                          </ThemedView>
+                          <ThemedView
                             style={{
                               flexDirection: "row",
                               justifyContent: "space-between",
@@ -277,7 +278,7 @@ export default function History({ activity }: { activity: Schedule }) {
                               onPress={() => setEditingComment(!editingComment)}
                             />
 
-                            <View
+                            <ThemedView
                               style={{
                                 flexDirection: "row",
                                 justifyContent: "space-between",
@@ -310,9 +311,9 @@ export default function History({ activity }: { activity: Schedule }) {
                                 }}
                                 title="Cancel"
                               ></ThemedButton>
-                            </View>
-                          </View>
-                          <View>
+                            </ThemedView>
+                          </ThemedView>
+                          <ThemedView>
                             <Confirm
                               title="Remove time"
                               message="Delete time from history"
@@ -331,13 +332,13 @@ export default function History({ activity }: { activity: Schedule }) {
                                 Delete
                               </ThemedText>
                             </Confirm>
-                          </View>
-                        </View>
+                          </ThemedView>
+                        </ThemedView>
                       ) : null}
-                    </View>
+                    </ThemedView>
                   ))}
-              </View>
-            </View>
+              </ThemedView>
+            </ThemedView>
           );
         })}
     </Card>

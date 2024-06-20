@@ -14,6 +14,7 @@ import { Link } from "expo-router";
 import Timer from "@/components/Timer";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import { ThemedView } from "@/components/ThemedView";
 
 const priority = ["None", "Low", "Medium", "High"];
 export function TodayCard({
@@ -82,7 +83,9 @@ export function TodayCard({
           ...borderStyle,
         }}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText type="defaultSemiBold">{schedule.name}</ThemedText>
           <Link href={`/activity/${schedule.id}`}>
             <MaterialCommunityIcons
@@ -91,8 +94,8 @@ export function TodayCard({
               color={theme.text}
             />
           </Link>
-        </View>
-        <View
+        </ThemedView>
+        <ThemedView
           style={{
             alignItems: "center",
             marginVertical: 10,
@@ -140,14 +143,16 @@ export function TodayCard({
               }
             }}
           />
-        </View>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        </ThemedView>
+        <ThemedView
+          style={{ flexDirection: "row", justifyContent: "space-between" }}
+        >
           <ThemedText style={{ textTransform: "capitalize" }}>
             {priority[schedule.priority] || "None"}
           </ThemedText>
 
           <TouchableOpacity onPress={() => setCurrentSchedule(schedule)}>
-            <View
+            <ThemedView
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
@@ -156,9 +161,9 @@ export function TodayCard({
             >
               <MaterialIcons name="list" size={24} color={theme.text} />
               <ThemedText>{tasks.length}</ThemedText>
-            </View>
+            </ThemedView>
           </TouchableOpacity>
-        </View>
+        </ThemedView>
       </Card>
     </>
   );

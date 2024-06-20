@@ -1,5 +1,6 @@
+import { ThemedView } from "@/components/ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 export default function Dots({
   activeIndex,
@@ -11,9 +12,11 @@ export default function Dots({
   const theme = useThemeColor();
 
   return (
-    <View style={{ flexDirection: "row" }}>
+    <ThemedView
+      style={{ flexDirection: "row", backgroundColor: "transparent" }}
+    >
       <TouchableOpacity onPress={() => setIndex(0)}>
-        <View
+        <ThemedView
           style={{
             height: 20,
             width: 20,
@@ -23,7 +26,7 @@ export default function Dots({
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setIndex(1)}>
-        <View
+        <ThemedView
           style={{
             height: 20,
             width: 20,
@@ -34,7 +37,7 @@ export default function Dots({
         />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => setIndex(2)}>
-        <View
+        <ThemedView
           style={{
             height: 20,
             width: 20,
@@ -43,6 +46,6 @@ export default function Dots({
           }}
         />
       </TouchableOpacity>
-    </View>
+    </ThemedView>
   );
 }

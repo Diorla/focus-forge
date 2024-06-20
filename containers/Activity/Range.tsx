@@ -1,8 +1,8 @@
-import { View } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
 import Schedule from "@/context/schedule/Schedule";
 import Checklist from "@/context/schedule/Checklist";
 import { format, secondsToHrMm } from "@/services/datetime";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function Range({
   activity,
@@ -17,9 +17,10 @@ export default function Range({
   const [hh, mm] = secondsToHrMm(weeklyTarget);
 
   return (
-    <View
+    <ThemedView
       style={{
         marginTop: 20,
+        backgroundColor: "transparent",
       }}
     >
       <ThemedText style={{ textAlign: "center" }} color={color} type="caption">
@@ -31,7 +32,13 @@ export default function Range({
       >
         {format(startDate, "date")} - {endDate}
       </ThemedText>
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
+      <ThemedView
+        style={{
+          backgroundColor: "transparent",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
         <ThemedText
           color={color}
           style={{ textAlign: "center", marginBottom: 8 }}
@@ -44,7 +51,7 @@ export default function Range({
         >
           {hh}h {mm}m
         </ThemedText>
-      </View>
-    </View>
+      </ThemedView>
+    </ThemedView>
   );
 }

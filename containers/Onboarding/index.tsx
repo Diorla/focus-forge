@@ -1,10 +1,11 @@
-import { View, Image } from "react-native";
+import { Image } from "react-native";
 import { useState } from "react";
 import Dots from "./Dots";
 import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function Onboarding({
   switchRegister,
@@ -20,13 +21,13 @@ export default function Onboarding({
 
   if (index === 0)
     return (
-      <View
+      <ThemedView
         style={{
           flex: 1,
         }}
       >
         <AnimatedBackground prevColor={prevColor} />
-        <View
+        <ThemedView
           style={{
             flex: 1,
             justifyContent: "space-evenly",
@@ -34,7 +35,9 @@ export default function Onboarding({
             alignItems: "center",
           }}
         >
-          <View style={{ alignItems: "center" }}>
+          <ThemedView
+            style={{ alignItems: "center", backgroundColor: "transparent" }}
+          >
             <Image
               source={require("../../assets/images/puzzle.jpg")}
               style={{
@@ -43,12 +46,18 @@ export default function Onboarding({
                 borderRadius: 100,
               }}
             />
-          </View>
-          <View style={{ padding: 8 }}>
+          </ThemedView>
+          <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
             <ThemedText color={theme.background} type="title">
               Break your task into chunks to reduce their difficulty
             </ThemedText>
-            <View style={{ alignItems: "flex-end", marginTop: 8 }}>
+            <ThemedView
+              style={{
+                alignItems: "flex-end",
+                marginTop: 8,
+                backgroundColor: "transparent",
+              }}
+            >
               <ThemedButton
                 color={theme.background}
                 onPress={() => {
@@ -57,8 +66,8 @@ export default function Onboarding({
                 }}
                 title="Next"
               />
-            </View>
-          </View>
+            </ThemedView>
+          </ThemedView>
           <Dots
             activeIndex={index}
             setIndex={(idx) => {
@@ -71,18 +80,18 @@ export default function Onboarding({
             onPress={() => switchRegister("register")}
             title="Get Started"
           />
-        </View>
-      </View>
+        </ThemedView>
+      </ThemedView>
     );
   if (index === 1)
     return (
-      <View
+      <ThemedView
         style={{
           flex: 1,
         }}
       >
         <AnimatedBackground color="secondary" prevColor={prevColor} />
-        <View
+        <ThemedView
           style={{
             flex: 1,
             justifyContent: "space-evenly",
@@ -90,7 +99,9 @@ export default function Onboarding({
             alignItems: "center",
           }}
         >
-          <View style={{ alignItems: "center" }}>
+          <ThemedView
+            style={{ alignItems: "center", backgroundColor: "transparent" }}
+          >
             <Image
               source={require("../../assets/images/hourglass.jpg")}
               style={{
@@ -99,16 +110,17 @@ export default function Onboarding({
                 borderRadius: 100,
               }}
             />
-          </View>
-          <View style={{ padding: 8 }}>
+          </ThemedView>
+          <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
             <ThemedText color={theme.background} type="title">
               Manage your time more effectively to get the best out of your day
             </ThemedText>
-            <View
+            <ThemedView
               style={{
                 flexDirection: "row",
                 justifyContent: "space-between",
                 marginTop: 8,
+                backgroundColor: "transparent",
               }}
             >
               <ThemedButton
@@ -128,8 +140,8 @@ export default function Onboarding({
                 }}
                 title="Next"
               />
-            </View>
-          </View>
+            </ThemedView>
+          </ThemedView>
           <Dots
             activeIndex={index}
             setIndex={(idx) => {
@@ -142,18 +154,18 @@ export default function Onboarding({
             onPress={() => switchRegister("register")}
             title="Get Started"
           />
-        </View>
-      </View>
+        </ThemedView>
+      </ThemedView>
     );
 
   return (
-    <View
+    <ThemedView
       style={{
         flex: 1,
       }}
     >
       <AnimatedBackground color="accent" prevColor={prevColor} />
-      <View
+      <ThemedView
         style={{
           flex: 1,
           justifyContent: "space-evenly",
@@ -161,7 +173,9 @@ export default function Onboarding({
           alignItems: "center",
         }}
       >
-        <View style={{ alignItems: "center" }}>
+        <ThemedView
+          style={{ alignItems: "center", backgroundColor: "transparent" }}
+        >
           <Image
             source={require("../../assets/images/deadline.jpg")}
             style={{
@@ -170,16 +184,17 @@ export default function Onboarding({
               borderRadius: 100,
             }}
           />
-        </View>
-        <View style={{ padding: 8 }}>
+        </ThemedView>
+        <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
           <ThemedText color={theme.background} type="title">
             Avoid distractions, achieve your goals and beat deadlines
           </ThemedText>
-          <View
+          <ThemedView
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
               marginTop: 8,
+              backgroundColor: "transparent",
             }}
           >
             <ThemedButton
@@ -190,8 +205,8 @@ export default function Onboarding({
               }}
               title="Prev"
             />
-          </View>
-        </View>
+          </ThemedView>
+        </ThemedView>
         <Dots
           activeIndex={index}
           setIndex={(idx) => {
@@ -204,7 +219,7 @@ export default function Onboarding({
           onPress={() => switchRegister("register")}
           title="Get Started"
         />
-      </View>
-    </View>
+      </ThemedView>
+    </ThemedView>
   );
 }

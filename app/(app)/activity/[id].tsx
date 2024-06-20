@@ -6,7 +6,7 @@ import ActivityModel from "@/context/data/model/ActivityModel";
 import useDataQuery from "@/context/data/useDataQuery";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getContrastColor } from "@/services/color";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -16,6 +16,7 @@ import Confirm from "@/components/Confirm";
 import deleteActivity from "@/services/database/deleteActivity";
 import updateActivity from "@/services/database/updateActivity";
 import goBack from "@/services/routing";
+import { StatusBar } from "expo-status-bar";
 
 export default function Activity() {
   const { id } = useLocalSearchParams();
@@ -42,16 +43,20 @@ export default function Activity() {
     const archive = activity.archived ? unarchiveActivity : archiveActivity;
 
     const color = getContrastColor(activity?.color);
+    // 0 is part of black (#000000), I didn't use white (f) because of capitalisation
+    const statusBarStyle = color.includes("0") ? "dark" : "light";
 
     return (
       <ScrollView style={{ backgroundColor: activity.color }}>
-        <View style={{ height: 36 }} />
-        <View
+        <StatusBar style={statusBarStyle} />
+        <ThemedView style={{ height: 36, backgroundColor: "transparent" }} />
+        <ThemedView
           style={{
             padding: 8,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
+            backgroundColor: "transparent",
           }}
         >
           <Ionicons
@@ -66,10 +71,14 @@ export default function Activity() {
             color={color}
             onPress={() => setShowMenu(!showMenu)}
           />
-        </View>
+        </ThemedView>
         {showMenu && (
-          <View style={{ marginVertical: 8 }}>
-            <View style={{ alignItems: "center" }}>
+          <ThemedView
+            style={{ marginVertical: 8, backgroundColor: "transparent" }}
+          >
+            <ThemedView
+              style={{ alignItems: "center", backgroundColor: "transparent" }}
+            >
               <ThemedButton
                 title="Edit"
                 color={color}
@@ -91,9 +100,9 @@ export default function Activity() {
                   Delete
                 </ThemedText>
               </Confirm>
-            </View>
+            </ThemedView>
             <Divider color={color} style={{ marginVertical: 12 }} />
-          </View>
+          </ThemedView>
         )}
         <ActivityScreen id={activity.id} />
         <EditModal

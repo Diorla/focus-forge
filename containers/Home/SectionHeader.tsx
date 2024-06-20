@@ -1,5 +1,5 @@
 import { ThemedText } from "@/components/ThemedText";
-import { View } from "react-native";
+import { ThemedView } from "@/components/ThemedView";
 
 export default function SectionHeader({
   title,
@@ -9,7 +9,7 @@ export default function SectionHeader({
   extra?: React.ReactNode;
 }) {
   return (
-    <View
+    <ThemedView
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
@@ -20,6 +20,6 @@ export default function SectionHeader({
     >
       <ThemedText type="title">{title}</ThemedText>
       {extra}
-    </View>
+    </ThemedView>
   );
 }

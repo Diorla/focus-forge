@@ -1,4 +1,4 @@
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Card, Divider } from "@rneui/themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,6 +9,7 @@ import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import { secondsToHrMm } from "@/services/datetime";
+import { ThemedView } from "@/components/ThemedView";
 
 const CardTime = ({ activity }: { activity: ActivityModel }) => {
   const { isOccurrence, occurrence, weeklyTarget, occurrenceType } = activity;
@@ -46,7 +47,9 @@ export default function ActivityCard({
     <Card
       containerStyle={{ borderRadius: 8, backgroundColor: theme.background }}
     >
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      <ThemedView
+        style={{ flexDirection: "row", justifyContent: "space-between" }}
+      >
         <ThemedText type="defaultSemiBold">{activity.name}</ThemedText>
         <Link href={`/activity/${activity.id}`}>
           <MaterialCommunityIcons
@@ -55,8 +58,8 @@ export default function ActivityCard({
             color={theme.text}
           />
         </Link>
-      </View>
-      <View
+      </ThemedView>
+      <ThemedView
         style={{
           alignItems: "center",
           marginVertical: 10,
@@ -70,14 +73,16 @@ export default function ActivityCard({
         <ThemedText type="defaultSemiBold">
           {activity.archived ? "Archived" : "Active"}{" "}
         </ThemedText>
-      </View>
-      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+      </ThemedView>
+      <ThemedView
+        style={{ flexDirection: "row", justifyContent: "space-between" }}
+      >
         <ThemedText style={{ textTransform: "capitalize" }}>
           {priority[activity.priority] || "None"}
         </ThemedText>
 
         <TouchableOpacity onPress={() => setVisible(!visible)}>
-          <View
+          <ThemedView
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
@@ -86,9 +91,9 @@ export default function ActivityCard({
           >
             <MaterialIcons name="list" size={24} color={theme.text} />
             <ThemedText>{tasks.length}</ThemedText>
-          </View>
+          </ThemedView>
         </TouchableOpacity>
-      </View>
+      </ThemedView>
     </Card>
   );
 }

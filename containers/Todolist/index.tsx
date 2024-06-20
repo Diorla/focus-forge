@@ -1,9 +1,10 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import useSchedule from "../../context/schedule/useSchedule";
 import ActivityCard from "./ActivityCard";
 import DoneCard from "./DoneCard";
 import { ThemedText } from "@/components/ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import { ThemedView } from "@/components/ThemedView";
 
 const occurrenceType = {
   daily: 0,
@@ -22,7 +23,7 @@ export default function TodolistScreen() {
 
   return (
     <ScrollView>
-      <View style={{ padding: 8, marginTop: 12 }}>
+      <ThemedView style={{ padding: 8, marginTop: 12 }}>
         <ThemedText
           type="title"
           style={{
@@ -33,7 +34,7 @@ export default function TodolistScreen() {
         >
           To do
         </ThemedText>
-      </View>
+      </ThemedView>
       {todo
         .sort((a, b) => b.priority - a.priority)
         .sort((a, b) => b.remaining - a.remaining)
@@ -44,7 +45,7 @@ export default function TodolistScreen() {
         .map((item) => (
           <ActivityCard activity={item} key={item.id} />
         ))}
-      <View style={{ padding: 8, marginVertical: 12 }}>
+      <ThemedView style={{ padding: 8, marginVertical: 12 }}>
         <ThemedText
           type="title"
           style={{
@@ -55,7 +56,7 @@ export default function TodolistScreen() {
         >
           Completed
         </ThemedText>
-      </View>
+      </ThemedView>
       <ScrollView horizontal>
         {done
           .sort((a, b) => a.remaining - b.remaining)
@@ -68,7 +69,7 @@ export default function TodolistScreen() {
             <DoneCard activity={item} key={item.id} />
           ))}
       </ScrollView>
-      <View style={{ padding: 8, marginVertical: 12 }}>
+      <ThemedView style={{ padding: 8, marginVertical: 12 }}>
         <ThemedText
           type="title"
           style={{
@@ -79,7 +80,7 @@ export default function TodolistScreen() {
         >
           Archived
         </ThemedText>
-      </View>
+      </ThemedView>
       <ScrollView horizontal>
         {archived
           .sort((a, b) => a.remaining - b.remaining)

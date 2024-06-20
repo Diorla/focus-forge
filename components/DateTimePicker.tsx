@@ -2,7 +2,7 @@ import DateTimePicker, {
   DateTimePickerAndroid,
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { Platform, View } from "react-native";
+import { Platform } from "react-native";
 import { format } from "../services/datetime";
 import dayjs from "dayjs";
 import { ThemedButton } from "./ThemedButton";
@@ -46,7 +46,7 @@ export default function DatePicker({
 
   if (Platform.OS === "ios")
     return (
-      <View style={{ alignItems: "flex-start", marginVertical: 8 }}>
+      <ThemedView style={{ alignItems: "flex-start", marginVertical: 8 }}>
         <ThemedText
           style={{
             marginLeft: 8,
@@ -63,11 +63,11 @@ export default function DatePicker({
           onChange={onChange}
           style={{ marginLeft: 24 }}
         />
-      </View>
+      </ThemedView>
     );
   if (Platform.OS === "android")
     return (
-      <View
+      <ThemedView
         style={{ alignItems: "flex-start", marginVertical: 8, marginLeft: 8 }}
       >
         <ThemedText
@@ -79,7 +79,7 @@ export default function DatePicker({
         >
           {label}
         </ThemedText>
-        <View style={{ marginLeft: 24, flexDirection: "row" }}>
+        <ThemedView style={{ marginLeft: 24, flexDirection: "row" }}>
           {mode.includes("date") && (
             <ThemedButton
               outlined
@@ -94,8 +94,8 @@ export default function DatePicker({
               title={format(date, "time")}
             />
           )}
-        </View>
-      </View>
+        </ThemedView>
+      </ThemedView>
     );
   return (
     <ThemedView style={{ flexDirection: "row" }}>

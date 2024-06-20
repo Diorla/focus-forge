@@ -1,8 +1,8 @@
 import * as React from "react";
-import { View } from "react-native";
 import Clock from "./Clock";
 import { useKeepAwake } from "expo-keep-awake";
 import useInterval from "@/hooks/useTimeInterval";
+import { ThemedView } from "../ThemedView";
 
 export default function StopWatch({ startTime }: { startTime: number }) {
   const [count, setCount] = React.useState((Date.now() - startTime) / 1000);
@@ -14,8 +14,8 @@ export default function StopWatch({ startTime }: { startTime: number }) {
 
   const value = (Date.now() - startTime) / 1000;
   return (
-    <View style={{ alignItems: "center", justifyContent: "center" }}>
+    <ThemedView style={{ alignItems: "center", justifyContent: "center" }}>
       <Clock time={value < 0 ? 0 : value} />
-    </View>
+    </ThemedView>
   );
 }
