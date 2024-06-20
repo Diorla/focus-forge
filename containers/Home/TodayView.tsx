@@ -29,6 +29,7 @@ export default function TodayView() {
       const todo = item.todayTime - item.doneToday;
       return todo > 0.001 || item.timerLength;
     })
+    .sort((a, b) => b.todayTime - b.doneToday - a.todayTime + a.doneToday)
     .sort((a, b) => b.priority - a.priority);
 
   if (today.length) {
