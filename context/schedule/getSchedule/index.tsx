@@ -59,7 +59,7 @@ export default function getSchedule({
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
 
-      const lastDone = doneList.sort((a, b) => a.datetime - b.datetime)[0]
+      const lastDone = doneList.sort((a, b) => b.datetime - a.datetime)[0]
         ?.datetime;
 
       // this week remaining should be greater or equal to 0
