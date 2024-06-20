@@ -4,7 +4,7 @@ import { ThemedView } from "@/components/ThemedView";
 import ActivityScreen from "@/containers/Activity";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import useDataQuery from "@/context/data/useDataQuery";
-import { router, useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,6 +15,7 @@ import EditModal from "@/containers/EditModal";
 import Confirm from "@/components/Confirm";
 import deleteActivity from "@/services/database/deleteActivity";
 import updateActivity from "@/services/database/updateActivity";
+import goBack from "@/services/routing";
 
 export default function Activity() {
   const { id } = useLocalSearchParams();
@@ -57,7 +58,7 @@ export default function Activity() {
             name="arrow-back"
             size={36}
             color={color}
-            onPress={() => router.back()}
+            onPress={() => goBack()}
           />
           <Ionicons
             name={showMenu ? "caret-down-circle" : "caret-up-circle"}
@@ -110,7 +111,7 @@ export default function Activity() {
         <ThemedText style={{ marginVertical: 12 }}>
           This activity has been deleted or some unknown error has occurred.
         </ThemedText>
-        <ThemedButton title="Back" onPress={() => router.back()}></ThemedButton>
+        <ThemedButton title="Back" onPress={() => goBack()}></ThemedButton>
       </ThemedView>
     </ParallaxScrollView>
   );

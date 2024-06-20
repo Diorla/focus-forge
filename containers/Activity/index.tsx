@@ -10,7 +10,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { getContrastColor } from "@/services/color";
 import useSchedule from "@/context/schedule/useSchedule";
-import { router } from "expo-router";
+import goBack from "@/services/routing";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
 export default function ActivityScreen({ id }: { id: string }) {
@@ -77,7 +77,7 @@ export default function ActivityScreen({ id }: { id: string }) {
   return (
     <View style={{ justifyContent: "center", alignItems: "center", flex: 1 }}>
       <ThemedText>Activity not found</ThemedText>
-      <ThemedButton onPress={() => router.back()} title="Go back" />
+      <ThemedButton onPress={() => goBack()} title="Go back" />
     </View>
   );
 }

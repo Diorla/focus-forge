@@ -1,6 +1,6 @@
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedView } from "@/components/ThemedView";
-import { router } from "expo-router";
+import goBack from "@/services/routing";
 import ThemedInput from "@/components/ThemedInput";
 import { useEffect, useState } from "react";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -68,7 +68,7 @@ export default function FormScreen() {
   };
 
   useEffect(() => {
-    if (user.id && user.id !== "user") router.back();
+    if (user.id && user.id !== "user") goBack();
   }, [user]);
 
   return (
