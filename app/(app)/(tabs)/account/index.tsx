@@ -6,7 +6,6 @@ import { ThemedText } from "@/components/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
 import Confirm from "@/components/Confirm";
 import signOut from "@/services/auth/signOut";
-import resetStorage from "@/services/storage/resetStorage";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import removeUserCred from "@/services/database/removeUserCred";
 
@@ -50,22 +49,18 @@ export default function AccountScreen() {
                 <ThemedText type="link">Log out</ThemedText>
               </ThemedView>
             </Confirm>
-            <Confirm
+            {/* <Confirm
               title="Erase data"
               message="This will erase all your local data"
-              acceptFn={() =>
-                resetStorage().then(() =>
-                  console.log("delete activity, sign out and delete user")
-                )
-              }
+              acceptFn={() => closeAccount(user.id)}
             >
               <ThemedView style={{ flexDirection: "row", paddingVertical: 8 }}>
                 <ThemedText type="link" style={{ marginRight: 20 }}>
                   <Ionicons size={28} name="remove-circle" />
                 </ThemedText>
-                <ThemedText type="link">Reset data</ThemedText>
+                <ThemedText type="link">Close account</ThemedText>
               </ThemedView>
-            </Confirm>
+            </Confirm> */}
           </>
         ) : (
           <ListItem path="form" title="Login" name="log-in" />
