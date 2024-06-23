@@ -32,8 +32,8 @@ export default function ProgressCard() {
           size={100}
           progress={progress}
           color={theme.background}
-          unfilledColor={theme.grey5}
-          borderColor={theme.grey5}
+          unfilledColor={theme.grey0}
+          borderColor="transparent"
           showsText
           thickness={5}
           formatText={() => (progress * 100).toFixed(2) + "%"}
