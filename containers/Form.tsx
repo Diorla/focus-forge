@@ -9,21 +9,31 @@ import signUp from "@/services/auth/signUp";
 import signIn from "@/services/auth/signIn";
 import useUser from "@/context/user/useUser";
 import saveUserCred from "@/services/database/saveUserCred";
+import { logError } from "@/services/database";
 
+const ErrorReader = (message: string) => {
+  if (message.includes("invalid-credential"))
+    return "Email and password does not match";
+  if (message.includes("email-already-in-use")) return "Email already in use";
+  if (message.includes("weak-password")) return "Password is too weak";
+  if (message.includes("user-not-found")) return "Email does not exist";
+  if (message.includes("invalid-email")) return "Email is invalid";
+  if (message.includes("too-many-requests"))
+    return "Too many failed sign in, please reset password";
+  return message;
+};
+
+const baseForm = {
+  email: "",
+  password: "",
+  repassword: "",
+};
 export default function FormScreen() {
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-    repassword: "",
-  });
+  const [form, setForm] = useState(baseForm);
 
-  const [formError, setFormError] = useState({
-    email: "",
-    password: "",
-    repassword: "",
-  });
+  const [formError, setFormError] = useState(baseForm);
 
   const [isNew, setIsNew] = useState(false);
   const theme = useThemeColor();
@@ -33,14 +43,14 @@ export default function FormScreen() {
     setLoading(true);
     if (!form.email) {
       setFormError({
-        ...formError,
+        ...baseForm,
         email: "Email is required",
       });
       return;
     }
     if (!form.password) {
       setFormError({
-        ...formError,
+        ...baseForm,
         password: "Password is required",
       });
       return;
@@ -48,7 +58,7 @@ export default function FormScreen() {
     if (isNew) {
       if (form.password !== form.repassword) {
         setFormError({
-          ...formError,
+          ...baseForm,
           repassword: "Password does not match",
         });
         return;
@@ -57,13 +67,27 @@ export default function FormScreen() {
         .then(() => {
           saveUserCred(email, password);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          setFormError({
+            ...baseForm,
+            repassword: ErrorReader(err.message),
+          });
+          setLoading(false);
+          logError(email, "signing up", err);
+        });
     }
     signIn(email, password)
       .then(() => {
         saveUserCred(email, password);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setFormError({
+          ...baseForm,
+          password: ErrorReader(err.message),
+        });
+        setLoading(false);
+        logError(email, "signing in", err);
+      });
     setLoading(false);
   };
 
