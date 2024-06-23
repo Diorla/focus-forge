@@ -11,7 +11,6 @@ import useUser from "@/context/user/useUser";
 import { ThemedView } from "@/components/ThemedView";
 import { ScrollView } from "react-native";
 import { useToast } from "react-native-toast-notifications";
-import AnimatedBackground from "../AnimatedBackground";
 
 interface QuotaFormState {
   weeklyQuota: number;
@@ -61,8 +60,7 @@ export default function Quotaform() {
 
   if (!quota.useWeeklyQuota)
     return (
-      <ThemedView style={{ flex: 1 }}>
-        <AnimatedBackground />
+      <ThemedView style={{ flex: 1, backgroundColor: "transparent" }}>
         <ThemedView
           style={{
             flex: 1,
@@ -81,6 +79,7 @@ export default function Quotaform() {
                   margin: 8,
                   padding: 8,
                   maxHeight: 300,
+                  backgroundColor: "transparent",
                 }}
               >
                 <TimeInput
@@ -264,9 +263,9 @@ export default function Quotaform() {
     <ThemedView
       style={{
         flex: 1,
+        backgroundColor: "transparent",
       }}
     >
-      <AnimatedBackground />
       <ThemedView
         style={{
           flex: 1,

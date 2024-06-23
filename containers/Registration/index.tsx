@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Input } from "@rneui/themed";
 import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -10,6 +9,7 @@ import { router } from "expo-router";
 import FormContainer from "../Form";
 import updateUser from "@/services/database/updateUser";
 import { ThemedView } from "@/components/ThemedView";
+import ThemedInput from "@/components/ThemedInput";
 
 export default function Registration() {
   const [name, setName] = useState("");
@@ -24,11 +24,18 @@ export default function Registration() {
 
   if (!user.id) return <FormContainer />;
 
-  if (user.name) return <QuotaForm />;
+  if (user.name)
+    return (
+      <>
+        <AnimatedBackground />
+        <QuotaForm />
+      </>
+    );
   return (
     <ThemedView
       style={{
         flex: 1,
+        backgroundColor: "transparent",
       }}
     >
       <AnimatedBackground prevColor={theme.background} externalKey="primary" />
@@ -40,7 +47,7 @@ export default function Registration() {
         }}
       >
         <ThemedView style={{ alignItems: "center" }}></ThemedView>
-        <ThemedView style={{ padding: 8 }}>
+        <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
           <ThemedText
             type="title"
             style={{
@@ -51,15 +58,16 @@ export default function Registration() {
           >
             Hello, What should I call you?
           </ThemedText>
-          <Input
+          <ThemedInput
             value={name}
             onChangeText={(name) => setName(name)}
-            style={{ color: theme.background, textAlign: "center" }}
+            style={{ textAlign: "center", color: theme.background }}
           />
           <ThemedView
             style={{
               justifyContent: "center",
               alignItems: "center",
+              backgroundColor: "transparent",
             }}
           >
             <ThemedButton
