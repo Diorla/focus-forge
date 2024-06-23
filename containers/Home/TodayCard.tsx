@@ -5,18 +5,18 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import PlayButton from "./PlayButton";
 import Schedule from "../../context/schedule/Schedule";
-import { getDateTimeKey, secondsToHrMm } from "../../services/datetime";
 import { useToast } from "react-native-toast-notifications";
 import { logError } from "../../services/database";
-import useDataQuery from "../../context/data/useDataQuery";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import Timer from "@/components/Timer";
 import { useThemeColor } from "@/hooks/useThemeColor";
-import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
+import { secondsToHrMm } from "@/services/datetime";
+import endTimer from "@/services/utils/endTimer";
+import startTimer from "@/services/utils/startTimer";
 
-const priority = ["None", "Low", "Medium", "High"];
+export const priority = ["None", "Low", "Medium", "High"];
 export function TodayCard({
   schedule,
   setCurrentSchedule,
@@ -45,34 +45,6 @@ export function TodayCard({
   const tasks = Object.keys(schedule.tasks).filter(
     (item) => !schedule.tasks[item].checked
   );
-
-  const startTimer = (id: string, length: number, notificationId: string) => {
-    return updateActivity({
-      id,
-      timerStart: Date.now(),
-      timerLength: length,
-      timerId: notificationId,
-    });
-  };
-
-  const endTimer = (id: string, startTime: number) => {
-    const length = (Date.now() - startTime) / 1000;
-    const key = getDateTimeKey(startTime);
-
-    updateActivity({
-      id,
-      timerStart: 0,
-      timerLength: 0,
-      timerId: "",
-      done: {
-        ...done,
-        [key]: {
-          length,
-          comment: "",
-        },
-      },
-    });
-  };
 
   return (
     <>
@@ -129,7 +101,7 @@ export function TodayCard({
             playing={running}
             onPress={() => {
               if (running) {
-                endTimer(id, timerStart);
+                endTimer(id, timerStart, done);
                 toast.show("Timer paused");
                 // if (isLoadedAd && !isPremium) showAd();
               } else {

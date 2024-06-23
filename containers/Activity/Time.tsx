@@ -4,6 +4,7 @@ import TimeFormat from "@/components/TimeFormat";
 import Schedule from "@/context/schedule/Schedule";
 import { secondsToHrMm } from "@/services/datetime";
 import React from "react";
+import Running from "./Running";
 
 export default function Time({
   activity,
@@ -34,13 +35,7 @@ export default function Time({
         backgroundColor: "transparent",
       }}
     >
-      <ThemedText
-        type="title"
-        color={color}
-        style={{ textAlign: "center", marginBottom: 8 }}
-      >
-        Todo
-      </ThemedText>
+      {activity.isOccurrence ? null : <Running activity={activity} />}
       <ThemedView
         style={{
           backgroundColor: "transparent",
