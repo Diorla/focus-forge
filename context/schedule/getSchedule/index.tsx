@@ -59,8 +59,10 @@ export default function getSchedule({
       const doneToday = getDoneToday(doneList);
       const doneThisWeek = getDoneThisWeek(doneList);
 
-      const lastDone = doneList.sort((a, b) => b.datetime - a.datetime)[0]
-        ?.datetime;
+      const lastDone = doneList
+        // Remove future times
+        .filter((done) => Date.now() > done.datetime)
+        .sort((a, b) => b.datetime - a.datetime)[0]?.datetime;
 
       // this week remaining should be greater or equal to 0
       const tempTWR = item.weeklyTarget - doneThisWeek;
