@@ -46,7 +46,6 @@ export default function ActivityScreen({ id }: { id: string }) {
           <Task activity={timedActivity} />
         </Card>
         <History activity={timedActivity} />
-        <ThemedView style={{ height: 50 }} />
       </ScrollView>
     );
   }
@@ -75,7 +74,6 @@ export default function ActivityScreen({ id }: { id: string }) {
           <Task activity={activity} />
         </Card>
         <Checked activity={activity} />
-        <ThemedView style={{ height: 50 }} />
       </ScrollView>
     );
   }

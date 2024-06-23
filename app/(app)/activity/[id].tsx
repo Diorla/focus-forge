@@ -6,17 +6,18 @@ import ActivityModel from "@/context/data/model/ActivityModel";
 import useDataQuery from "@/context/data/useDataQuery";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { ScrollView } from "react-native";
+import { Modal, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getContrastColor } from "@/services/color";
 import { ThemedButton } from "@/components/ThemedButton";
 import { Divider } from "@rneui/themed";
-import EditModal from "@/containers/EditModal";
 import Confirm from "@/components/Confirm";
 import deleteActivity from "@/services/database/deleteActivity";
 import updateActivity from "@/services/database/updateActivity";
 import goBack from "@/services/routing";
 import { StatusBar } from "expo-status-bar";
+import ActivityForm from "@/containers/Add";
+import TopSpace from "@/components/TopSpace";
 
 export default function Activity() {
   const { id } = useLocalSearchParams();
@@ -49,7 +50,7 @@ export default function Activity() {
     return (
       <ScrollView style={{ backgroundColor: activity.color }}>
         <StatusBar style={statusBarStyle} />
-        <ThemedView style={{ height: 36, backgroundColor: "transparent" }} />
+        <TopSpace />
         <ThemedView
           style={{
             padding: 8,
@@ -105,11 +106,18 @@ export default function Activity() {
           </ThemedView>
         )}
         <ActivityScreen id={activity.id} />
-        <EditModal
-          activity={activity}
-          visible={showEdit}
-          closeModal={() => setShowEdit(!showEdit)}
-        />
+        <Modal visible={showEdit}>
+          <ParallaxScrollView name="pencil">
+            <ActivityForm initialForm={activity} />
+            <ThemedView style={{ marginBottom: 16, alignItems: "center" }}>
+              <ThemedButton
+                onPress={() => setShowEdit(!showEdit)}
+                title="Close"
+                style={{ marginBottom: 32 }}
+              />
+            </ThemedView>
+          </ParallaxScrollView>
+        </Modal>
       </ScrollView>
     );
   }

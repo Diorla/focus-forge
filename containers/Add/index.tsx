@@ -6,7 +6,6 @@ import { random } from "../../services/color";
 import useSchedule from "../../context/schedule/useSchedule";
 import { useToast } from "react-native-toast-notifications";
 import ActivityModel from "../../context/data/model/ActivityModel";
-import useDataQuery from "../../context/data/useDataQuery";
 import { ThemedText } from "@/components/ThemedText";
 import TimeInput from "@/components/TimeInput";
 import Picker from "@/components/Picker";
@@ -18,39 +17,50 @@ import ThemedInput from "@/components/ThemedInput";
 import { ThemedView } from "@/components/ThemedView";
 import useUser from "@/context/user/useUser";
 import createActivity from "@/services/database/createActivity";
+import updateActivity from "@/services/database/updateActivity";
 
-export default function AddScreen() {
+const baseForm: ActivityModel = {
+  name: "",
+  weeklyTarget: 0,
+  dailyLimit: 0,
+  startDate: Date.now(),
+  priority: 0,
+  color: random(),
+  category: "",
+  description: "",
+  id: "",
+  archived: 0,
+  createdAt: Date.now(),
+  updatedAt: Date.now(),
+  lastDone: 0,
+  timerStart: 0,
+  timerLength: 0,
+  timerId: "",
+  occurrence: 0,
+  occurrenceType: "daily",
+  done: {},
+  tasks: {},
+  isOccurrence: false,
+  deletedAt: 0,
+  userId: "",
+};
+
+export default function ActivityForm({
+  initialForm = baseForm,
+}: {
+  initialForm?: ActivityModel;
+}) {
   const {
     user: { id },
   } = useUser();
-  const baseForm: ActivityModel = {
-    name: "",
-    weeklyTarget: 0,
-    dailyLimit: 0,
-    startDate: Date.now(),
-    priority: 0,
-    color: random(),
-    category: "",
-    description: "",
-    id: "",
-    archived: 0,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-    lastDone: 0,
-    timerStart: 0,
-    timerLength: 0,
-    timerId: "",
-    occurrence: 0,
-    occurrenceType: "daily",
-    done: {},
-    tasks: {},
-    isOccurrence: false,
+
+  const mergedForm = {
+    ...initialForm,
     userId: id,
-    deletedAt: 0,
   };
 
   const theme = useThemeColor();
-  const [form, setForm] = useState<ActivityModel>({ ...baseForm });
+  const [form, setForm] = useState<ActivityModel>({ ...mergedForm });
   const { schedule } = useSchedule();
   const list = Array.from(new Set(schedule.map((item) => item.category)));
   const toast = useToast();
@@ -94,9 +104,22 @@ export default function AddScreen() {
       }
     }
     try {
-      createActivity(form)
-        .then(() => setForm({ ...baseForm, isOccurrence: form.isOccurrence }))
-        .then(() => toast.show("New activity added"));
+      if (initialForm?.id) {
+        updateActivity({ ...form, id: initialForm.id }).then(() =>
+          alert("Activity updated")
+        );
+      } else {
+        createActivity(form)
+          .then(() =>
+            setForm({
+              ...mergedForm,
+              isOccurrence: form.isOccurrence,
+              category: form.category,
+              priority: form.priority,
+            })
+          )
+          .then(() => toast.show("New activity added"));
+      }
     } catch (error) {
       const { message } = error as Error;
       toast.show("Adding new activity failed: " + message);
@@ -275,7 +298,10 @@ export default function AddScreen() {
         list={["None", ...list]}
       />
       <ThemedView style={{ marginBottom: 16, alignItems: "center" }}>
-        <ThemedButton onPress={saveActivity} title="Add" />
+        <ThemedButton
+          onPress={saveActivity}
+          title={initialForm?.id ? "Update" : "Add"}
+        />
       </ThemedView>
     </ThemedView>
   );
