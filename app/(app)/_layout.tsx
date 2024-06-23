@@ -3,9 +3,9 @@ import "react-native-reanimated";
 import useUser from "@/context/user/useUser";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
-import { ThemedText } from "@/components/ThemedText";
 import * as SplashScreen from "expo-splash-screen";
 import UserModel from "@/context/user/UserModel";
+import PageLoader from "@/components/PageLoader";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -36,7 +36,7 @@ export default function AppLayout() {
     return null;
   }
 
-  if (loading) return <ThemedText>Loading</ThemedText>;
+  if (loading) return <PageLoader />;
   if (isFirstTime(user)) return <Redirect href="/sign-in" />;
   return <Stack screenOptions={{ headerShown: false }} />;
 }

@@ -10,8 +10,8 @@ import Schedule from "./Schedule";
 import useDataQuery from "../data/useDataQuery";
 import Checklist from "./Checklist";
 import getChecklist from "./getChecklist";
-import { ThemedText } from "@/components/ThemedText";
 import { logError } from "@/services/database";
+import PageLoader from "@/components/PageLoader";
 
 dayjs.extend(isToday);
 
@@ -105,7 +105,7 @@ export default function ScheduleProvider({
     }
   }, [activityListString]);
 
-  if (loading) return <ThemedText>Loading...</ThemedText>;
+  if (loading) return <PageLoader />;
   return (
     <ActivityContext.Provider
       value={{
