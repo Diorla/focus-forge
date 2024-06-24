@@ -81,7 +81,7 @@ export default function Timer({
       <Progress.Bar
         progress={(doneToday + count) / targetTime}
         color={theme.primary}
-        unfilledColor={theme.grey0}
+        unfilledColor={theme.grey3}
         borderColor={theme.grey5}
         width={250}
       />

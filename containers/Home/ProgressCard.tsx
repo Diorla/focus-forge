@@ -32,7 +32,7 @@ export default function ProgressCard() {
           size={100}
           progress={progress}
           color={theme.background}
-          unfilledColor={theme.grey0}
+          unfilledColor={theme.grey3}
           borderColor="transparent"
           showsText
           thickness={5}

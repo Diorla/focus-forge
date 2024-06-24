@@ -46,8 +46,7 @@ export default function Running({ activity }: { activity: Schedule }) {
           <Progress.Bar
             progress={doneToday / todayTime}
             color={theme.grey3}
-            unfilledColor={theme.grey0}
-            borderColor={theme.grey5}
+            unfilledColor={theme.grey3}
             width={250}
           />
         </>

@@ -89,8 +89,8 @@ export function TodayCard({
               </ThemedText>
               <Progress.Bar
                 progress={doneToday / todayTime}
-                color={theme.grey3}
-                unfilledColor={theme.grey0}
+                color={theme.grey0}
+                unfilledColor={theme.grey3}
                 borderColor={theme.grey5}
                 width={250}
               />
