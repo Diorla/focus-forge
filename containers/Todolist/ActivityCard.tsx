@@ -6,8 +6,8 @@ import { useState } from "react";
 import DoneType from "../../context/data/types/DoneType";
 import { Modal } from "react-native";
 import { getDateTimeKey } from "../../services/datetime";
-import { MaterialIcons } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import { Link, router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import DatePicker from "@/components/DateTimePicker";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -53,7 +53,7 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
   }
 
   return (
-    <TouchableOpacity onPress={() => router.push(`/activity/${id}`)}>
+    <>
       <Modal visible={showAddTime}>
         <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <Input
@@ -112,7 +112,14 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
           <ThemedText style={{ fontWeight: "bold" }}>
             {activity.name}{" "}
           </ThemedText>
-          <ThemedText>{dateRemaining}</ThemedText>
+          <Link href={`/activity/${activity.id}`}>
+            <MaterialCommunityIcons
+              name="arrow-expand-all"
+              size={24}
+              color={theme.text}
+            />
+          </Link>
+          {/* <ThemedText>{dateRemaining}</ThemedText> */}
         </ThemedView>
         <ThemedView
           style={{
@@ -140,9 +147,12 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          <ThemedText style={{ textTransform: "capitalize" }}>
-            {priority[activity.priority] || "None"}
-          </ThemedText>
+          <ThemedView style={{ flexDirection: "row" }}>
+            <ThemedText>{dateRemaining}, </ThemedText>
+            <ThemedText style={{ textTransform: "capitalize" }}>
+              {priority[activity.priority] || "None"}
+            </ThemedText>
+          </ThemedView>
 
           <TouchableOpacity onPress={() => setVisible(!visible)}>
             <ThemedView
@@ -158,6 +168,6 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
           </TouchableOpacity>
         </ThemedView>
       </Card>
-    </TouchableOpacity>
+    </>
   );
 }
