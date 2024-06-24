@@ -1,5 +1,5 @@
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import ActivityForm from "@/containers/Add";
+import ActivityForm from "@/containers/ActivityForm";
 
 export default function TabTwoScreen() {
   return (

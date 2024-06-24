@@ -16,7 +16,7 @@ import deleteActivity from "@/services/database/deleteActivity";
 import updateActivity from "@/services/database/updateActivity";
 import goBack from "@/services/routing";
 import { StatusBar } from "expo-status-bar";
-import ActivityForm from "@/containers/Add";
+import ActivityForm from "@/containers/ActivityForm";
 import TopSpace from "@/components/TopSpace";
 
 export default function Activity() {
