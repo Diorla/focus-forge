@@ -3,6 +3,7 @@ import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
 import useSchedule from "../../context/schedule/useSchedule";
 import TimeFormat from "@/components/TimeFormat";
+import { ThemedView } from "@/components/ThemedView";
 // import AdsView from "./AdsView";
 
 export default function UpcomingView() {
@@ -14,9 +15,9 @@ export default function UpcomingView() {
 
   if (upcoming.length)
     return (
-      <>
+      <ThemedView>
         <SectionHeader title="Upcoming" extra={<TimeFormat value={time} />} />
-        <ScrollView horizontal>
+        <ScrollView horizontal style={{ paddingBottom: 16 }}>
           {upcoming
             .sort((prev, next) => next.upcomingTime - prev.upcomingTime)
             .map((item) => (
@@ -24,7 +25,7 @@ export default function UpcomingView() {
             ))}
         </ScrollView>
         {/* <AdsView /> */}
-      </>
+      </ThemedView>
     );
   return null;
 }
