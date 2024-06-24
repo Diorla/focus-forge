@@ -35,12 +35,6 @@ export default function Root({ children }: PropsWithChildren) {
 const responsiveBackground = `
 body {
   background-color: ${Colors.light.grey5};
-  min-height: 100vh;
-}
-#root {
-  max-width: 720px;
-  margin: 0 auto;
-  min-height: 100vh;
 }
 @media (prefers-color-scheme: dark) {
   body {
