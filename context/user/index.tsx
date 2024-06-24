@@ -8,12 +8,16 @@ import { logError } from "@/services/database";
 import watchUser from "@/services/database/watchUser";
 import getUserCred from "@/services/database/getUserCred";
 import signIn from "@/services/auth/signIn";
+import { Dimensions, View } from "react-native";
 
-const generateAuth = () => {
-  return getAuth(app);
-};
 const auth = getAuth(app);
 
+const maxWidth = 720;
+const getMarginLeft = (width: number) => {
+  const left = (Dimensions.get("window").width - width) / 2;
+  if (left < 0) return 0;
+  return left;
+};
 export default function UserProvider({
   children,
 }: {
@@ -21,6 +25,14 @@ export default function UserProvider({
 }) {
   const [user, setUser] = useState<UserModel>(initialUser);
   const [loading, setLoading] = useState(true);
+  const [marginLeft, setMarginLeft] = useState(0);
+
+  useEffect(() => {
+    const subscription = Dimensions.addEventListener("change", () => {
+      setMarginLeft(getMarginLeft(maxWidth));
+    });
+    return () => subscription?.remove();
+  });
 
   useEffect(() => {
     let unsubscribe: Unsubscribe;
@@ -53,7 +65,18 @@ export default function UserProvider({
 
   return (
     <UserContext.Provider value={{ user, loading }}>
-      {children}
+      <View style={{ maxWidth, marginLeft }}>
+        <View
+          style={{
+            minHeight: Dimensions.get("window").height,
+            maxWidth: "100%",
+            flex: 1,
+            alignItems: "stretch",
+          }}
+        >
+          {children}
+        </View>
+      </View>
     </UserContext.Provider>
   );
 }
