@@ -21,7 +21,7 @@ export default function RecentView() {
 
   if (completed.length)
     return (
-      <ThemedView>
+      <ThemedView style={{ marginVertical: 16 }}>
         <SectionHeader title="Recent" />
         <ScrollView horizontal style={{ paddingBottom: 16 }}>
           {completed

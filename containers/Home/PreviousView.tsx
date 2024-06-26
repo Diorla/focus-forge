@@ -9,7 +9,7 @@ export default function PreviousView() {
   const previous = schedule.filter((item) => item.doneThisWeek);
   if (previous.length)
     return (
-      <ThemedView>
+      <ThemedView style={{ marginVertical: 16 }}>
         <SectionHeader title="Past activities" />
         <ScrollView horizontal style={{ paddingBottom: 16 }}>
           {previous
