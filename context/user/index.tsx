@@ -28,6 +28,7 @@ export default function UserProvider({
   const [marginLeft, setMarginLeft] = useState(0);
 
   useEffect(() => {
+    setMarginLeft(getMarginLeft(maxWidth));
     const subscription = Dimensions.addEventListener("change", () => {
       setMarginLeft(getMarginLeft(maxWidth));
     });
