@@ -10,11 +10,32 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 
 dayjs.extend(advancedFormat);
 
+const greeting = (hour: number) => {
+  if (hour < 12) {
+    return "Good morning,";
+  } else if (hour < 18) {
+    return "Good afternoon,";
+  } else {
+    return "Good evening,";
+  }
+};
+
 export default function TabHeader() {
   const theme = useThemeColor();
   const { time } = useDataQuery();
   return (
-    <ThemedView>
+    <ThemedView
+      style={{
+        shadowColor: theme.text,
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+      }}
+    >
       <TopSpace />
       <ThemedView
         style={{
@@ -25,7 +46,9 @@ export default function TabHeader() {
         }}
       >
         <ThemedView>
-          <ThemedText type="subtitle">{dayjs(time).format("HH:mm")}</ThemedText>
+          <ThemedText type="subtitle">
+            {greeting(dayjs(time).hour())}
+          </ThemedText>
           <ThemedText type="defaultSemiBold">
             {dayjs(time).format("ddd, MMM Do")}
           </ThemedText>
