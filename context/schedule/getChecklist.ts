@@ -19,6 +19,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        doneTimes,
       });
     } else if (occurrenceType === "weekly") {
       const { done } = activity;
@@ -28,6 +29,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        doneTimes,
       });
     } else if (occurrenceType === "monthly") {
       const { done } = activity;
@@ -37,6 +39,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        doneTimes,
       });
     } else {
       const { done } = activity;
@@ -46,6 +49,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        doneTimes,
       });
     }
   });

@@ -11,7 +11,7 @@ import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 
 export default function DoneCard({ activity }: { activity: Checklist }) {
-  const { id, occurrence, occurrenceType } = activity;
+  const { id, occurrence, occurrenceType, doneTimes } = activity;
   const theme = useThemeColor();
 
   const [visible, setVisible] = useState(false);
@@ -55,7 +55,9 @@ export default function DoneCard({ activity }: { activity: Checklist }) {
             marginVertical: 20,
           }}
         >
-          <ThemedText>{occurrence} total</ThemedText>
+          <ThemedText>
+            {doneTimes}/{occurrence} total
+          </ThemedText>
         </ThemedView>
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
