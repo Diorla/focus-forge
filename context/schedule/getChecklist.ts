@@ -2,6 +2,9 @@ import dayjs from "dayjs";
 import ActivityModel from "../data/model/ActivityModel";
 import Checklist from "./Checklist";
 
+const minimumZero = (value: number): number => {
+  return Math.max(0, value);
+};
 export default function getChecklist(
   activityList: ActivityModel[]
 ): Checklist[] {
@@ -15,7 +18,7 @@ export default function getChecklist(
       ).length;
       checklist.push({
         ...activity,
-        remaining: occurrence - doneTimes,
+        remaining: minimumZero(occurrence - doneTimes),
       });
     } else if (occurrenceType === "weekly") {
       const { done } = activity;
@@ -24,7 +27,7 @@ export default function getChecklist(
       ).length;
       checklist.push({
         ...activity,
-        remaining: occurrence - doneTimes,
+        remaining: minimumZero(occurrence - doneTimes),
       });
     } else if (occurrenceType === "monthly") {
       const { done } = activity;
@@ -33,7 +36,7 @@ export default function getChecklist(
       ).length;
       checklist.push({
         ...activity,
-        remaining: occurrence - doneTimes,
+        remaining: minimumZero(occurrence - doneTimes),
       });
     } else {
       const { done } = activity;
@@ -42,7 +45,7 @@ export default function getChecklist(
       ).length;
       checklist.push({
         ...activity,
-        remaining: occurrence - doneTimes,
+        remaining: minimumZero(occurrence - doneTimes),
       });
     }
   });
