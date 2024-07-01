@@ -88,7 +88,7 @@ export default function History({ activity }: { activity: Schedule }) {
   const deleteDone = (key: string) => {
     const temp = { ...done };
     delete temp[key];
-    updateActivity({ id: activity.id, done: temp });
+    updateActivity({ ...activity, id: activity.id, done: temp }, false);
   };
 
   if (loading)
