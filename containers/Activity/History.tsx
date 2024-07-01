@@ -309,6 +309,7 @@ export default function History({ activity }: { activity: Schedule }) {
                                   });
                                   setExpandIdx("");
                                 }}
+                                style={{ marginHorizontal: 8 }}
                                 title="Cancel"
                               ></ThemedButton>
                             </ThemedView>
