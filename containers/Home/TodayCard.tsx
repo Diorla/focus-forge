@@ -1,4 +1,4 @@
-import { TouchableOpacity, View, useColorScheme } from "react-native";
+import { Platform, TouchableOpacity, View, useColorScheme } from "react-native";
 import { Card } from "@rneui/themed";
 import * as Progress from "react-native-progress";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -15,7 +15,14 @@ import { ThemedView } from "@/components/ThemedView";
 import { secondsToHrMm } from "@/services/datetime";
 import endTimer from "@/services/utils/endTimer";
 import startTimer from "@/services/utils/startTimer";
+import { schedulePushNotification } from "@/services/notification";
+import dayjs from "dayjs";
 
+export const dateRange = (date1: dayjs.Dayjs, date2: dayjs.Dayjs) => {
+  if (dayjs(date1).isSame(date2, "date"))
+    return `From ${date1.format("HH:mm")} to ${date2.format("HH:mm")}`;
+  return `From ${date1.format("ddd, HH:mm")} to ${date2.format("ddd, HH:mm")}`;
+};
 export const priority = ["None", "Low", "Medium", "High"];
 export function TodayCard({
   schedule,
@@ -108,6 +115,19 @@ export function TodayCard({
                 try {
                   const timerId = String(Date.now());
                   startTimer(id, todayTime - doneToday, timerId);
+                  const remaining = todayTime - doneToday;
+                  const now = dayjs();
+                  if (Platform.OS !== "web")
+                    schedulePushNotification(
+                      {
+                        title: `${schedule.name} ended`,
+                        body: dateRange(now, now.add(remaining, "seconds")),
+                        data: {
+                          scheduleId: id,
+                        },
+                      },
+                      remaining
+                    );
                   toast.show("Timer started");
                 } catch (error) {
                   logError("today card", "starting timer", error as Error);

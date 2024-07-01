@@ -11,9 +11,13 @@ import { logError } from "@/services/database";
 import { useToast } from "react-native-toast-notifications";
 import endTimer from "@/services/utils/endTimer";
 import startTimer from "@/services/utils/startTimer";
+import dayjs from "dayjs";
+import { Platform } from "react-native";
+import { schedulePushNotification } from "@/services/notification";
+import { dateRange } from "../Home/TodayCard";
 
 export default function Running({ activity }: { activity: Schedule }) {
-  const { timerId, todayTime, timerStart, id, doneToday, timerLength } =
+  const { timerId, todayTime, timerStart, id, doneToday, timerLength, name } =
     activity;
   const theme = useThemeColor();
   const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
@@ -63,6 +67,19 @@ export default function Running({ activity }: { activity: Schedule }) {
             try {
               const timerId = String(Date.now());
               startTimer(id, todayTime - doneToday, timerId);
+              const remaining = todayTime - doneToday;
+              const now = dayjs();
+              if (Platform.OS !== "web")
+                schedulePushNotification(
+                  {
+                    title: `${name} ended`,
+                    body: dateRange(now, now.add(remaining, "seconds")),
+                    data: {
+                      scheduleId: id,
+                    },
+                  },
+                  remaining
+                );
               toast.show("Timer started");
             } catch (error) {
               logError("today card", "starting timer", error as Error);
