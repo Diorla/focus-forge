@@ -1,20 +1,21 @@
 import * as React from "react";
-import { secondsToHrMm } from "../../services/datetime";
-import { ThemedText } from "../ThemedText";
+import Time from "./Time";
+import { useKeepAwake } from "expo-keep-awake";
+import useInterval from "@/hooks/useTimeInterval";
+import { ThemedView } from "../ThemedView";
 
-export default function Clock({
-  time,
-  color,
-}: {
-  time: number;
-  color?: string;
-}) {
-  const [hr, mm, ss] = secondsToHrMm(time);
+export default function Clock({ startTime }: { startTime: number }) {
+  const [count, setCount] = React.useState((Date.now() - startTime) / 1000);
+
+  useKeepAwake();
+  useInterval(() => {
+    setCount(count + 1);
+  }, 1000);
+
+  const value = (Date.now() - startTime) / 1000;
   return (
-    <ThemedText>
-      {String(Math.floor(hr)).padStart(2, "0")}:
-      {String(Math.floor(mm)).padStart(2, "0")}:
-      {String(Math.floor(ss)).padStart(2, "0")}
-    </ThemedText>
+    <ThemedView style={{ alignItems: "center", justifyContent: "center" }}>
+      <Time time={value < 0 ? 0 : value} />
+    </ThemedView>
   );
 }

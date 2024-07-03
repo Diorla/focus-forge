@@ -6,7 +6,7 @@ import { getDateTimeKey } from "../../services/datetime";
 import { useKeepAwake } from "expo-keep-awake";
 import useDataQuery from "../../context/data/useDataQuery";
 import useInterval from "@/hooks/useTimeInterval";
-import Clock from "./Clock";
+import Time from "./Time";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "../ThemedView";
 import updateActivity from "@/services/database/updateActivity";
@@ -42,9 +42,6 @@ export default function Timer({
     updateActivity({ done: { ...done, [datetime]: currentDone }, id });
   };
   const endTimer = (id: string, startTime: number) => {
-    const key = getDateTimeKey(startTime);
-
-    // reset the activity time to 0
     updateActivity({
       timerStart: 0,
       timerLength: 0,
@@ -77,7 +74,7 @@ export default function Timer({
 
   return (
     <ThemedView style={{ alignItems: "center", justifyContent: "center" }}>
-      <Clock time={value < 0 ? 0 : value} />
+      <Time time={value < 0 ? 0 : value} />
       <Progress.Bar
         progress={(doneToday + count) / targetTime}
         color={theme.primary}
