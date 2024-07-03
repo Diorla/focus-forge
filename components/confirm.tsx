@@ -9,6 +9,7 @@ export default function Confirm({
   cancelTitle,
   acceptFn,
   cancelFn,
+  preConfirmFn,
 }: {
   children: React.ReactNode;
   title: string;
@@ -17,8 +18,11 @@ export default function Confirm({
   cancelTitle?: string;
   acceptFn: () => void;
   cancelFn?: () => void;
+  preConfirmFn?: () => void;
 }) {
-  const openAlert = () =>
+  const openAlert = () => {
+    if (preConfirmFn) preConfirmFn();
+
     Alert.alert(title, message, [
       {
         text: cancelTitle || "Cancel",
@@ -27,8 +31,10 @@ export default function Confirm({
       },
       { text: acceptTitle || "OK", onPress: acceptFn },
     ]);
+  };
 
   const prompt = () => {
+    if (preConfirmFn) preConfirmFn();
     const result = confirm(`${title}: ${message}`);
     if (result) acceptFn();
     else cancelFn && cancelFn();

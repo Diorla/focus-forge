@@ -1,5 +1,5 @@
 import { Picker as RNPicker } from "@react-native-picker/picker";
-import { Modal, Platform } from "react-native";
+import { Modal, Platform, TextStyle } from "react-native";
 import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
@@ -11,11 +11,13 @@ export default function Picker({
   value,
   onValueChange,
   list,
+  labelStyle = {},
 }: {
-  label: string;
+  label?: string;
   value: string;
   onValueChange: (value: string) => void;
   list: Array<{ label: string; value: string }>;
+  labelStyle?: TextStyle;
 }) {
   const theme = useThemeColor();
   const [showPicker, setShowPicker] = useState(false);
@@ -23,11 +25,14 @@ export default function Picker({
     return (
       <ThemedView>
         <ThemedText
-          style={{
-            marginLeft: 8,
-            color: theme.grey0,
-            fontWeight: "bold",
-          }}
+          style={[
+            {
+              marginLeft: 8,
+              color: theme.grey0,
+              fontWeight: "bold",
+            },
+            labelStyle,
+          ]}
         >
           {label}
         </ThemedText>
