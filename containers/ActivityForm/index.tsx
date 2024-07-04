@@ -8,7 +8,7 @@ import { useToast } from "react-native-toast-notifications";
 import ActivityModel from "../../context/data/model/ActivityModel";
 import { ThemedText } from "@/components/ThemedText";
 import TimeInput from "@/components/TimeInput";
-import Picker from "@/components/Picker";
+import ThemedPicker from "@/components/ThemedPicker";
 import ColorPicker from "@/components/ColorPicker";
 import SelectCategory from "@/components/SelectCategory";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -183,7 +183,7 @@ export default function ActivityForm({
             }
             errorMessage={errorMSG.occurrence}
           />
-          <Picker
+          <ThemedPicker
             value={form.occurrenceType}
             onValueChange={(occurrenceType) =>
               setForm({
@@ -253,7 +253,7 @@ export default function ActivityForm({
           </ThemedView>
         </ThemedView>
       )}
-      <Picker
+      <ThemedPicker
         value={String(form.priority)}
         onValueChange={(priority) =>
           setForm({

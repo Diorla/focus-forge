@@ -6,7 +6,7 @@ import { ThemedButton } from "./ThemedButton";
 import { ThemedView } from "./ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
 
-export default function Picker({
+export default function ThemedPicker({
   label,
   value,
   onValueChange,

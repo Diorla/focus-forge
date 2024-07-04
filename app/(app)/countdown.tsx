@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import useUser from "@/context/user/useUser";
 import Stopwatch from "@/components/Stopwatch";
 import { Ionicons } from "@expo/vector-icons";
-import Picker from "@/components/Picker";
+import ThemedPicker from "@/components/ThemedPicker";
 import TaskTime from "@/components/Timer/Time";
 import useSchedule from "@/context/schedule/useSchedule";
 import { Link } from "expo-router";
@@ -99,7 +99,7 @@ export default function CountdownScreen() {
             )}
           </ThemedView>
           <ThemedView style={{ marginVertical: 24 }} />
-          <Picker
+          <ThemedPicker
             labelStyle={{ marginLeft: 0 }}
             label="Select activity"
             value={currentTaskId}

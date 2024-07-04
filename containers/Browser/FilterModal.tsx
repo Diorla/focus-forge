@@ -1,4 +1,4 @@
-import Picker from "@/components/Picker";
+import ThemedPicker from "@/components/ThemedPicker";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedView } from "@/components/ThemedView";
 import { Modal } from "react-native";
@@ -62,7 +62,7 @@ export default function FilterModal({
       <ThemedView style={{ flex: 1, justifyContent: "space-between" }}>
         <ThemedView>
           <ThemedView style={{ marginVertical: 12 }}>
-            <Picker
+            <ThemedPicker
               label="Filter"
               value={filters}
               onValueChange={setFilters}
@@ -70,7 +70,7 @@ export default function FilterModal({
             />
           </ThemedView>
           <ThemedView style={{ marginVertical: 12 }}>
-            <Picker
+            <ThemedPicker
               label="Sort"
               value={sort}
               onValueChange={setSort}
