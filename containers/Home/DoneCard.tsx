@@ -62,10 +62,9 @@ export default function DoneCard({ activity }: { activity: Checklist }) {
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          <ThemedText style={{ textTransform: "capitalize" }}>
-            {priority[activity.priority] || "None"}
-          </ThemedText>
-
+          <ThemedView style={{ flexDirection: "row" }}>
+            <ThemedText>{dateRemaining}</ThemedText>
+          </ThemedView>
           <TouchableOpacity onPress={() => setVisible(!visible)}>
             <ThemedView
               style={{

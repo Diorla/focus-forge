@@ -253,34 +253,36 @@ export default function ActivityForm({
           </ThemedView>
         </ThemedView>
       )}
-      <ThemedPicker
-        value={String(form.priority)}
-        onValueChange={(priority) =>
-          setForm({
-            ...form,
-            priority: Number(priority),
-          })
-        }
-        label="Priority"
-        list={[
-          {
-            label: "High",
-            value: "3",
-          },
-          {
-            label: "Medium",
-            value: "2",
-          },
-          {
-            label: "Low",
-            value: "1",
-          },
-          {
-            label: "None",
-            value: "0",
-          },
-        ]}
-      />
+      {form.isOccurrence ? null : (
+        <ThemedPicker
+          value={String(form.priority)}
+          onValueChange={(priority) =>
+            setForm({
+              ...form,
+              priority: Number(priority),
+            })
+          }
+          label="Priority"
+          list={[
+            {
+              label: "High",
+              value: "3",
+            },
+            {
+              label: "Medium",
+              value: "2",
+            },
+            {
+              label: "Low",
+              value: "1",
+            },
+            {
+              label: "None",
+              value: "0",
+            },
+          ]}
+        />
+      )}
       <ThemedInput
         label="Description"
         multiline

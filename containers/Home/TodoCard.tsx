@@ -147,12 +147,8 @@ export default function TodoCard({ activity }: { activity: Checklist }) {
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
           <ThemedView style={{ flexDirection: "row" }}>
-            <ThemedText>{dateRemaining}, </ThemedText>
-            <ThemedText style={{ textTransform: "capitalize" }}>
-              {priority[activity.priority] || "None"}
-            </ThemedText>
+            <ThemedText>{dateRemaining}</ThemedText>
           </ThemedView>
-
           <TouchableOpacity onPress={() => setVisible(!visible)}>
             <ThemedView
               style={{
