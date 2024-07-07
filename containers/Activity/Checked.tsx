@@ -89,7 +89,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
   const deleteDone = (key: string) => {
     const temp = { ...done };
     delete temp[key];
-    updateActivity({ id: activity.id, done: temp });
+    updateActivity({ ...activity, id: activity.id, done: temp }, false);
   };
 
   if (loading)
@@ -228,7 +228,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
                       {expandIdx === time.datetime ? (
                         <ThemedView>
                           <ThemedView>
-                            {editingComment ? (
+                            <ThemedView>
                               <Input
                                 value={form.comment}
                                 onChangeText={(comment) =>
@@ -236,38 +236,23 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                 }
                                 multiline
                               />
-                            ) : (
-                              <ThemedView>
-                                <TimeInput
-                                  value={form.length}
-                                  onChange={(length) =>
-                                    setForm({ ...form, length })
-                                  }
-                                />
-                                <DatePicker
-                                  date={form.datetime}
-                                  setDate={(datetime) =>
-                                    setForm({ ...form, datetime })
-                                  }
-                                  label="Date time"
-                                  mode="datetime"
-                                />
-                              </ThemedView>
-                            )}
+                              <DatePicker
+                                date={form.datetime}
+                                setDate={(datetime) =>
+                                  setForm({ ...form, datetime })
+                                }
+                                label="Date time"
+                                mode="datetime"
+                              />
+                            </ThemedView>
                           </ThemedView>
                           <ThemedView
                             style={{
                               flexDirection: "row",
-                              justifyContent: "space-between",
+                              justifyContent: "flex-end",
                               alignItems: "center",
                             }}
                           >
-                            <MaterialCommunityIcons
-                              name={editingComment ? "timer" : "note-text"}
-                              size={24}
-                              color={theme.text}
-                              onPress={() => setEditingComment(!editingComment)}
-                            />
                             <ThemedView
                               style={{
                                 flexDirection: "row",
@@ -288,6 +273,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                   });
                                   setExpandIdx("");
                                 }}
+                                style={{ marginHorizontal: 8 }}
                                 title="Save"
                               ></ThemedButton>
                               <ThemedButton
