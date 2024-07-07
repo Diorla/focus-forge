@@ -62,7 +62,7 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
   const deleteTask = (id: number) => {
     const tempTask = { ...tasks };
     delete tempTask[id];
-    updateActivity({ id: activity.id, tasks: tempTask });
+    updateActivity({ ...activity, id: activity.id, tasks: tempTask }, false);
   };
 
   const createTask = () => {
