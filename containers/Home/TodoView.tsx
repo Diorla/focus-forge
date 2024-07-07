@@ -3,12 +3,21 @@ import useSchedule from "../../context/schedule/useSchedule";
 import TodoCard from "./TodoCard";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import Checklist from "@/context/schedule/Checklist";
+import dayjs from "dayjs";
 
-const occurrenceType = {
-  daily: 0,
-  weekly: 1,
-  monthly: 2,
-  yearly: 3,
+const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+const getChecksValue = (item: Checklist) => {
+  if (item.occurrenceType === "daily") return 1 / item.remaining;
+  if (item.occurrenceType === "weekly") {
+    const daysLeft = 7 - dayjs().day();
+    const value = daysLeft / item.remaining;
+    return value;
+  }
+  const currentMonth = dayjs().month();
+  const daysLeft = daysInMonth[currentMonth] - dayjs().date();
+  const value = daysLeft / item.remaining;
+  return value;
 };
 
 export default function TodoView() {
@@ -23,13 +32,8 @@ export default function TodoView() {
       </ThemedText>
       <ScrollView horizontal>
         {todo
-          .sort((a, b) => b.priority - a.priority)
-          .sort((a, b) => b.remaining - a.remaining)
-          .sort(
-            (a, b) =>
-              occurrenceType[a.occurrenceType] -
-              occurrenceType[b.occurrenceType]
-          )
+          .sort((a, b) => a.doneTimes - b.doneTimes)
+          .sort((a, b) => getChecksValue(a) - getChecksValue(b))
           .map((item) => (
             <TodoCard activity={item} key={item.id} />
           ))}

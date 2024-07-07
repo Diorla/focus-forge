@@ -11,6 +11,11 @@ import Schedule from "@/context/schedule/Schedule";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 
+const getTimeRemaining = (item: Schedule) => {
+  const { weeklyTarget, doneToday, doneThisWeek } = item;
+  return weeklyTarget - doneThisWeek - doneToday;
+};
+
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useSchedule();
@@ -29,14 +34,20 @@ export default function TodayView() {
       const todo = item.todayTime - item.doneToday;
       return todo > 0.001 || item.timerLength;
     })
-    .sort((a, b) => b.todayTime - b.doneToday - a.todayTime + a.doneToday)
-    .sort((a, b) => b.priority - a.priority);
+    .sort((a, b) => (b.name > a.name ? -1 : 1))
+    .sort((a, b) => b.dailyLimit - a.dailyLimit)
+    .sort((a, b) => getTimeRemaining(b) - getTimeRemaining(a))
+    .sort((a, b) => b.priority - a.priority)
+    .sort((a, b) => b.doneToday - a.doneToday);
 
   if (today.length) {
-    const runningActivity = today.find((item) => item.timerStart);
-    const notRunning = today.filter((item) => item.id !== runningActivity?.id);
-    const first = runningActivity ?? today[0];
-    const rest = runningActivity ? notRunning : today.slice(1);
+    const runningActivity = today.filter((item) => item.timerStart);
+    const runningActivityIds = runningActivity.map((item) => item.id);
+    const notRunning = today.filter(
+      (item) => !runningActivityIds.includes(item.id)
+    );
+    const first = runningActivity.length ? runningActivity : [today[0]];
+    const rest = runningActivity.length ? notRunning : today.slice(1);
 
     return (
       <ThemedView style={{ marginVertical: 8, paddingVertical: 8 }}>
@@ -64,12 +75,15 @@ export default function TodayView() {
           ) : null}
         </ThemedView>
         <ThemedView>
-          <TodayCard
-            schedule={first}
-            setCurrentSchedule={() => setCurrentSchedule(first)}
-            // isLoadedAd={isLoaded}
-            // showAd={show}
-          />
+          {first.map((item) => (
+            <TodayCard
+              key={item.id}
+              schedule={item}
+              setCurrentSchedule={() => setCurrentSchedule(item)}
+              // isLoadedAd={isLoaded}
+              // showAd={show}
+            />
+          ))}
           {expanded ? (
             <>
               {rest
