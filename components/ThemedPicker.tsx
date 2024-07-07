@@ -1,10 +1,11 @@
 import { Picker as RNPicker } from "@react-native-picker/picker";
-import { Modal, Platform, TextStyle } from "react-native";
+import { Platform, TextStyle } from "react-native";
 import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedView } from "./ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
+import ThemedModal from "./ThemedModal";
 
 export default function ThemedPicker({
   label,
@@ -72,7 +73,7 @@ export default function ThemedPicker({
           title={labelValue}
         />
       </ThemedView>
-      <Modal visible={showPicker}>
+      <ThemedModal visible={showPicker}>
         <ThemedView
           style={{
             justifyContent: "center",
@@ -103,7 +104,7 @@ export default function ThemedPicker({
             />
           </ThemedView>
         </ThemedView>
-      </Modal>
+      </ThemedModal>
     </ThemedView>
   );
 }

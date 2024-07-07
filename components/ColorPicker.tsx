@@ -1,4 +1,4 @@
-import { Modal, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { useState } from "react";
 import { getContrastColor, random } from "../services/color";
 import Slider from "@react-native-community/slider";
@@ -8,6 +8,7 @@ import { ThemedButton } from "./ThemedButton";
 import { ThemedText } from "./ThemedText";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "./ThemedView";
+import ThemedModal from "./ThemedModal";
 
 export default function ColorPicker({
   label,
@@ -50,7 +51,7 @@ export default function ColorPicker({
           <ThemedText color={textColor}>{value}</ThemedText>
         </TouchableOpacity>
       </ThemedView>
-      <Modal visible={showPicker}>
+      <ThemedModal visible={showPicker}>
         <ThemedView
           style={{
             justifyContent: "space-evenly",
@@ -127,7 +128,7 @@ export default function ColorPicker({
             />
           </ThemedView>
         </ThemedView>
-      </Modal>
+      </ThemedModal>
     </ThemedView>
   );
 }

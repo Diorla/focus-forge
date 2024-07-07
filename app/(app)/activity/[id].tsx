@@ -6,7 +6,7 @@ import ActivityModel from "@/context/data/model/ActivityModel";
 import useDataQuery from "@/context/data/useDataQuery";
 import { useLocalSearchParams } from "expo-router";
 import { useEffect, useState } from "react";
-import { Modal, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { getContrastColor } from "@/services/color";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -18,6 +18,7 @@ import goBack from "@/services/routing";
 import { StatusBar } from "expo-status-bar";
 import ActivityForm from "@/containers/ActivityForm";
 import TopSpace from "@/components/TopSpace";
+import ThemedModal from "@/components/ThemedModal";
 
 export default function Activity() {
   const { id } = useLocalSearchParams();
@@ -106,7 +107,7 @@ export default function Activity() {
           </ThemedView>
         )}
         <ActivityScreen id={activity.id} />
-        <Modal visible={showEdit}>
+        <ThemedModal visible={showEdit}>
           <ParallaxScrollView name="pencil">
             <ActivityForm initialForm={activity} />
             <ThemedView style={{ marginBottom: 16, alignItems: "center" }}>
@@ -117,7 +118,7 @@ export default function Activity() {
               />
             </ThemedView>
           </ParallaxScrollView>
-        </Modal>
+        </ThemedModal>
       </ScrollView>
     );
   }

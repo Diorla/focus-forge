@@ -1,4 +1,4 @@
-import { Modal, ScrollView } from "react-native";
+import { ScrollView } from "react-native";
 import { Divider } from "@rneui/themed";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
@@ -6,6 +6,7 @@ import React from "react";
 import Task from "@/components/Task";
 import Schedule from "@/context/schedule/Schedule";
 import { ThemedView } from "@/components/ThemedView";
+import ThemedModal from "@/components/ThemedModal";
 
 export default function ChecklistModal({
   activity,
@@ -17,7 +18,7 @@ export default function ChecklistModal({
   closeModal: () => void;
 }) {
   return (
-    <Modal visible={visible} style={{ flex: 1 }}>
+    <ThemedModal visible={visible} style={{ flex: 1 }}>
       <ScrollView style={{ flex: 1, marginTop: 52 }}>
         <ThemedText
           type="title"
@@ -35,6 +36,6 @@ export default function ChecklistModal({
           title="Close"
         />
       </ThemedView>
-    </Modal>
+    </ThemedModal>
   );
 }

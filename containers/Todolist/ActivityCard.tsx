@@ -4,7 +4,6 @@ import { Card, Input } from "@rneui/themed";
 import Checklist from "../../context/schedule/Checklist";
 import { useState } from "react";
 import DoneType from "../../context/data/types/DoneType";
-import { Modal } from "react-native";
 import { getDateTimeKey } from "../../services/datetime";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import { Link, router } from "expo-router";
@@ -15,6 +14,7 @@ import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
+import ThemedModal from "@/components/ThemedModal";
 
 export default function ActivityCard({ activity }: { activity: Checklist }) {
   const { id, remaining, occurrence, occurrenceType } = activity;
@@ -54,7 +54,7 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
 
   return (
     <>
-      <Modal visible={showAddTime}>
+      <ThemedModal visible={showAddTime}>
         <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <Input
             label="Note"
@@ -98,7 +98,7 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
             />
           </ThemedView>
         </ThemedView>
-      </Modal>
+      </ThemedModal>
       <Card
         containerStyle={{
           minWidth: 300,

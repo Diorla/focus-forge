@@ -1,4 +1,4 @@
-import { ActivityIndicator, Modal, TouchableOpacity } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { Card, Input } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -21,6 +21,7 @@ import {
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
+import ThemedModal from "@/components/ThemedModal";
 
 type History = {
   time: string;
@@ -110,7 +111,7 @@ export default function History({ activity }: { activity: Schedule }) {
         backgroundColor: theme.background,
       }}
     >
-      <Modal visible={showAddTime}>
+      <ThemedModal visible={showAddTime}>
         <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <TimeInput
             value={newTime.length}
@@ -156,7 +157,7 @@ export default function History({ activity }: { activity: Schedule }) {
             ></ThemedButton>
           </ThemedView>
         </ThemedView>
-      </Modal>
+      </ThemedModal>
       <ThemedView
         style={{
           flexDirection: "row",

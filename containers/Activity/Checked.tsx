@@ -21,6 +21,7 @@ import {
 import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
+import ThemedModal from "@/components/ThemedModal";
 
 type History = {
   time: string;
@@ -110,7 +111,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
         backgroundColor: theme.background,
       }}
     >
-      <Modal visible={showAddTime}>
+      <ThemedModal visible={showAddTime}>
         <ThemedView style={{ justifyContent: "center", flex: 1 }}>
           <Input
             label="Note"
@@ -150,7 +151,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
             />
           </ThemedView>
         </ThemedView>
-      </Modal>
+      </ThemedModal>
       <ThemedView
         style={{
           flexDirection: "row",

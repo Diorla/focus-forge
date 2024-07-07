@@ -1,7 +1,7 @@
 import ThemedPicker from "@/components/ThemedPicker";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedView } from "@/components/ThemedView";
-import { Modal } from "react-native";
+import ThemedModal from "@/components/ThemedModal";
 
 const filterList = [
   {
@@ -57,7 +57,7 @@ export default function FilterModal({
   sort: string;
 }) {
   return (
-    <Modal visible={visible}>
+    <ThemedModal visible={visible}>
       <ThemedView style={{ marginTop: 52 }} />
       <ThemedView style={{ flex: 1, justifyContent: "space-between" }}>
         <ThemedView>
@@ -82,6 +82,6 @@ export default function FilterModal({
           <ThemedButton title="Close" onPress={closeModal} />
         </ThemedView>
       </ThemedView>
-    </Modal>
+    </ThemedModal>
   );
 }

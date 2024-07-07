@@ -1,11 +1,11 @@
 import { Picker as RNPicker } from "@react-native-picker/picker";
-import { Modal } from "react-native";
 import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedView } from "./ThemedView";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import dayjs from "dayjs";
+import ThemedModal from "./ThemedModal";
 
 const months = [
   "January",
@@ -94,7 +94,7 @@ export default function WebDateTimePicker({
           title={datetime}
         />
       </ThemedView>
-      <Modal visible={showPicker}>
+      <ThemedModal visible={showPicker}>
         <ThemedView
           style={{
             justifyContent: "center",
@@ -195,7 +195,7 @@ export default function WebDateTimePicker({
             />
           </ThemedView>
         </ThemedView>
-      </Modal>
+      </ThemedModal>
     </ThemedView>
   );
 }
