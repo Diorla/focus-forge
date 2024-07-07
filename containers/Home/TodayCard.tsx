@@ -1,7 +1,6 @@
-import { Platform, TouchableOpacity, View, useColorScheme } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 import { Card } from "@rneui/themed";
 import * as Progress from "react-native-progress";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import PlayButton from "./PlayButton";
 import Schedule from "../../context/schedule/Schedule";
@@ -17,6 +16,8 @@ import endTimer from "@/services/utils/endTimer";
 import startTimer from "@/services/utils/startTimer";
 import { schedulePushNotification } from "@/services/notification";
 import dayjs from "dayjs";
+import TodoFormat from "./TodoFormat";
+import TimeFormat from "@/components/TimeFormat";
 
 export const dateRange = (date1: dayjs.Dayjs, date2: dayjs.Dayjs) => {
   if (dayjs(date1).isSame(date2, "date"))
@@ -42,6 +43,10 @@ export function TodayCard({
     timerStart,
     timerLength,
     done,
+    isOccurrence,
+    occurrence,
+    occurrenceType,
+    weeklyTarget,
   } = schedule;
 
   const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
@@ -65,14 +70,17 @@ export function TodayCard({
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          <ThemedText type="defaultSemiBold">{schedule.name}</ThemedText>
           <Link href={`/activity/${schedule.id}`}>
-            <MaterialCommunityIcons
-              name="arrow-expand-all"
-              size={24}
-              color={theme.text}
-            />
+            <ThemedText type="defaultSemiBold">{schedule.name}</ThemedText>
           </Link>
+          {isOccurrence ? (
+            <TodoFormat
+              occurrence={occurrence}
+              occurrenceType={occurrenceType}
+            />
+          ) : (
+            <TimeFormat value={weeklyTarget} />
+          )}
         </ThemedView>
         <ThemedView
           style={{

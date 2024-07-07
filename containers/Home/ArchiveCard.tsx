@@ -1,48 +1,28 @@
 import { TouchableOpacity } from "react-native";
-import { Card, Divider } from "@rneui/themed";
+import { Card } from "@rneui/themed";
 import { MaterialIcons } from "@expo/vector-icons";
-import ChecklistModal from "./ChecklistModal";
 import { useState } from "react";
-import generateCardTime from "./generateCardTime";
-import CardInfo from "./CardInfo";
-import dayjs from "dayjs";
 import { ThemedText } from "@/components/ThemedText";
-import TimeFormat from "@/components/TimeFormat";
 import { Link } from "expo-router";
-import Schedule from "@/context/schedule/Schedule";
 import { priority } from "@/constants/Priority";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import ActivityModel from "@/context/data/model/ActivityModel";
+import { format } from "@/services/datetime";
 import TodoFormat from "./TodoFormat";
+import TimeFormat from "@/components/TimeFormat";
 
-export default function ActivityCard({
-  schedule,
-  type,
-}: {
-  schedule: Schedule;
-  type: "completed" | "overflow" | "upcoming" | "previous" | "recent";
-}) {
+export default function ArchiveCard({ activity }: { activity: ActivityModel }) {
   const theme = useThemeColor();
-  const {
-    done,
-    lastDone,
-    isOccurrence,
-    occurrence,
-    occurrenceType,
-    weeklyTarget,
-  } = schedule;
+  const { archived, weeklyTarget, occurrence, occurrenceType, isOccurrence } =
+    activity;
   const [visible, setVisible] = useState(false);
-  const tasks = Object.keys(schedule.tasks).filter(
-    (item) => !schedule.tasks[item].checked
+  const tasks = Object.keys(activity.tasks).filter(
+    (item) => !activity.tasks[item].checked
   );
 
   return (
     <>
-      <ChecklistModal
-        activity={schedule}
-        visible={visible}
-        closeModal={() => setVisible(false)}
-      />
       <Card
         containerStyle={{
           width: 300,
@@ -53,8 +33,8 @@ export default function ActivityCard({
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          <Link href={`/activity/${schedule.id}`}>
-            <ThemedText type="defaultSemiBold">{schedule.name}</ThemedText>
+          <Link href={`/activity/${activity.id}`}>
+            <ThemedText type="defaultSemiBold">{activity.name}</ThemedText>
           </Link>
           {isOccurrence ? (
             <TodoFormat
@@ -71,27 +51,13 @@ export default function ActivityCard({
             marginVertical: 10,
           }}
         >
-          <TimeFormat value={generateCardTime(type, schedule)} />
-          <Divider
-            color={theme.grey5}
-            style={{ width: "50%", marginVertical: 4 }}
-          />
-          <CardInfo
-            type={type}
-            done={Object.keys(done).map((item) => {
-              return {
-                ...done[item],
-                datetime: dayjs(item).valueOf(),
-              };
-            })}
-            lastDone={lastDone}
-          />
+          <ThemedText>Archived: {format(archived, "date")}</ThemedText>
         </ThemedView>
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
           <ThemedText style={{ textTransform: "capitalize" }}>
-            {priority[schedule.priority] || "None"}
+            {priority[activity.priority] || "None"}
           </ThemedText>
 
           <TouchableOpacity onPress={() => setVisible(!visible)}>

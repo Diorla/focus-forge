@@ -56,7 +56,7 @@ export default function DoneCard({ activity }: { activity: Checklist }) {
           }}
         >
           <ThemedText>
-            {doneTimes}/{occurrence} total
+            {doneTimes}/{occurrence}
           </ThemedText>
         </ThemedView>
         <ThemedView

@@ -1,3 +1,5 @@
+export type OccurrenceType = "daily" | "weekly" | "monthly" | "yearly";
+
 interface ActivityModel {
   id: string;
   name: string;
@@ -32,7 +34,7 @@ interface ActivityModel {
   /**
    * How often this activity should occur
    */
-  occurrenceType: "daily" | "weekly" | "monthly" | "yearly";
+  occurrenceType: OccurrenceType;
   /**
    * Each time a time is recorded, or occurrence is marked
    * In case of occurrence, the length will be 1

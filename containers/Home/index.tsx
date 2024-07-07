@@ -6,6 +6,7 @@ import UpcomingView from "./UpcomingView";
 import OverflowView from "./OverflowView";
 import PreviousView from "./PreviousView";
 import ArchivedView from "./ArchivedView";
+import TodoView from "./TodoView";
 
 /**
  * This will be based on "done this week" to indicate the total number of activity
@@ -16,6 +17,7 @@ export default function HomeScreen() {
   return (
     <ScrollView>
       <ProgressCard />
+      <TodoView />
       <TodayView />
       <UpcomingView />
       <OverflowView />

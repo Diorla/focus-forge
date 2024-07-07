@@ -14,8 +14,7 @@ export default function SectionHeader({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        paddingHorizontal: 8,
-        marginTop: 24,
+        paddingHorizontal: 4,
       }}
     >
       <ThemedText type="title">{title}</ThemedText>

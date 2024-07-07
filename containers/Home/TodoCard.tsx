@@ -5,7 +5,11 @@ import Checklist from "../../context/schedule/Checklist";
 import { useState } from "react";
 import DoneType from "../../context/data/types/DoneType";
 import { getDateTimeKey } from "../../services/datetime";
-import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
+import {
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import { Link, router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import DatePicker from "@/components/DateTimePicker";
@@ -16,7 +20,7 @@ import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
 import ThemedModal from "@/components/ThemedModal";
 
-export default function ActivityCard({ activity }: { activity: Checklist }) {
+export default function TodoCard({ activity }: { activity: Checklist }) {
   const { id, remaining, occurrence, occurrenceType } = activity;
   const theme = useThemeColor();
 
@@ -109,27 +113,15 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}
         >
-          <ThemedText style={{ fontWeight: "bold" }}>
-            {activity.name}{" "}
-          </ThemedText>
           <Link href={`/activity/${activity.id}`}>
-            <MaterialCommunityIcons
-              name="arrow-expand-all"
-              size={24}
-              color={theme.text}
-            />
+            <ThemedText style={{ fontWeight: "bold" }}>
+              {activity.name}
+            </ThemedText>
           </Link>
-          {/* <ThemedText>{dateRemaining}</ThemedText> */}
-        </ThemedView>
-        <ThemedView
-          style={{
-            alignItems: "center",
-            justifyContent: "center",
-            marginVertical: 20,
-          }}
-        >
-          <ThemedText>{remaining} remaining</ThemedText>
-          <ThemedButton
+          <Ionicons
+            name="checkmark-done"
+            size={24}
+            color={theme.text}
             onPress={() => {
               setShowAddTime(!showAddTime);
               setNewTime({
@@ -138,11 +130,18 @@ export default function ActivityCard({ activity }: { activity: Checklist }) {
                 length: 1,
               });
             }}
-            title="Check"
-            outlined
-            style={{ marginVertical: 10 }}
           />
-          <ThemedText>{occurrence} total</ThemedText>
+        </ThemedView>
+        <ThemedView
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            marginVertical: 20,
+          }}
+        >
+          <ThemedText>
+            {remaining} / {occurrence}
+          </ThemedText>
         </ThemedView>
         <ThemedView
           style={{ flexDirection: "row", justifyContent: "space-between" }}

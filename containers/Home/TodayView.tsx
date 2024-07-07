@@ -39,7 +39,7 @@ export default function TodayView() {
     const rest = runningActivity ? notRunning : today.slice(1);
 
     return (
-      <ThemedView style={{ marginVertical: 16, paddingVertical: 16 }}>
+      <ThemedView style={{ marginVertical: 8, paddingVertical: 8 }}>
         {currentSchedule ? (
           <ChecklistModal
             activity={currentSchedule}

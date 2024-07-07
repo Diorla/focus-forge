@@ -15,7 +15,7 @@ export default function UpcomingView() {
 
   if (upcoming.length)
     return (
-      <ThemedView style={{ marginVertical: 16 }}>
+      <ThemedView style={{ marginVertical: 8, paddingVertical: 8 }}>
         <SectionHeader title="Upcoming" extra={<TimeFormat value={time} />} />
         <ScrollView horizontal style={{ paddingBottom: 16 }}>
           {upcoming
