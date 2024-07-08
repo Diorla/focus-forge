@@ -33,6 +33,7 @@ export default function AccountScreen() {
           </>
         )}
         <ListItem path="stat" title="Stat" name="stats-chart" />
+        <ListItem path="help" title="Help" name="help" />
         <ListItem path="history" title="History" name="timer" />
         <ListItem path="settings" title="Settings" name="settings" />
         {isLoggedIn ? (

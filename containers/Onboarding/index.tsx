@@ -1,11 +1,8 @@
-import { Image } from "react-native";
 import { useState } from "react";
-import Dots from "./Dots";
 import AnimatedBackground from "../AnimatedBackground";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedButton } from "@/components/ThemedButton";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import Content from "./Content";
 
 export default function Onboarding({
   switchRegister,
@@ -17,8 +14,6 @@ export default function Onboarding({
   const theme = useThemeColor();
   const [prevColor, setPrevColor] = useState(theme.text);
 
-  const colorList = [theme.primary, theme.secondary, theme.accent];
-
   if (index === 0)
     return (
       <ThemedView
@@ -27,60 +22,21 @@ export default function Onboarding({
         }}
       >
         <AnimatedBackground prevColor={prevColor} />
-        <ThemedView
-          style={{
-            flex: 1,
-            justifyContent: "space-evenly",
-            backgroundColor: "transparent",
-            alignItems: "center",
+        <Content
+          switchRegister={switchRegister}
+          nextClick={() => {
+            setPrevColor(theme.primary);
+            setIndex(index + 1);
           }}
-        >
-          <ThemedView
-            style={{ alignItems: "center", backgroundColor: "transparent" }}
-          >
-            <Image
-              source={require("../../assets/images/puzzle.jpg")}
-              style={{
-                height: 200,
-                width: 200,
-                borderRadius: 100,
-              }}
-            />
-          </ThemedView>
-          <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
-            <ThemedText color={theme.background} type="title">
-              Break your task into chunks to reduce their difficulty
-            </ThemedText>
-            <ThemedView
-              style={{
-                alignItems: "flex-end",
-                marginTop: 8,
-                backgroundColor: "transparent",
-              }}
-            >
-              <ThemedButton
-                color={theme.background}
-                onPress={() => {
-                  setIndex(index + 1);
-                  setPrevColor(theme.primary);
-                }}
-                title="Next"
-              />
-            </ThemedView>
-          </ThemedView>
-          <Dots
-            activeIndex={index}
-            setIndex={(idx) => {
-              setPrevColor(colorList[index]);
-              setIndex(idx);
-            }}
-          />
-          <ThemedButton
-            color={theme.background}
-            onPress={() => switchRegister("register")}
-            title="Get Started"
-          />
-        </ThemedView>
+          prevClick={() => {
+            setPrevColor(theme.primary);
+            setIndex(index - 1);
+          }}
+          setIndex={setIndex}
+          index={index}
+          source={require("../../assets/images/puzzle.jpg")}
+          title="Break your task into chunks to reduce their difficulty"
+        />
       </ThemedView>
     );
   if (index === 1)
@@ -91,70 +47,21 @@ export default function Onboarding({
         }}
       >
         <AnimatedBackground color="secondary" prevColor={prevColor} />
-        <ThemedView
-          style={{
-            flex: 1,
-            justifyContent: "space-evenly",
-            backgroundColor: "transparent",
-            alignItems: "center",
+        <Content
+          switchRegister={switchRegister}
+          nextClick={() => {
+            setPrevColor(theme.secondary);
+            setIndex(index + 1);
           }}
-        >
-          <ThemedView
-            style={{ alignItems: "center", backgroundColor: "transparent" }}
-          >
-            <Image
-              source={require("../../assets/images/hourglass.jpg")}
-              style={{
-                height: 200,
-                width: 200,
-                borderRadius: 100,
-              }}
-            />
-          </ThemedView>
-          <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
-            <ThemedText color={theme.background} type="title">
-              Manage your time more effectively to get the best out of your day
-            </ThemedText>
-            <ThemedView
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginTop: 8,
-                backgroundColor: "transparent",
-              }}
-            >
-              <ThemedButton
-                color={theme.background}
-                onPress={() => {
-                  setIndex(index - 1);
-                  setPrevColor(theme.secondary);
-                }}
-                title="Prev"
-              />
-
-              <ThemedButton
-                color={theme.background}
-                onPress={() => {
-                  setIndex(index + 1);
-                  setPrevColor(theme.secondary);
-                }}
-                title="Next"
-              />
-            </ThemedView>
-          </ThemedView>
-          <Dots
-            activeIndex={index}
-            setIndex={(idx) => {
-              setPrevColor(colorList[index]);
-              setIndex(idx);
-            }}
-          />
-          <ThemedButton
-            color={theme.background}
-            onPress={() => switchRegister("register")}
-            title="Get Started"
-          />
-        </ThemedView>
+          prevClick={() => {
+            setPrevColor(theme.secondary);
+            setIndex(index - 1);
+          }}
+          setIndex={setIndex}
+          index={index}
+          source={require("../../assets/images/hourglass.jpg")}
+          title="Manage your time more effectively to get the best out of your day"
+        />
       </ThemedView>
     );
 
@@ -165,61 +72,21 @@ export default function Onboarding({
       }}
     >
       <AnimatedBackground color="accent" prevColor={prevColor} />
-      <ThemedView
-        style={{
-          flex: 1,
-          justifyContent: "space-evenly",
-          backgroundColor: "transparent",
-          alignItems: "center",
+      <Content
+        switchRegister={switchRegister}
+        nextClick={() => {
+          setPrevColor(theme.accent);
+          setIndex(index + 1);
         }}
-      >
-        <ThemedView
-          style={{ alignItems: "center", backgroundColor: "transparent" }}
-        >
-          <Image
-            source={require("../../assets/images/deadline.jpg")}
-            style={{
-              height: 200,
-              width: 200,
-              borderRadius: 100,
-            }}
-          />
-        </ThemedView>
-        <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
-          <ThemedText color={theme.background} type="title">
-            Avoid distractions, achieve your goals and beat deadlines
-          </ThemedText>
-          <ThemedView
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 8,
-              backgroundColor: "transparent",
-            }}
-          >
-            <ThemedButton
-              color={theme.background}
-              onPress={() => {
-                setIndex(index - 1);
-                setPrevColor(theme.accent);
-              }}
-              title="Prev"
-            />
-          </ThemedView>
-        </ThemedView>
-        <Dots
-          activeIndex={index}
-          setIndex={(idx) => {
-            setPrevColor(colorList[index]);
-            setIndex(idx);
-          }}
-        />
-        <ThemedButton
-          color={theme.background}
-          onPress={() => switchRegister("register")}
-          title="Get Started"
-        />
-      </ThemedView>
+        prevClick={() => {
+          setPrevColor(theme.accent);
+          setIndex(index - 1);
+        }}
+        setIndex={setIndex}
+        index={index}
+        source={require("../../assets/images/deadline.jpg")}
+        title="Avoid distractions, achieve your goals and beat deadlines"
+      />
     </ThemedView>
   );
 }
