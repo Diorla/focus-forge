@@ -49,8 +49,9 @@ export default function Running({ activity }: { activity: Schedule }) {
           </ThemedText>
           <Progress.Bar
             progress={doneToday / todayTime}
-            color={theme.grey3}
+            color={theme.grey0}
             unfilledColor={theme.grey3}
+            borderColor={theme.grey5}
             width={250}
           />
         </>
