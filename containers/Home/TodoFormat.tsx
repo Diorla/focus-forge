@@ -11,11 +11,15 @@ export function occurrenceAbbrev(value: number, period: OccurrenceType) {
 export default function TodoFormat({
   occurrence,
   occurrenceType,
+  color,
 }: {
   occurrence: number;
   occurrenceType: OccurrenceType;
+  color?: string;
 }) {
   return (
-    <ThemedText>{occurrenceAbbrev(occurrence, occurrenceType)}</ThemedText>
+    <ThemedText color={color}>
+      {occurrenceAbbrev(occurrence, occurrenceType)}
+    </ThemedText>
   );
 }

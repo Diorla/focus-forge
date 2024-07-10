@@ -13,6 +13,7 @@ import useSchedule from "@/context/schedule/useSchedule";
 import goBack from "@/services/routing";
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import TodoFormat from "../Home/TodoFormat";
 
 export default function ActivityScreen({ id }: { id: string }) {
   const theme = useThemeColor();
@@ -62,6 +63,16 @@ export default function ActivityScreen({ id }: { id: string }) {
         <ThemedText type="title" color={color} style={{ textAlign: "center" }}>
           {activity.name}
         </ThemedText>
+        <ThemedView transparent style={{ alignItems: "center" }}>
+          <TodoFormat
+            color={color}
+            occurrence={activity.occurrence}
+            occurrenceType={activity.occurrenceType}
+          />
+          <ThemedText color={color}>
+            Remaining: {activity.remaining}x
+          </ThemedText>
+        </ThemedView>
         <Range activity={activity} color={color} />
         <PriorityLabel priority={activity?.priority} />
         <Divider style={{ marginVertical: 8 }} />
