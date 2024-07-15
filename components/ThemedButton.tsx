@@ -7,8 +7,8 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "./ThemedView";
+import useUser from "@/context/user/useUser";
 
 export type ThemedButtonProps = ButtonProps & {
   lightColor?: string;
@@ -32,7 +32,7 @@ export function ThemedButton({
   loading,
   ...rest
 }: ThemedButtonProps) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const color = currenColor || theme.secondary;
 
   return (

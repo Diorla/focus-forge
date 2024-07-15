@@ -12,7 +12,6 @@ import ThemedPicker from "@/components/ThemedPicker";
 import ColorPicker from "@/components/ColorPicker";
 import SelectCategory from "@/components/SelectCategory";
 import { ThemedButton } from "@/components/ThemedButton";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import ThemedInput from "@/components/ThemedInput";
 import { ThemedView } from "@/components/ThemedView";
 import useUser from "@/context/user/useUser";
@@ -52,6 +51,7 @@ export default function ActivityForm({
 }) {
   const {
     user: { id },
+    theme,
   } = useUser();
 
   const mergedForm = {
@@ -59,7 +59,6 @@ export default function ActivityForm({
     userId: id,
   };
 
-  const theme = useThemeColor();
   const [form, setForm] = useState<ActivityModel>({ ...mergedForm });
   const { schedule } = useSchedule();
   const list = Array.from(new Set(schedule.map((item) => item.category)));

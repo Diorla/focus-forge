@@ -3,7 +3,25 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-export const Colors = {
+export type ColorType = {
+  text: string;
+  background: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  grey0: string;
+  grey1: string;
+  grey2: string;
+  grey3: string;
+  grey4: string;
+  grey5: string;
+  success: string;
+  warning: string;
+  error: string;
+  dark: boolean;
+};
+
+export const Colors: { light: ColorType; dark: ColorType } = {
   light: {
     text: "#11181C",
     background: "#ffffff",
@@ -19,10 +37,11 @@ export const Colors = {
     success: "#52c41a",
     warning: "#faad14",
     error: "#ff190c",
+    dark: false,
   },
   dark: {
-    text: "#e3e6e7",
-    background: "#3c3c3c",
+    text: "#ffffff",
+    background: "#11181C",
     primary: "#c69efa",
     secondary: "#80dddb",
     accent: "#ec8ca9",
@@ -35,5 +54,6 @@ export const Colors = {
     success: "#439946",
     warning: "#cfbe27",
     error: "#bf2c24",
+    dark: true,
   },
 };

@@ -2,7 +2,6 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Timer from "@/components/Timer";
 import Schedule from "@/context/schedule/Schedule";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { secondsToHrMm } from "@/services/datetime";
 import React from "react";
 import * as Progress from "react-native-progress";
@@ -15,11 +14,12 @@ import dayjs from "dayjs";
 import { Platform } from "react-native";
 import { schedulePushNotification } from "@/services/notification";
 import { dateRange } from "../Home/TodayCard";
+import useUser from "@/context/user/useUser";
 
 export default function Running({ activity }: { activity: Schedule }) {
   const { timerId, todayTime, timerStart, id, doneToday, timerLength, name } =
     activity;
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const [hh, mm, ss] = secondsToHrMm(todayTime - doneToday);
   const running = !!timerId;
   const toast = useToast();

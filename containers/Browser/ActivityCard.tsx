@@ -6,10 +6,10 @@ import { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import { priority } from "@/constants/Priority";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import { secondsToHrMm } from "@/services/datetime";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
 
 const CardTime = ({ activity }: { activity: ActivityModel }) => {
   const { isOccurrence, occurrence, weeklyTarget, occurrenceType } = activity;
@@ -37,7 +37,7 @@ export default function ActivityCard({
 }: {
   activity: ActivityModel;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const [visible, setVisible] = useState(false);
   const tasks = Object.keys(activity.tasks).filter(
     (item) => !activity.tasks[item].checked

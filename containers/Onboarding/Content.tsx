@@ -1,10 +1,10 @@
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ImageSourcePropType, Image, Platform } from "react-native";
 import Dots from "./Dots";
 import Download from "./Download";
+import useUser from "@/context/user/useUser";
 
 export default function Content({
   prevClick,
@@ -23,7 +23,7 @@ export default function Content({
   source: ImageSourcePropType | undefined;
   title: string;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const prevDisabled = index === 0;
   const nextDisabled = index === 2;
 

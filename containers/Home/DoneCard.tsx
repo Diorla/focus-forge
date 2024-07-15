@@ -6,13 +6,12 @@ import { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { ThemedText } from "@/components/ThemedText";
 import { router } from "expo-router";
-import { priority } from "@/constants/Priority";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
 
 export default function DoneCard({ activity }: { activity: Checklist }) {
   const { id, occurrence, occurrenceType, doneTimes } = activity;
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   const [visible, setVisible] = useState(false);
   const tasks = Object.keys(activity.tasks).filter(

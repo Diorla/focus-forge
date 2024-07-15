@@ -1,5 +1,5 @@
 import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
 import { TouchableOpacity } from "react-native";
 
 export default function Dots({
@@ -9,7 +9,7 @@ export default function Dots({
   activeIndex: number;
   setIndex: (index: number) => void;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   return (
     <ThemedView

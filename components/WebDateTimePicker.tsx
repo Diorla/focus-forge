@@ -3,9 +3,9 @@ import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedView } from "./ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import dayjs from "dayjs";
 import ThemedModal from "./ThemedModal";
+import useUser from "@/context/user/useUser";
 
 const months = [
   "January",
@@ -72,7 +72,7 @@ export default function WebDateTimePicker({
   value: number;
   onValueChange: (value: number) => void;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const [showPicker, setShowPicker] = useState(false);
   const datetime = dayjs(value).format("DD MMM YYYY, HH:mm");
 

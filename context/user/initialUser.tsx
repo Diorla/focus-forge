@@ -11,4 +11,5 @@ export const initialUser: UserModel = {
   createdAt: 0,
   email: "",
   registered: false,
+  mode: "",
 };

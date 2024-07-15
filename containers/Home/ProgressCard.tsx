@@ -3,11 +3,11 @@ import * as Progress from "react-native-progress";
 import useSchedule from "../../context/schedule/useSchedule";
 import { secondsToHrMm } from "../../services/datetime";
 import { ThemedText } from "@/components/ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
 
 export default function ProgressCard() {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const {
     time: { doneToday, todoTime, taskDone, taskLeft },
   } = useSchedule();

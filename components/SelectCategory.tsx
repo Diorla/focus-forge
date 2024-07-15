@@ -1,12 +1,10 @@
-import { Input } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
-import { TextInput } from "react-native";
 import ModalSelector from "react-native-modal-selector";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "./ThemedView";
 import ThemedInput from "./ThemedInput";
+import useUser from "@/context/user/useUser";
 
 export default function SelectCategory({
   value,
@@ -19,7 +17,8 @@ export default function SelectCategory({
 }) {
   const [label, setLabel] = useState("");
   const [data, setData] = useState<{ label: string; key: string }[]>([]);
-  const theme = useThemeColor();
+
+  const { theme } = useUser();
 
   useEffect(() => {
     const uniqueList = [...new Set([...list, value])];

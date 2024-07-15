@@ -1,8 +1,8 @@
 import { useState } from "react";
 import AnimatedBackground from "../AnimatedBackground";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 import Content from "./Content";
+import useUser from "@/context/user/useUser";
 
 export default function Onboarding({
   switchRegister,
@@ -11,7 +11,7 @@ export default function Onboarding({
 }) {
   const [index, setIndex] = useState(0);
 
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const [prevColor, setPrevColor] = useState(theme.text);
 
   if (index === 0)

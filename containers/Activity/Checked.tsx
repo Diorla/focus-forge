@@ -1,14 +1,12 @@
-import { ActivityIndicator, Modal, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { Card, Input } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Comment from "./Comment";
 import generateHistoryHeader from "./generateHistoryHeader";
 import DatePicker from "@/components/DateTimePicker";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedText } from "@/components/ThemedText";
-import TimeInput from "@/components/TimeInput";
 import Confirm from "@/components/Confirm";
 import DoneType from "@/context/data/types/DoneType";
 import Checklist from "@/context/schedule/Checklist";
@@ -18,10 +16,10 @@ import {
   format,
   getDateTimeKey,
 } from "@/services/datetime";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
 import ThemedModal from "@/components/ThemedModal";
+import useUser from "@/context/user/useUser";
 
 type History = {
   time: string;
@@ -35,7 +33,7 @@ type History = {
 export default function Checked({ activity }: { activity: Checklist }) {
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { done = {} } = activity;
   const [expandIdx, setExpandIdx] = useState("");
   const [form, setForm] = useState<DoneType>({
@@ -43,7 +41,6 @@ export default function Checked({ activity }: { activity: Checklist }) {
     datetime: Date.now(),
     length: 1,
   });
-  const [editingComment, setEditingComment] = useState(false);
 
   const [newTime, setNewTime] = useState<DoneType>({
     comment: "",

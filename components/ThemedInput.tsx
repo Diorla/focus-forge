@@ -1,9 +1,9 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
 import { InputProps } from "@rneui/base";
 import { Input } from "@rneui/themed";
 
 export default function ThemedInput(props: InputProps) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   return (
     <Input
       {...props}

@@ -6,9 +6,9 @@ import hexToRGB from "../services/color/hexToRGB";
 import RGBToHex from "../services/color/RGBToHex";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedText } from "./ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "./ThemedView";
 import ThemedModal from "./ThemedModal";
+import useUser from "@/context/user/useUser";
 
 export default function ColorPicker({
   label,
@@ -21,7 +21,7 @@ export default function ColorPicker({
 }) {
   const [showPicker, setShowPicker] = useState(false);
   const textColor = getContrastColor(value);
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   const [red, green, blue] = hexToRGB(value);
 
@@ -32,7 +32,6 @@ export default function ColorPicker({
           marginLeft: 8,
           fontWeight: "bold",
         }}
-        color={textColor}
       >
         {label}
       </ThemedText>

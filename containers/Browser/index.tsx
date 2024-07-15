@@ -7,11 +7,11 @@ import FilterModal from "./FilterModal";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Input } from "@rneui/base";
 import Fuse from "fuse.js";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedText } from "@/components/ThemedText";
+import useUser from "@/context/user/useUser";
 
 export default function BrowserScreen() {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { activityList } = useDataQuery();
   const [filteredList, setFilteredList] = useState<ActivityModel[]>([]);
   const [filters, setFilters] = useState("");

@@ -1,5 +1,5 @@
 import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
 import { Dimensions } from "react-native";
 import * as Animatable from "react-native-animatable";
 
@@ -33,7 +33,7 @@ export default function AnimatedBackground({
   externalKey?: string;
 }) {
   const id = externalKey || Math.random();
-  const theme = useThemeColor();
+  const { theme } = useUser();
   return (
     <>
       <ThemedView

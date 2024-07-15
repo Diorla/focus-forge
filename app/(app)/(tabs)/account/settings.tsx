@@ -1,22 +1,14 @@
 import { Pressable } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import goBack from "@/services/routing";
+import SettingsContainer from "@/containers/Settings";
 
-/**
- * theme
- * date settings
- * notifications
- * @returns
- */
-export default function TabTwoScreen() {
+export default function Settings() {
   return (
     <ParallaxScrollView name="cog">
-      <ThemedView>
-        <ThemedText>This is where you can change settings</ThemedText>
-      </ThemedView>
-      <Pressable onPress={() => goBack()}>
+      <SettingsContainer />
+      <Pressable style={{ alignItems: "center" }} onPress={() => goBack()}>
         <ThemedText type="link">Close</ThemedText>
       </Pressable>
     </ParallaxScrollView>

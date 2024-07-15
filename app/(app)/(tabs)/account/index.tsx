@@ -6,7 +6,6 @@ import { ThemedText } from "@/components/ThemedText";
 import { Ionicons } from "@expo/vector-icons";
 import Confirm from "@/components/Confirm";
 import signOut from "@/services/auth/signOut";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import removeUserCred from "@/services/database/removeUserCred";
 
 /**
@@ -17,10 +16,10 @@ import removeUserCred from "@/services/database/removeUserCred";
  * @returns
  */
 export default function AccountScreen() {
-  const { user } = useUser();
+  const { user, theme } = useUser();
 
   const isLoggedIn = user.id !== "user";
-  const { background } = useThemeColor();
+  const { background } = theme;
 
   return (
     <ParallaxScrollView name="person">

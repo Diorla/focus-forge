@@ -4,8 +4,8 @@ import { useState } from "react";
 import { ThemedText } from "./ThemedText";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedView } from "./ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import ThemedModal from "./ThemedModal";
+import useUser from "@/context/user/useUser";
 
 export default function ThemedPicker({
   label,
@@ -20,7 +20,7 @@ export default function ThemedPicker({
   list: Array<{ label: string; value: string }>;
   labelStyle?: TextStyle;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const [showPicker, setShowPicker] = useState(false);
   if (Platform.OS === "android")
     return (
@@ -38,6 +38,7 @@ export default function ThemedPicker({
           {label}
         </ThemedText>
         <RNPicker
+          itemStyle={{ color: theme.text }}
           selectedValue={value}
           onValueChange={onValueChange}
           style={{ color: theme.grey0 }}

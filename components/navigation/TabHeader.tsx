@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
 
 dayjs.extend(advancedFormat);
 
@@ -21,12 +21,12 @@ const greeting = (hour: number) => {
 };
 
 export default function TabHeader() {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { time } = useDataQuery();
   return (
     <ThemedView
       style={{
-        shadowColor: theme.text,
+        shadowColor: theme.grey4,
         shadowOffset: {
           width: 0,
           height: 2,

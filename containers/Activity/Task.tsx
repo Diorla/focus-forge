@@ -7,12 +7,12 @@ import Checklist from "@/context/schedule/Checklist";
 import Schedule from "@/context/schedule/Schedule";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
 
 export default function Task({ activity }: { activity: Schedule | Checklist }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { tasks } = activity;
   const [taskList, setTaskList] = useState<
     { title: string; checked: number; created: number }[]

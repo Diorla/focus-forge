@@ -7,11 +7,11 @@ import { ThemedButton } from "./ThemedButton";
 import Confirm from "./Confirm";
 import KeyboardWrapper from "./KeyboardWrapper";
 import { ThemedView } from "./ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
+import useUser from "@/context/user/useUser";
 
 export default function Task({ activity }: { activity: Schedule }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { tasks } = activity;
   const [taskList, setTaskList] = useState<
     { title: string; checked: number; created: number }[]

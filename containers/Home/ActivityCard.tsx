@@ -11,9 +11,9 @@ import TimeFormat from "@/components/TimeFormat";
 import { Link } from "expo-router";
 import Schedule from "@/context/schedule/Schedule";
 import { priority } from "@/constants/Priority";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 import TodoFormat from "./TodoFormat";
+import useUser from "@/context/user/useUser";
 
 export default function ActivityCard({
   schedule,
@@ -22,7 +22,7 @@ export default function ActivityCard({
   schedule: Schedule;
   type: "completed" | "overflow" | "upcoming" | "previous" | "recent";
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const {
     done,
     lastDone,

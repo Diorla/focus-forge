@@ -5,15 +5,15 @@ import { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import { priority } from "@/constants/Priority";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import { format } from "@/services/datetime";
 import TodoFormat from "./TodoFormat";
 import TimeFormat from "@/components/TimeFormat";
+import useUser from "@/context/user/useUser";
 
 export default function ArchiveCard({ activity }: { activity: ActivityModel }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { archived, weeklyTarget, occurrence, occurrenceType, isOccurrence } =
     activity;
   const [visible, setVisible] = useState(false);

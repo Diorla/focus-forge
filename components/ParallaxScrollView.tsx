@@ -1,4 +1,4 @@
-import { StyleSheet, useColorScheme } from "react-native";
+import { StyleSheet } from "react-native";
 import Animated, {
   interpolate,
   useAnimatedRef,
@@ -10,8 +10,9 @@ import { type IconProps } from "@expo/vector-icons/build/createIconSet";
 import { type ComponentProps } from "react";
 
 import { ThemedView } from "@/components/ThemedView";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { Ionicons } from "@expo/vector-icons";
+import useUser from "@/context/user/useUser";
+import { Colors } from "@/constants/Colors";
 
 const HEADER_HEIGHT = 250;
 
@@ -21,11 +22,8 @@ export default function ParallaxScrollView({
 }: IconProps<ComponentProps<typeof Ionicons>["name"]>) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollOffset = useScrollViewOffset(scrollRef);
-  const colorScheme = useColorScheme();
-  const theme = useThemeColor();
-  const oppositeTheme = useThemeColor(
-    colorScheme === "dark" ? "light" : "dark"
-  );
+  const { theme } = useUser();
+  const oppositeTheme = theme.dark ? Colors.light : Colors.dark;
 
   const headerAnimatedStyle = useAnimatedStyle(() => {
     return {

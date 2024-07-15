@@ -3,7 +3,6 @@ import AnimatedBackground from "../AnimatedBackground";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import QuotaForm from "./QuotaForm";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import useUser from "@/context/user/useUser";
 import { router } from "expo-router";
 import FormContainer from "../Form";
@@ -13,8 +12,7 @@ import ThemedInput from "@/components/ThemedInput";
 
 export default function Registration() {
   const [name, setName] = useState("");
-  const theme = useThemeColor();
-  const { user } = useUser();
+  const { user, theme } = useUser();
 
   useEffect(() => {
     if (user.registered) {

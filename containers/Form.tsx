@@ -4,7 +4,6 @@ import goBack from "@/services/routing";
 import ThemedInput from "@/components/ThemedInput";
 import { useEffect, useState } from "react";
 import { ThemedButton } from "@/components/ThemedButton";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import signUp from "@/services/auth/signUp";
 import signIn from "@/services/auth/signIn";
 import useUser from "@/context/user/useUser";
@@ -20,14 +19,11 @@ const baseForm = {
   repassword: "",
 };
 export default function FormScreen() {
-  const { user } = useUser();
+  const { user, theme } = useUser();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState(baseForm);
-
   const [formError, setFormError] = useState(baseForm);
-
   const [isNew, setIsNew] = useState(false);
-  const theme = useThemeColor();
   const [isResetPassword, setIsResetPassword] = useState(false);
   const [resetConfirmed, setResetConfirmed] = useState(false);
 

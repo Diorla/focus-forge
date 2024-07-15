@@ -1,9 +1,9 @@
 import { Chip } from "@rneui/themed";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
 
 export default function PriorityLabel({ priority }: { priority: number }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   if (priority === 3)
     return (
       <ThemedView
@@ -48,7 +48,7 @@ export default function PriorityLabel({ priority }: { priority: number }) {
         justifyContent: "center",
       }}
     >
-      <Chip buttonStyle={{ backgroundColor: theme.grey0 }}>None</Chip>
+      <Chip buttonStyle={{ backgroundColor: theme.grey5 }}>None</Chip>
     </ThemedView>
   );
 }

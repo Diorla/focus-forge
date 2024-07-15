@@ -8,8 +8,8 @@ import ChecklistModal from "./ChecklistModal";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import Schedule from "@/context/schedule/Schedule";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
+import useUser from "@/context/user/useUser";
 
 const getTimeRemaining = (item: Schedule) => {
   const { weeklyTarget, doneToday, doneThisWeek } = item;
@@ -20,7 +20,7 @@ export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useSchedule();
   const [currentSchedule, setCurrentSchedule] = useState<Schedule | null>(null);
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   // const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
   //   keywords: schedule.map((item) => item.name),

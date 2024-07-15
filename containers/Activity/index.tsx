@@ -11,12 +11,12 @@ import { ThemedButton } from "@/components/ThemedButton";
 import { getContrastColor } from "@/services/color";
 import useSchedule from "@/context/schedule/useSchedule";
 import goBack from "@/services/routing";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 import TodoFormat from "../Home/TodoFormat";
+import useUser from "@/context/user/useUser";
 
 export default function ActivityScreen({ id }: { id: string }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const { schedule, checklist } = useSchedule();
   const timedActivity = schedule.find((item) => item.id === id);
 

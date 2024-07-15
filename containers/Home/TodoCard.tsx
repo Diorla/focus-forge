@@ -5,24 +5,19 @@ import Checklist from "../../context/schedule/Checklist";
 import { useState } from "react";
 import DoneType from "../../context/data/types/DoneType";
 import { getDateTimeKey } from "../../services/datetime";
-import {
-  Ionicons,
-  MaterialCommunityIcons,
-  MaterialIcons,
-} from "@expo/vector-icons";
-import { Link, router } from "expo-router";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import DatePicker from "@/components/DateTimePicker";
 import { ThemedButton } from "@/components/ThemedButton";
-import { priority } from "@/constants/Priority";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
 import ThemedModal from "@/components/ThemedModal";
+import useUser from "@/context/user/useUser";
 
 export default function TodoCard({ activity }: { activity: Checklist }) {
-  const { id, remaining, occurrence, occurrenceType } = activity;
-  const theme = useThemeColor();
+  const { remaining, occurrence, occurrenceType } = activity;
+  const { theme } = useUser();
 
   const [visible, setVisible] = useState(false);
   const tasks = Object.keys(activity.tasks).filter(

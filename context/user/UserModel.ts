@@ -37,6 +37,7 @@ interface UserModel {
   createdAt: number;
   email: string;
   registered: boolean;
+  mode: "dark" | "light" | "";
 }
 
 export default UserModel;

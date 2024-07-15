@@ -1,8 +1,4 @@
-import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from "@react-navigation/native";
+import { ThemeProvider } from "@react-navigation/native";
 import { Slot } from "expo-router";
 import "react-native-reanimated";
 import UserProvider from "@/context/user";
@@ -15,6 +11,8 @@ import { logError } from "@/services/database";
 import { ThemedView } from "@/components/ThemedView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
+import DarkTheme from "@/constants/DarkTheme";
+import DefaultTheme from "@/constants/DefaultTheme";
 
 const CustomFallback = (props: {
   error: Error;
@@ -46,7 +44,7 @@ export default function RootLayout() {
         onError={(error) => logError("error boundary", "uncaught error", error)}
         FallbackComponent={CustomFallback}
       >
-        <ToastProvider>
+        <ToastProvider placement="center">
           <DataProvider>
             <ScheduleProvider>
               <ThemeProvider

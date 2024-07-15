@@ -7,9 +7,9 @@ import { format } from "../services/datetime";
 import dayjs from "dayjs";
 import { ThemedButton } from "./ThemedButton";
 import { ThemedText } from "./ThemedText";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "./ThemedView";
 import WebDateTimePicker from "./WebDateTimePicker";
+import useUser from "@/context/user/useUser";
 
 export default function DatePicker({
   date,
@@ -22,7 +22,7 @@ export default function DatePicker({
   label: string;
   mode?: "date" | "time" | "datetime";
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   const onChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
     const currentDate = selectedDate;
     setDate(dayjs(currentDate).valueOf());

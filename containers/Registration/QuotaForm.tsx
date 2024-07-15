@@ -2,7 +2,6 @@ import { useState } from "react";
 import TimeInput from "@/components/TimeInput";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import updateUser from "@/services/database/updateUser";
 import { DailyQuota } from "@/context/user/UserModel";
 import { secondsToHrMm } from "@/services/datetime";
@@ -23,9 +22,8 @@ function insertArray<type>(arr: type[], idx: number, value: type) {
   return [...arr.slice(0, idx), value, ...arr.slice(idx + 1)];
 }
 
-export default function Quotaform() {
-  const { user } = useUser();
-  const theme = useThemeColor();
+export default function QuotaForm() {
+  const { user, theme } = useUser();
   const toast = useToast();
 
   const [quota, setQuota] = useState<QuotaFormState>({

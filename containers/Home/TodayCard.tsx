@@ -9,7 +9,6 @@ import { logError } from "../../services/database";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
 import Timer from "@/components/Timer";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "@/components/ThemedView";
 import { secondsToHrMm } from "@/services/datetime";
 import endTimer from "@/services/utils/endTimer";
@@ -18,6 +17,7 @@ import { schedulePushNotification } from "@/services/notification";
 import dayjs from "dayjs";
 import TodoFormat from "./TodoFormat";
 import TimeFormat from "@/components/TimeFormat";
+import useUser from "@/context/user/useUser";
 
 export const dateRange = (date1: dayjs.Dayjs, date2: dayjs.Dayjs) => {
   if (dayjs(date1).isSame(date2, "date"))
@@ -32,7 +32,7 @@ export function TodayCard({
   schedule: Schedule;
   setCurrentSchedule: any;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   const toast = useToast();
   const {

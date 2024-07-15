@@ -8,7 +8,7 @@ import { logError } from "@/services/database";
 import watchUser from "@/services/database/watchUser";
 import getUserCred from "@/services/database/getUserCred";
 import signIn from "@/services/auth/signIn";
-import { Dimensions, View } from "react-native";
+import { Dimensions, useColorScheme, View } from "react-native";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
@@ -91,6 +91,8 @@ export default function UserProvider({
   const [user, setUser] = useState<UserModel>(initialUser);
   const [loading, setLoading] = useState(true);
   const [marginLeft, setMarginLeft] = useState(0);
+  const [theme, setTheme] = useState(Colors.light);
+  const colorScheme = useColorScheme();
 
   const [expoPushToken, setExpoPushToken] = useState("");
   const [notification, setNotification] = useState<
@@ -98,6 +100,13 @@ export default function UserProvider({
   >(undefined);
   const notificationListener = useRef<Notifications.Subscription>();
   const responseListener = useRef<Notifications.Subscription>();
+
+  useEffect(() => {
+    const theme = user.mode ? user.mode : colorScheme;
+    if (theme === "dark") setTheme(Colors.dark);
+    else setTheme(Colors.light);
+    return () => {};
+  }, [user.mode]);
 
   useEffect(() => {
     registerForPushNotificationsAsync()
@@ -163,7 +172,7 @@ export default function UserProvider({
 
   return (
     <UserContext.Provider
-      value={{ user, loading, expoPushToken, notification }}
+      value={{ user, loading, expoPushToken, notification, theme }}
     >
       <View style={{ maxWidth, marginLeft }}>
         <View

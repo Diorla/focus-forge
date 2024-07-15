@@ -1,17 +1,16 @@
 import { Tabs } from "expo-router";
 import React from "react";
-
 import { TabBarIcon } from "@/components/navigation/TabBarIcon";
 import TabHeader from "@/components/navigation/TabHeader";
-import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
 
 export default function TabLayout() {
-  const { grey0 } = useThemeColor();
+  const { theme } = useUser();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: grey0,
+        tabBarActiveTintColor: theme.grey0,
         header: () => <TabHeader />,
       }}
     >

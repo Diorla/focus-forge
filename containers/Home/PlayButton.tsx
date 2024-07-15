@@ -1,4 +1,4 @@
-import { useThemeColor } from "@/hooks/useThemeColor";
+import useUser from "@/context/user/useUser";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -9,7 +9,7 @@ export default function PlayButton({
   playing: boolean;
   onPress: () => void;
 }) {
-  const theme = useThemeColor();
+  const { theme } = useUser();
   if (playing)
     return (
       <MaterialCommunityIcons

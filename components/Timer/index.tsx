@@ -7,9 +7,9 @@ import { useKeepAwake } from "expo-keep-awake";
 import useDataQuery from "../../context/data/useDataQuery";
 import useInterval from "@/hooks/useTimeInterval";
 import Time from "./Time";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ThemedView } from "../ThemedView";
 import updateActivity from "@/services/database/updateActivity";
+import useUser from "@/context/user/useUser";
 
 export default function Timer({
   startTime,
@@ -27,7 +27,7 @@ export default function Timer({
   length: number;
 }) {
   useKeepAwake();
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   const { activityList } = useDataQuery();
   const [count, setCount] = useState((Date.now() - startTime) / 1000);

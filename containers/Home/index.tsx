@@ -7,6 +7,7 @@ import OverflowView from "./OverflowView";
 import PreviousView from "./PreviousView";
 import ArchivedView from "./ArchivedView";
 import TodoView from "./TodoView";
+import useUser from "@/context/user/useUser";
 
 /**
  * This will be based on "done this week" to indicate the total number of activity
@@ -14,8 +15,11 @@ import TodoView from "./TodoView";
  * @returns
  */
 export default function HomeScreen() {
+  const {
+    theme: { background },
+  } = useUser();
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: background }}>
       <ProgressCard />
       <TodoView />
       <TodayView />

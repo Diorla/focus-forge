@@ -3,8 +3,8 @@ import { hrMmToSeconds, secondsToHrMm } from "../services/datetime";
 import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import ThemedInput from "./ThemedInput";
-import { useThemeColor } from "@/hooks/useThemeColor";
 import { ViewStyle } from "react-native";
+import useUser from "@/context/user/useUser";
 
 export default function TimeInput({
   value,
@@ -24,7 +24,7 @@ export default function TimeInput({
   containerStyle?: ViewStyle;
 }) {
   const [hh, mm, ss] = secondsToHrMm(value);
-  const theme = useThemeColor();
+  const { theme } = useUser();
 
   const currentColor = color || theme.grey0;
   return (
