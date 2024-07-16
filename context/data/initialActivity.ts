@@ -20,6 +20,7 @@ export const initialActivity: ActivityModel = {
   isOccurrence: false,
   occurrence: 0,
   occurrenceType: "daily",
+  occurrenceStart: 0,
   done: {},
   tasks: {},
   deletedAt: 0,

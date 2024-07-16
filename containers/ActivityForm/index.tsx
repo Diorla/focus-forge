@@ -42,8 +42,24 @@ const baseForm: ActivityModel = {
   isOccurrence: false,
   deletedAt: 0,
   userId: "",
+  occurrenceStart: 0,
 };
 
+const arr: number[] = [];
+
+arr.length = 24;
+
+const hours = arr.fill(0).map((_item, idx) => idx);
+
+const getTime = (value: number) => {
+  if (value === 0) return "12am";
+  if (value === 12) return "12pm";
+  return `${value < 12 ? value + " am" : value - 12 + " pm"}`;
+};
+const timeOptions = hours.map((hour) => ({
+  label: getTime(hour),
+  value: String(hour),
+}));
 export default function ActivityForm({
   initialForm = baseForm,
 }: {
@@ -213,6 +229,17 @@ export default function ActivityForm({
                 value: "yearly",
               },
             ]}
+          />
+          <ThemedPicker
+            value={String(form.occurrenceStart)}
+            onValueChange={(occurrenceStart) =>
+              setForm({
+                ...form,
+                occurrenceStart: Number(occurrenceStart),
+              })
+            }
+            label="Start time"
+            list={timeOptions}
           />
         </ThemedView>
       ) : (

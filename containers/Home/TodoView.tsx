@@ -33,6 +33,7 @@ export default function TodoView() {
       <ScrollView horizontal>
         {todo
           .sort((a, b) => a.doneTimes - b.doneTimes)
+          .sort((a, b) => (a.occurrenceStart || 0) - (b.occurrenceStart || 0))
           .sort((a, b) => getChecksValue(a) - getChecksValue(b))
           .map((item) => (
             <TodoCard activity={item} key={item.id} />

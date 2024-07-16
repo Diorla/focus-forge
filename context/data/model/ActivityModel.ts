@@ -36,6 +36,11 @@ interface ActivityModel {
    */
   occurrenceType: OccurrenceType;
   /**
+   * The time when the occurrence could start,
+   * just from 0 to 23
+   */
+  occurrenceStart: number;
+  /**
    * Each time a time is recorded, or occurrence is marked
    * In case of occurrence, the length will be 1
    * The key is the datetime that it happened
