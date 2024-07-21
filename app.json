@@ -2,7 +2,7 @@
   "expo": {
     "name": "focus-forge",
     "slug": "focus-forge",
-    "version": "0.0.35",
+    "version": "0.0.36",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.diorla.focusforge",
-      "buildNumber": "10",
+      "buildNumber": "11",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -29,7 +29,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.diorla.focusforge",
-      "versionCode": 12
+      "versionCode": 13
     },
     "web": {
       "bundler": "metro",
