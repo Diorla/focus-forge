@@ -44,8 +44,7 @@ export default function Running({ activity }: { activity: Schedule }) {
       ) : (
         <>
           <ThemedText>
-            {String(hh).padStart(2, "0")}:{String(mm).padStart(2, "0")}:
-            {String(ss).padStart(2, "0")}
+            {hh}h {mm}m {ss}s
           </ThemedText>
           <Progress.Bar
             progress={doneToday / todayTime}
