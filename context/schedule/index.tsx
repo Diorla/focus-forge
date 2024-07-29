@@ -48,7 +48,9 @@ export default function ScheduleProvider({
   const activityListString = JSON.stringify(activityList);
 
   function generateChecklist() {
-    const checklist = activityList.filter((item) => item.isOccurrence);
+    const checklist = activityList
+      .filter((item) => item.isOccurrence)
+      .filter((item) => !item.archived);
     if (!checklist.length) return null;
     setChecklist(getChecklist(checklist));
   }
