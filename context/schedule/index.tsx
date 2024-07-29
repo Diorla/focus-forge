@@ -6,12 +6,12 @@ import isToday from "dayjs/plugin/isToday";
 import getTime from "./getTime";
 import getSchedule from "./getSchedule";
 import Schedule from "./Schedule";
-
 import useDataQuery from "../data/useDataQuery";
 import Checklist from "./Checklist";
 import getChecklist from "./getChecklist";
 import { logError } from "@/services/database";
 import PageLoader from "@/components/PageLoader";
+import { AppState } from "react-native";
 
 dayjs.extend(isToday);
 
@@ -44,7 +44,6 @@ export default function ScheduleProvider({
   });
 
   // Determine if new stuff is created
-  // const doneListString = JSON.stringify(doneList);
   const activityListString = JSON.stringify(activityList);
 
   function generateChecklist() {
@@ -106,6 +105,20 @@ export default function ScheduleProvider({
       logError(String(activityList.length), "use effect", error as Error);
     }
   }, [activityListString]);
+
+  useEffect(() => {
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        try {
+          generateSchedule();
+          generateChecklist();
+        } catch (error) {
+          logError(String(activityList.length), "use effect", error as Error);
+        }
+      }
+    });
+    return () => subscription.remove();
+  }, []);
 
   if (loading) return <PageLoader />;
   return (
