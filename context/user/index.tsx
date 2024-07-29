@@ -147,7 +147,12 @@ export default function UserProvider({
       unsubscribe = onAuthStateChanged(auth as Auth, (currentUser) => {
         if (currentUser) {
           watchUser(currentUser.uid, (user) => {
-            setUser({ ...initialUser, ...user, id: currentUser.uid });
+            setUser({
+              ...initialUser,
+              ...user,
+              id: currentUser.uid,
+              email: currentUser.email || user.email,
+            });
             setLoading(false);
           });
         } else {
