@@ -44,7 +44,7 @@ export default function RootLayout() {
         onError={(error) => logError("error boundary", "uncaught error", error)}
         FallbackComponent={CustomFallback}
       >
-        <ToastProvider placement="center">
+        <ToastProvider placement="top">
           <DataProvider>
             <ScheduleProvider>
               <ThemeProvider
