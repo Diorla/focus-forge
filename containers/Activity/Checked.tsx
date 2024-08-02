@@ -168,7 +168,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
         ?.sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
         .map((item) => {
           return (
-            <ThemedView key={item}>
+            <ThemedView key={item} style={{ marginBottom: 16 }}>
               <ThemedText type="title">
                 {generateHistoryHeader(item)}
               </ThemedText>
@@ -212,13 +212,15 @@ export default function Checked({ activity }: { activity: Checklist }) {
                           comment={time.comment}
                         />
                         <ThemedView
+                          transparent
                           style={{
-                            justifyContent: "flex-end",
+                            justifyContent: "space-between",
                             flexDirection: "row",
                             paddingVertical: 8,
                             alignItems: "center",
                           }}
                         >
+                          <ThemedText>{time.length && "Completed"}</ThemedText>
                           <ThemedText>{time.time}</ThemedText>
                         </ThemedView>
                       </TouchableOpacity>
@@ -270,10 +272,10 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                   });
                                   setExpandIdx("");
                                 }}
-                                style={{ marginHorizontal: 8 }}
                                 title="Save"
                               ></ThemedButton>
                               <ThemedButton
+                                style={{ marginHorizontal: 8 }}
                                 onPress={() => {
                                   setForm({
                                     comment: "",

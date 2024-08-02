@@ -180,7 +180,7 @@ export default function History({ activity }: { activity: Schedule }) {
         ?.sort((a, b) => dayjs(b).valueOf() - dayjs(a).valueOf())
         .map((item) => {
           return (
-            <ThemedView key={item}>
+            <ThemedView key={item} style={{ marginBottom: 16 }}>
               <ThemedText type="title">
                 {generateHistoryHeader(item)}
               </ThemedText>
@@ -194,9 +194,9 @@ export default function History({ activity }: { activity: Schedule }) {
                     <ThemedView
                       style={{
                         backgroundColor: theme.grey5,
-                        marginBottom: 4,
-                        paddingVertical: 12,
-                        paddingHorizontal: 8,
+                        marginBottom: 2,
+                        paddingVertical: 4,
+                        paddingHorizontal: 4,
                       }}
                       key={idx}
                     >
@@ -220,6 +220,7 @@ export default function History({ activity }: { activity: Schedule }) {
                         }}
                       >
                         <ThemedView
+                          transparent
                           style={{
                             justifyContent: "space-between",
                             flexDirection: "row",
