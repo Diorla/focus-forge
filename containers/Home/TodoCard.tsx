@@ -1,6 +1,6 @@
 import * as React from "react";
 import { TouchableOpacity } from "react-native";
-import { Card, Input } from "@rneui/themed";
+import { Card, CheckBox, Input } from "@rneui/themed";
 import Checklist from "../../context/schedule/Checklist";
 import { useState } from "react";
 import DoneType from "../../context/data/types/DoneType";
@@ -61,6 +61,20 @@ export default function TodoCard({ activity }: { activity: Checklist }) {
             onChangeText={(comment) => setNewTime({ ...newTime, comment })}
             multiline
           />
+          <ThemedView>
+            <CheckBox
+              checked={!!newTime.length}
+              onPress={() => {
+                setNewTime({
+                  ...newTime,
+                  length: newTime.length ? 0 : 1,
+                });
+              }}
+              title="Completed"
+              checkedIcon="dot-circle-o"
+              uncheckedIcon="circle-o"
+            />
+          </ThemedView>
           <DatePicker
             date={newTime.datetime}
             setDate={(datetime) => setNewTime({ ...newTime, datetime })}
@@ -75,15 +89,13 @@ export default function TodoCard({ activity }: { activity: Checklist }) {
           >
             <ThemedButton
               onPress={() => {
-                if (newTime.length) {
-                  createDone(newTime);
-                  setShowAddTime(false);
-                  setNewTime({
-                    comment: "",
-                    datetime: Date.now(),
-                    length: 1,
-                  });
-                }
+                createDone(newTime);
+                setShowAddTime(false);
+                setNewTime({
+                  comment: "",
+                  datetime: Date.now(),
+                  length: 1,
+                });
               }}
               title="Save"
               outlined

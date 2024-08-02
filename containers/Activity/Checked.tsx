@@ -1,5 +1,5 @@
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
-import { Card, Input } from "@rneui/themed";
+import { Card, CheckBox, Input, useTheme } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Comment from "./Comment";
@@ -31,6 +31,11 @@ type History = {
 };
 
 export default function Checked({ activity }: { activity: Checklist }) {
+  const {
+    theme: {
+      colors: { success, error },
+    },
+  } = useTheme();
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<{ [key: string]: History[] }>({});
   const { theme } = useUser();
@@ -220,7 +225,9 @@ export default function Checked({ activity }: { activity: Checklist }) {
                             alignItems: "center",
                           }}
                         >
-                          <ThemedText>{time.length && "Completed"}</ThemedText>
+                          <ThemedText color={time.length ? success : error}>
+                            {time.length ? "Completed" : "Not done"}
+                          </ThemedText>
                           <ThemedText>{time.time}</ThemedText>
                         </ThemedView>
                       </TouchableOpacity>
@@ -235,6 +242,20 @@ export default function Checked({ activity }: { activity: Checklist }) {
                                 }
                                 multiline
                               />
+                              <ThemedView>
+                                <CheckBox
+                                  checked={!!form.length}
+                                  onPress={() => {
+                                    setForm({
+                                      ...form,
+                                      length: form.length ? 0 : 1,
+                                    });
+                                  }}
+                                  title="Completed"
+                                  checkedIcon="dot-circle-o"
+                                  uncheckedIcon="circle-o"
+                                />
+                              </ThemedView>
                               <DatePicker
                                 date={form.datetime}
                                 setDate={(datetime) =>
