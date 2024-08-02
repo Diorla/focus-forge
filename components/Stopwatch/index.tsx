@@ -24,9 +24,9 @@ export default function Stopwatch({ startTime }: { startTime: number }) {
     return () => subscription.remove();
   }, [startTime]);
 
-    return (
-      <ThemedView style={{ alignItems: "center", justifyContent: "center" }}>
-        <Time time={count < 0 ? 0 : count} />
-      </ThemedView>
-    );
+  return (
+    <ThemedView style={{ alignItems: "center", justifyContent: "center" }}>
+      <Time time={count < 0 ? 0 : count} />
+    </ThemedView>
+  );
 }

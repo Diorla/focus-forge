@@ -5,7 +5,7 @@ export type DailyQuota = [
   number,
   number,
   number,
-  number
+  number,
 ];
 
 interface UserModel {
