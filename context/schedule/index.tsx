@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ActivityContext from "./scheduleContext";
 import dayjs from "dayjs";
 import useUser from "../user/useUser";
@@ -46,48 +46,51 @@ export default function ScheduleProvider({
   // Determine if new stuff is created
   const activityListString = JSON.stringify(activityList);
 
-  function generateChecklist() {
+  const generateChecklist = useCallback(() => {
     const checklist = activityList
       .filter((item) => item.isOccurrence)
       .filter((item) => !item.archived);
     if (!checklist.length) return null;
     setChecklist(getChecklist(checklist));
-  }
-  function generateSchedule() {
-    const scheduledActivityList = activityList.filter(
-      (item) => !item.isOccurrence
-    );
+  }, [activityList]);
 
-    if (!scheduledActivityList.length) {
+  const generateSchedule = useCallback(() => {
+    {
+      const scheduledActivityList = activityList.filter(
+        (item) => !item.isOccurrence
+      );
+
+      if (!scheduledActivityList.length) {
+        setLoading(false);
+        return null;
+      }
+      const time = getTime(scheduledActivityList, user);
+
+      const scheduleList = getSchedule({
+        activities: scheduledActivityList,
+        initialTodayRemaining: time.todayRemaining,
+        initialUpcomingTime: time.upcomingTime,
+      });
+
+      let todoTime = 0;
+      let taskDone = 0;
+      let taskLeft = 0;
+
+      scheduleList?.forEach((item) => {
+        const { todayTime, doneToday } = item;
+        todoTime += todayTime - doneToday;
+        const timeLeft = todayTime - doneToday;
+        // TODO: Fix precision floating calculation with decimal.js
+        if (todayTime && timeLeft > 0.0001) taskLeft++;
+        if (todayTime && timeLeft <= 0.0001) taskDone++;
+      });
+
+      setSchedule(scheduleList);
+      setTime({ ...time, todoTime, taskDone, taskLeft });
+      setPrevTime(userTime);
       setLoading(false);
-      return null;
     }
-    const time = getTime(scheduledActivityList, user);
-
-    const scheduleList = getSchedule({
-      activities: scheduledActivityList,
-      initialTodayRemaining: time.todayRemaining,
-      initialUpcomingTime: time.upcomingTime,
-    });
-
-    let todoTime = 0;
-    let taskDone = 0;
-    let taskLeft = 0;
-
-    scheduleList?.forEach((item) => {
-      const { todayTime, doneToday } = item;
-      todoTime += todayTime - doneToday;
-      const timeLeft = todayTime - doneToday;
-      // TODO: Fix precision floating calculation with decimal.js
-      if (todayTime && timeLeft > 0.0001) taskLeft++;
-      if (todayTime && timeLeft <= 0.0001) taskDone++;
-    });
-
-    setSchedule(scheduleList);
-    setTime({ ...time, todoTime, taskDone, taskLeft });
-    setPrevTime(userTime);
-    setLoading(false);
-  }
+  }, [activityList, user, userTime]);
 
   // Check if it's a new day since last update
   useEffect(() => {
@@ -95,16 +98,16 @@ export default function ScheduleProvider({
       generateSchedule();
       generateChecklist();
     }
-  }, [userTime]);
+  }, [generateChecklist, generateSchedule, prevTime, userTime]);
 
   useEffect(() => {
     try {
       generateSchedule();
       generateChecklist();
     } catch (error) {
-      logError(String(activityList.length), "use effect", error as Error);
+      logError(String(activityListString), "use effect", error as Error);
     }
-  }, [activityListString]);
+  }, [activityListString, generateChecklist, generateSchedule]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (state) => {
@@ -118,7 +121,7 @@ export default function ScheduleProvider({
       }
     });
     return () => subscription.remove();
-  }, []);
+  }, [activityList.length, generateChecklist, generateSchedule]);
 
   if (loading) return <PageLoader />;
   return (

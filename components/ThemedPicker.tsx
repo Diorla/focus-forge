@@ -17,7 +17,7 @@ export default function ThemedPicker({
   label?: string;
   value: string;
   onValueChange: (value: string) => void;
-  list: Array<{ label: string; value: string }>;
+  list: { label: string; value: string }[];
   labelStyle?: TextStyle;
 }) {
   const { theme } = useUser();

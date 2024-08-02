@@ -1,4 +1,4 @@
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import Time from "./Time";
 import { Card, Divider } from "@rneui/themed";
 import Range from "./Range";

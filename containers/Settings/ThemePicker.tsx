@@ -1,7 +1,5 @@
-import { Modal, Pressable } from "react-native";
-import { ThemedText } from "@/components/ThemedText";
+import { Pressable } from "react-native";
 import { ThemedView } from "@/components/ThemedView";
-import { MaterialIcons } from "@expo/vector-icons";
 import useUser from "@/context/user/useUser";
 import { Picker } from "@react-native-picker/picker";
 import { useEffect, useState } from "react";

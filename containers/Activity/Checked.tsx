@@ -1,4 +1,4 @@
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { Card, CheckBox, Input, useTheme } from "@rneui/themed";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -77,7 +77,7 @@ export default function Checked({ activity }: { activity: Checklist }) {
     });
     setHistory(tempHistory);
     setLoading(false);
-  }, [JSON.stringify(done)]);
+  }, [done]);
 
   const createDone = (data: DoneType) => {
     const key = getDateTimeKey(data.datetime);

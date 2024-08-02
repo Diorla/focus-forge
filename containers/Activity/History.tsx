@@ -23,7 +23,7 @@ import { ThemedView } from "@/components/ThemedView";
 import ThemedModal from "@/components/ThemedModal";
 import useUser from "@/context/user/useUser";
 
-type History = {
+type HistoryProps = {
   time: string;
   description: string;
   datetime: string;
@@ -34,7 +34,7 @@ type History = {
 
 export default function History({ activity }: { activity: Schedule }) {
   const [loading, setLoading] = useState(true);
-  const [history, setHistory] = useState<{ [key: string]: History[] }>({});
+  const [history, setHistory] = useState<{ [key: string]: HistoryProps[] }>({});
   const { theme } = useUser();
   const { done = {} } = activity;
   const [expandIdx, setExpandIdx] = useState("");
@@ -54,7 +54,7 @@ export default function History({ activity }: { activity: Schedule }) {
   const [showAddTime, setShowAddTime] = useState(false);
 
   useEffect(() => {
-    const tempHistory: { [key: string]: History[] } = {};
+    const tempHistory: { [key: string]: HistoryProps[] } = {};
     Object.keys(done).forEach((item) => {
       const { comment, length } = done[item];
       const date = getDateKey(item);
@@ -75,7 +75,7 @@ export default function History({ activity }: { activity: Schedule }) {
     });
     setHistory(tempHistory);
     setLoading(false);
-  }, [JSON.stringify(done)]);
+  }, [done]);
 
   const createDone = (data: DoneType) => {
     const key = getDateTimeKey(data.datetime);

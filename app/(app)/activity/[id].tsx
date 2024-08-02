@@ -34,7 +34,7 @@ export default function Activity() {
     if (activity) setActivity(activity);
     else setActivity(null);
     setLoading(false);
-  }, [JSON.stringify(activityList)]);
+  }, [activityList, id]);
 
   if (loading) {
     return (

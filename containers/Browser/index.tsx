@@ -20,7 +20,7 @@ export default function BrowserScreen() {
   const [search, setSearch] = useState("");
   useEffect(() => {
     setFilteredList(activityList);
-  }, [filters, JSON.stringify(activityList)]);
+  }, [activityList, filters]);
 
   // TODO: set sort and filters function
   const sortFn = (a: ActivityModel, b: ActivityModel) => {

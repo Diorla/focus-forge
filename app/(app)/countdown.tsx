@@ -26,7 +26,7 @@ export default function CountdownScreen() {
   const toast = useToast();
   useEffect(() => {
     if (schedule.length) setCurrentTaskId(schedule[0].id);
-  }, [schedule.length]);
+  }, [schedule]);
 
   const currentTask = schedule.find((task) => task.id === currentTaskId);
 

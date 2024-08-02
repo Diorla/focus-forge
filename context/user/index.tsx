@@ -106,7 +106,7 @@ export default function UserProvider({
     if (theme === "dark") setTheme(Colors.dark);
     else setTheme(Colors.light);
     return () => {};
-  }, [user.mode]);
+  }, [colorScheme, user.mode]);
 
   useEffect(() => {
     registerForPushNotificationsAsync()
@@ -139,7 +139,7 @@ export default function UserProvider({
       setMarginLeft(getMarginLeft(maxWidth));
     });
     return () => subscription?.remove();
-  });
+  }, []);
 
   useEffect(() => {
     let unsubscribe: Unsubscribe;

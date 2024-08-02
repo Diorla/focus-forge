@@ -8,7 +8,8 @@ import { useColorScheme } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 export function useThemeColor(mode?: "light" | "dark" | "") {
-  const theme = mode ? mode : useColorScheme();
+  const colorScheme = useColorScheme();
+  const theme = mode ? mode : colorScheme;
   if (theme === "dark") return Colors.dark;
   return Colors.light;
 }

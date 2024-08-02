@@ -29,7 +29,7 @@ export default function Task({ activity }: { activity: Schedule | Checklist }) {
     Object.keys(tasks).forEach((key) => {
       setTaskList((prev) => [...prev, { ...tasks[key], created: Number(key) }]);
     });
-  }, [activity.id]);
+  }, [activity.id, tasks]);
 
   const checkTask = (id: number) => {
     setTaskList(
