@@ -8,16 +8,19 @@ import ProjectCard from "@/components/ProjectCard";
 
 const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const getChecksValue = (item: Checklist) => {
-  if (item.occurrenceType === "daily") return 1 / item.remaining;
+  if (item.occurrenceType === "daily") {
+    const hoursRemaining = 24 - dayjs().hour();
+    return hoursRemaining / item.remaining;
+  }
   if (item.occurrenceType === "weekly") {
     const daysLeft = 7 - dayjs().day();
-    const value = daysLeft / item.remaining;
-    return value;
+    const value = (daysLeft * 24) / item.remaining;
+    return value - dayjs().hour();
   }
   const currentMonth = dayjs().month();
   const daysLeft = daysInMonth[currentMonth] - dayjs().date();
-  const value = daysLeft / item.remaining;
-  return value;
+  const value = (daysLeft * 24) / item.remaining;
+  return value - dayjs().hour();
 };
 
 export default function TodoView() {
