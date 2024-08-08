@@ -1,10 +1,10 @@
 import { ScrollView } from "react-native";
 import useSchedule from "../../context/schedule/useSchedule";
-import TodoCard from "./TodoCard";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Checklist from "@/context/schedule/Checklist";
 import dayjs from "dayjs";
+import ProjectCard from "@/components/ProjectCard";
 
 const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const getChecksValue = (item: Checklist) => {
@@ -30,13 +30,13 @@ export default function TodoView() {
       <ThemedText type="title" style={{ paddingHorizontal: 4 }}>
         To do
       </ThemedText>
-      <ScrollView horizontal>
+      <ScrollView horizontal style={{ paddingBottom: 16 }}>
         {todo
           .sort((a, b) => a.doneTimes - b.doneTimes)
           .sort((a, b) => (a.occurrenceStart || 0) - (b.occurrenceStart || 0))
           .sort((a, b) => getChecksValue(a) - getChecksValue(b))
           .map((item) => (
-            <TodoCard activity={item} key={item.id} />
+            <ProjectCard item={item} key={item.id} type="todo" />
           ))}
       </ScrollView>
     </ThemedView>

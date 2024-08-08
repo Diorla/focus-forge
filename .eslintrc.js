@@ -10,5 +10,19 @@ module.exports = {
         endOfLine: "auto",
       },
     ],
+    "max-len": [
+      "error",
+      {
+        code: 80,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
+      },
+    ],
+    "max-lines": [
+      "error",
+      { max: 100, skipBlankLines: true, skipComments: true },
+    ],
   },
 };

@@ -1,10 +1,9 @@
 import { ScrollView } from "react-native";
-import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
 import useSchedule from "../../context/schedule/useSchedule";
 import TimeFormat from "@/components/TimeFormat";
 import { ThemedView } from "@/components/ThemedView";
-// import AdsView from "./AdsView";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function UpcomingView() {
   const { schedule } = useSchedule();
@@ -21,10 +20,9 @@ export default function UpcomingView() {
           {upcoming
             .sort((prev, next) => next.upcomingTime - prev.upcomingTime)
             .map((item) => (
-              <ActivityCard key={item.id} schedule={item} type="upcoming" />
+              <ProjectCard key={item.id} item={item} type="upcoming" />
             ))}
         </ScrollView>
-        {/* <AdsView /> */}
       </ThemedView>
     );
   return null;

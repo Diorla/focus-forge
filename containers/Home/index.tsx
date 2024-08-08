@@ -10,8 +10,9 @@ import TodoView from "./TodoView";
 import useUser from "@/context/user/useUser";
 
 /**
- * This will be based on "done this week" to indicate the total number of activity
- * done over the week, excluding today of course (that will be in the recent view)
+ * This will be based on "done this week" to indicate the total number of
+ * activity done over the week, excluding today of course
+ * (that will be in the recent view)
  * @returns
  */
 export default function HomeScreen() {

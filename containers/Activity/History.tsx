@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import { ActivityIndicator, TouchableOpacity } from "react-native";
 import { Card, Input } from "@rneui/themed";
 import { useEffect, useState } from "react";

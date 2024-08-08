@@ -1,6 +1,5 @@
 import { ThemedView } from "@/components/ThemedView";
 import useDataQuery from "@/context/data/useDataQuery";
-import ActivityCard from "./ActivityCard";
 import { useEffect, useState } from "react";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import FilterModal from "./FilterModal";
@@ -9,6 +8,7 @@ import { Input } from "@rneui/base";
 import Fuse from "fuse.js";
 import { ThemedText } from "@/components/ThemedText";
 import useUser from "@/context/user/useUser";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function BrowserScreen() {
   const { theme } = useUser();
@@ -82,7 +82,8 @@ export default function BrowserScreen() {
         </ThemedView>
       </ThemedView>
       {currentList.sort(sortFn).map((item) => (
-        <ActivityCard activity={item} key={item.id} />
+        <ProjectCard item={item} />
+        // <ActivityCard activity={item} key={item.id} />
       ))}
     </ThemedView>
   );

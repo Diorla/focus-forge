@@ -6,19 +6,10 @@ import Checklist from "./Checklist";
 export interface ScheduleContext {
   loading: boolean;
   time: {
-    doneThisWeek: number;
-    doneToday: number;
-    thisWeekRemaining: number;
-    todayRemaining: number;
-    weeklyQuota: number;
-    daysRemaining: number;
-    todayQuota: number;
-    leftover: number;
-    todayTime: number;
-    upcomingTime: number;
     todoTime: number;
     taskDone: number;
     taskLeft: number;
+    doneToday: number;
   };
 
   schedule: Schedule[];

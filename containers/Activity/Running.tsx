@@ -5,7 +5,7 @@ import Schedule from "@/context/schedule/Schedule";
 import { secondsToHrMm } from "@/services/datetime";
 import React from "react";
 import * as Progress from "react-native-progress";
-import PlayButton from "../Home/PlayButton";
+import PlayButton from "../../components/ProjectCard/PlayButton";
 import { logError } from "@/services/database";
 import { useToast } from "react-native-toast-notifications";
 import endTimer from "@/services/utils/endTimer";
@@ -13,8 +13,8 @@ import startTimer from "@/services/utils/startTimer";
 import dayjs from "dayjs";
 import { Platform } from "react-native";
 import { schedulePushNotification } from "@/services/notification";
-import { dateRange } from "../Home/TodayCard";
 import useUser from "@/context/user/useUser";
+import dateRange from "../../components/ProjectCard/dateRange";
 
 export default function Running({ activity }: { activity: Schedule }) {
   const { timerId, todayTime, timerStart, id, doneToday, timerLength, name } =

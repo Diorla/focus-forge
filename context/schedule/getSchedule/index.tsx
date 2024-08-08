@@ -6,22 +6,6 @@ import getTodayTime from "./getTodayTime";
 import ActivityModel from "../../data/model/ActivityModel";
 import dayjs from "dayjs";
 
-/**
- * => Activity
- * Done today (DT) => All the time done today
- * Done this week (DTW) => All the time done this week, excluding today
- * Daily limit (DL) => Ideal time for a week
- * Weekly target (WT) => Alloted time for the week
- * This week remaining TWR => WT - DTW
- * Today Quota (TQ) => It should be the daily limit if TWR > DL, else it is TWR
- * Future Time (FT) => The time that will be alloted for upcoming time or overflow time
- * Today time (TT) => TQ or DT, whichever is bigger
- * Today remaining (TR) => TT - DT, indicates how much time is left
- * Additional today (AT) => if user doesn't have enough time to cover FT, then the extra time left will be moved to AT as long as there is time today to cover them.
- * Upcoming time (UT) => FT that is covered
- * Overflow time (OT) => FT that is not covered by AT or UT
- */
-
 type ScheduleProps = {
   activities: ActivityModel[];
   initialTodayRemaining: number;
@@ -86,7 +70,7 @@ export default function getSchedule({
 
       // all extra time left for the week
       let futureTime = 0;
-      // extra time added to today because insufficient time in the following days
+      // extra time added to today because insufficient time in d following day
       let additionalTime = 0;
       // time available for the following week
       let upcomingTime = 0;
@@ -118,7 +102,7 @@ export default function getSchedule({
       if (unaccountedTime < 0) unaccountedTime = 0;
       futureTime += unaccountedTime;
 
-      // Now to ensure that there is enough time in the future to complete the task
+      // Now to ensure that there is enough time in d future 2 complete the task
       if (currentUpcomingTime > futureTime) {
         //  We have enough time in the future
         upcomingTime = futureTime;
@@ -153,3 +137,22 @@ export default function getSchedule({
     });
   return list;
 }
+
+/**
+ * => Activity
+ * Done today (DT) => All the time done today
+ * Done this week (DTW) => All the time done this week, excluding today
+ * Daily limit (DL) => Ideal time for a week
+ * Weekly target (WT) => Alloted time for the week
+ * This week remaining TWR => WT - DTW
+ * Today Quota (TQ) => It should be the daily limit if TWR > DL, else it is TWR
+ * Future Time (FT) => The time that will be alloted for upcoming time or
+ * overflow time
+ * Today time (TT) => TQ or DT, whichever is bigger
+ * Today remaining (TR) => TT - DT, indicates how much time is left
+ * Additional today (AT) => if user doesn't have enough time to cover FT, then
+ * the extra time left will be moved to AT as long as there is time today to
+ * cover them.
+ * Upcoming time (UT) => FT that is covered
+ * Overflow time (OT) => FT that is not covered by AT or UT
+ */

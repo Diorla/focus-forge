@@ -6,9 +6,9 @@ import { Platform } from "react-native";
 import { format } from "../services/datetime";
 import dayjs from "dayjs";
 import { ThemedButton } from "./ThemedButton";
-import { ThemedText } from "./ThemedText";
 import { ThemedView } from "./ThemedView";
 import WebDateTimePicker from "./WebDateTimePicker";
+import Label from "./Label";
 import useUser from "@/context/user/useUser";
 
 export default function DatePicker({
@@ -47,38 +47,24 @@ export default function DatePicker({
   if (Platform.OS === "ios")
     return (
       <ThemedView style={{ alignItems: "flex-start", marginVertical: 8 }}>
-        <ThemedText
-          style={{
-            marginLeft: 8,
-            color: theme.grey2,
-            fontWeight: "bold",
-            marginBottom: 8,
-          }}
-        >
-          {label}
-        </ThemedText>
+        <Label label={label} />
         <DateTimePicker
           value={new Date(date)}
           mode={mode}
           onChange={onChange}
           style={{ marginLeft: 24 }}
+          textColor={"red"}
+          themeVariant={theme.dark ? "dark" : "light"}
         />
       </ThemedView>
     );
+
   if (Platform.OS === "android")
     return (
       <ThemedView
         style={{ alignItems: "flex-start", marginVertical: 8, marginLeft: 8 }}
       >
-        <ThemedText
-          style={{
-            color: theme.grey2,
-            fontWeight: "bold",
-            marginBottom: 8,
-          }}
-        >
-          {label}
-        </ThemedText>
+        <Label label={label} />
         <ThemedView style={{ marginLeft: 24, flexDirection: "row" }}>
           {mode.includes("date") && (
             <ThemedButton

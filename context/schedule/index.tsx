@@ -3,8 +3,6 @@ import ActivityContext from "./scheduleContext";
 import dayjs from "dayjs";
 import useUser from "../user/useUser";
 import isToday from "dayjs/plugin/isToday";
-import getTime from "./getTime";
-import getSchedule from "./getSchedule";
 import Schedule from "./Schedule";
 import useDataQuery from "../data/useDataQuery";
 import Checklist from "./Checklist";
@@ -12,6 +10,9 @@ import getChecklist from "./getChecklist";
 import { logError } from "@/services/database";
 import PageLoader from "@/components/PageLoader";
 import { AppState } from "react-native";
+import filterChecklist from "./filterChecklist";
+import generateSchedule from "./generateSchedule";
+import initialTime from "./initialTime";
 
 dayjs.extend(isToday);
 
@@ -27,101 +28,44 @@ export default function ScheduleProvider({
   const [checklist, setChecklist] = useState<Checklist[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const [time, setTime] = useState({
-    doneThisWeek: 0,
-    doneToday: 0,
-    thisWeekRemaining: 0,
-    todayRemaining: 0,
-    weeklyQuota: 0,
-    daysRemaining: 0,
-    todayQuota: 0,
-    leftover: 0,
-    todayTime: 0,
-    upcomingTime: 0,
-    todoTime: 0,
-    taskDone: 0,
-    taskLeft: 0,
-  });
+  const [time, setTime] = useState(initialTime);
 
   // Determine if new stuff is created
   const activityListString = JSON.stringify(activityList);
 
-  const generateChecklist = useCallback(() => {
-    const checklist = activityList
-      .filter((item) => item.isOccurrence)
-      .filter((item) => !item.archived);
-    if (!checklist.length) return null;
-    setChecklist(getChecklist(checklist));
-  }, [activityList]);
-
-  const generateSchedule = useCallback(() => {
-    {
-      const scheduledActivityList = activityList.filter(
-        (item) => !item.isOccurrence
-      );
-
-      if (!scheduledActivityList.length) {
-        setLoading(false);
-        return null;
-      }
-      const time = getTime(scheduledActivityList, user);
-
-      const scheduleList = getSchedule({
-        activities: scheduledActivityList,
-        initialTodayRemaining: time.todayRemaining,
-        initialUpcomingTime: time.upcomingTime,
-      });
-
-      let todoTime = 0;
-      let taskDone = 0;
-      let taskLeft = 0;
-
-      scheduleList?.forEach((item) => {
-        const { todayTime, doneToday } = item;
-        todoTime += todayTime - doneToday;
-        const timeLeft = todayTime - doneToday;
-        // TODO: Fix precision floating calculation with decimal.js
-        if (todayTime && timeLeft > 0.0001) taskLeft++;
-        if (todayTime && timeLeft <= 0.0001) taskDone++;
-      });
-
-      setSchedule(scheduleList);
-      setTime({ ...time, todoTime, taskDone, taskLeft });
+  const refresh = useCallback(() => {
+    try {
       setPrevTime(userTime);
+      const { scheduleList, todoTime, taskDone, taskLeft, doneToday } =
+        generateSchedule(activityList, user);
+      setSchedule(scheduleList);
+      setTime({ todoTime, taskDone, taskLeft, doneToday });
+      setChecklist(getChecklist(activityList.filter(filterChecklist)));
       setLoading(false);
+    } catch (error) {
+      logError(activityListString, "use effect", error as Error);
     }
-  }, [activityList, user, userTime]);
+  }, [activityList, activityListString, user, userTime]);
 
   // Check if it's a new day since last update
   useEffect(() => {
     if (!dayjs(prevTime).isSame(userTime, "date")) {
-      generateSchedule();
-      generateChecklist();
+      refresh();
     }
-  }, [generateChecklist, generateSchedule, prevTime, userTime]);
+  }, [prevTime, userTime, activityList, user, refresh]);
 
   useEffect(() => {
-    try {
-      generateSchedule();
-      generateChecklist();
-    } catch (error) {
-      logError(String(activityListString), "use effect", error as Error);
-    }
-  }, [activityListString, generateChecklist, generateSchedule]);
+    refresh();
+  }, [activityListString, activityList, user, userTime, refresh]);
 
   useEffect(() => {
     const subscription = AppState.addEventListener("change", (state) => {
       if (state === "active") {
-        try {
-          generateSchedule();
-          generateChecklist();
-        } catch (error) {
-          logError(String(activityList.length), "use effect", error as Error);
-        }
+        refresh();
       }
     });
     return () => subscription.remove();
-  }, [activityList.length, generateChecklist, generateSchedule]);
+  }, [activityList, activityList.length, refresh, user, userTime]);
 
   if (loading) return <PageLoader />;
   return (

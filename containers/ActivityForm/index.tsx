@@ -1,11 +1,9 @@
+/* eslint-disable max-lines */
 import * as React from "react";
-import { TouchableOpacity } from "react-native";
 import { CheckBox } from "@rneui/themed";
 import { useState } from "react";
-import { random } from "../../services/color";
 import useSchedule from "../../context/schedule/useSchedule";
 import { useToast } from "react-native-toast-notifications";
-import ActivityModel from "../../context/data/model/ActivityModel";
 import { ThemedText } from "@/components/ThemedText";
 import TimeInput from "@/components/TimeInput";
 import ThemedPicker from "@/components/ThemedPicker";
@@ -17,62 +15,26 @@ import { ThemedView } from "@/components/ThemedView";
 import useUser from "@/context/user/useUser";
 import createActivity from "@/services/database/createActivity";
 import updateActivity from "@/services/database/updateActivity";
+import { baseForm } from "./baseForm";
+import { generateHourList } from "./generateHourList";
+import handleError from "./handleError";
+import ActivityModel from "@/context/data/model/ActivityModel";
+import { OccurrenceType } from "@/context/data/model/ActivityModel";
+import { baseErrorMSG } from "./baseErrorMSG";
+import styles from "./styles";
+import { occurrenceTypeList } from "./occurrenceTypeList";
+import { priorityPickerList } from "./priorityPickerList";
 
-const baseForm: ActivityModel = {
-  name: "",
-  weeklyTarget: 0,
-  dailyLimit: 0,
-  startDate: Date.now(),
-  priority: 0,
-  color: random(),
-  category: "",
-  description: "",
-  id: "",
-  archived: 0,
-  createdAt: Date.now(),
-  updatedAt: Date.now(),
-  lastDone: 0,
-  timerStart: 0,
-  timerLength: 0,
-  timerId: "",
-  occurrence: 0,
-  occurrenceType: "daily",
-  done: {},
-  tasks: {},
-  isOccurrence: false,
-  deletedAt: 0,
-  userId: "",
-  occurrenceStart: 0,
-};
-
-const arr: number[] = [];
-
-arr.length = 24;
-
-const hours = arr.fill(0).map((_item, idx) => idx);
-
-const getTime = (value: number) => {
-  if (value === 0) return "12am";
-  if (value === 12) return "12pm";
-  return `${value < 12 ? value + " am" : value - 12 + " pm"}`;
-};
-const timeOptions = hours.map((hour) => ({
-  label: getTime(hour),
-  value: String(hour),
-}));
 export default function ActivityForm({
   initialForm = baseForm,
 }: {
   initialForm?: ActivityModel;
 }) {
-  const {
-    user: { id },
-    theme,
-  } = useUser();
+  const { user, theme } = useUser();
 
   const mergedForm = {
     ...initialForm,
-    userId: id,
+    userId: user.id,
   };
 
   const [form, setForm] = useState<ActivityModel>({ ...mergedForm });
@@ -80,44 +42,10 @@ export default function ActivityForm({
   const list = Array.from(new Set(schedule.map((item) => item.category)));
   const toast = useToast();
 
-  const [errorMSG, setErrorMSG] = useState({
-    name: "",
-    weeklyTarget: "",
-    dailyLimit: "",
-    occurrence: "",
-  });
+  const [errorMSG, setErrorMSG] = useState(baseErrorMSG);
   const saveActivity = () => {
-    if (!form.name) {
-      setErrorMSG({
-        ...errorMSG,
-        name: "Please provide a name",
-      });
-      return;
-    }
-    if (form.isOccurrence) {
-      if (form.occurrence <= 0) {
-        setErrorMSG({
-          ...errorMSG,
-          occurrence: "Please provide a valid number",
-        });
-        return;
-      }
-    } else {
-      if (!form.weeklyTarget) {
-        setErrorMSG({
-          ...errorMSG,
-          weeklyTarget: "Please provide a weekly target",
-        });
-        return;
-      }
-      if (!form.dailyLimit) {
-        setErrorMSG({
-          ...errorMSG,
-          dailyLimit: "Please provide a daily limit",
-        });
-        return;
-      }
-    }
+    const errorMSG = handleError(form);
+    if (errorMSG) return setErrorMSG(errorMSG);
     try {
       if (initialForm?.id) {
         updateActivity({ ...form, id: initialForm.id }).then(() =>
@@ -146,15 +74,7 @@ export default function ActivityForm({
     : 0;
 
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-        backgroundColor: theme.background,
-        borderTopRightRadius: 16,
-        borderTopLeftRadius: 16,
-        paddingTop: 20,
-      }}
-    >
+    <ThemedView style={[styles.wrapper, { backgroundColor: theme.background }]}>
       <ThemedInput
         label="Name"
         value={form.name}
@@ -167,19 +87,16 @@ export default function ActivityForm({
         }
         errorMessage={errorMSG.name}
       />
-      <TouchableOpacity
+      <CheckBox
+        checked={!form.isOccurrence}
+        title="Use timer"
         onPress={() =>
           setForm({
             ...form,
             isOccurrence: !form.isOccurrence,
           })
         }
-      >
-        <ThemedView style={{ flexDirection: "row", alignItems: "center" }}>
-          <CheckBox checked={!form.isOccurrence} />
-          <ThemedText>Use timer</ThemedText>
-        </ThemedView>
-      </TouchableOpacity>
+      />
       {form.isOccurrence ? (
         <ThemedView
           style={{ borderColor: "silver", borderWidth: 1, margin: 4 }}
@@ -203,32 +120,11 @@ export default function ActivityForm({
             onValueChange={(occurrenceType) =>
               setForm({
                 ...form,
-                occurrenceType: occurrenceType as
-                  | "daily"
-                  | "weekly"
-                  | "monthly"
-                  | "yearly",
+                occurrenceType: occurrenceType as OccurrenceType,
               })
             }
             label="Occurrence"
-            list={[
-              {
-                label: "Daily",
-                value: "daily",
-              },
-              {
-                label: "Weekly",
-                value: "weekly",
-              },
-              {
-                label: "Monthly",
-                value: "monthly",
-              },
-              {
-                label: "Yearly",
-                value: "yearly",
-              },
-            ]}
+            list={occurrenceTypeList}
           />
           <ThemedPicker
             value={String(form.occurrenceStart)}
@@ -239,7 +135,7 @@ export default function ActivityForm({
               })
             }
             label="Start time"
-            list={timeOptions}
+            list={generateHourList()}
           />
         </ThemedView>
       ) : (
@@ -289,24 +185,7 @@ export default function ActivityForm({
             })
           }
           label="Priority"
-          list={[
-            {
-              label: "High",
-              value: "3",
-            },
-            {
-              label: "Medium",
-              value: "2",
-            },
-            {
-              label: "Low",
-              value: "1",
-            },
-            {
-              label: "None",
-              value: "0",
-            },
-          ]}
+          list={priorityPickerList}
         />
       )}
       <ThemedInput

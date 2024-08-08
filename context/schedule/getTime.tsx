@@ -2,20 +2,6 @@ import dayjs from "dayjs";
 import ActivityModel from "../data/model/ActivityModel";
 import UserModel from "../user/UserModel";
 
-/**
- * => User
- * Weekly quota (WQ) => total number of time that will be spent on all task in a week =
- * Done this week (DTW) => All the time done this week, excluding today =
- * Done today (DT) => All the time done today, the time already used for task =
- * This week remaining (TWR) => WQ - DTW =
- * Days remaining (DR) => The number of days remaining, 7 is the maximum and 1 is the minimum, the last day. =
- * Leftovers (LO) => For daily quotas, indicates unused time from previous days. it is total before today - DTW.
- * Today quota (TQ) => the time that should be alloted for today. It depends on weekly quota or daily quota.
- * Today time (TT) => The time that is alloted for today, ideally it should be TQ, but if DT > TQ, then it is DT
- * Upcoming time (UT) => The time that remains for future task, ie TWR - TT
- * Today remaining (TR) => The time still available for assigning task today, it's TQ - DT
- */
-
 export default function getTime(activities: ActivityModel[], user: UserModel) {
   const { weeklyQuota: WQ, useWeeklyQuota, dailyQuota } = user;
   /**
@@ -31,8 +17,8 @@ export default function getTime(activities: ActivityModel[], user: UserModel) {
    */
   let doneToday = 0;
   /**
-   * How long remaining, by subtracting the time already spent on task from weeklyQuota
-   * If it is less than 0, then it should be 0 of course
+   * How long remaining, by subtracting the time already spent on task from
+   * weeklyQuota If it is less than 0, then it should be 0 of course
    */
   let thisWeekRemaining = 0;
   /**
@@ -45,7 +31,8 @@ export default function getTime(activities: ActivityModel[], user: UserModel) {
    */
   let todayQuota = 0;
   /**
-   * The total number of time that is set aside for today, this happens when user
+   * The total number of time that is set aside for today, this happens when
+   * user
    * exceed what they have today
    */
   let todayTime = 0;
@@ -54,7 +41,8 @@ export default function getTime(activities: ActivityModel[], user: UserModel) {
    */
   let leftover = 0;
   /**
-   * All the time left for future time, would be 0 if the days remaining is 1 (no tomorrow)
+   * All the time left for future time, would be 0 if the days remaining is 1
+   * (no tomorrow)
    */
   let upcomingTime = 0;
   /**
@@ -124,3 +112,22 @@ export default function getTime(activities: ActivityModel[], user: UserModel) {
     todayRemaining,
   };
 }
+
+/**
+ * => User
+ * Weekly quota (WQ) => total number of time that will be spent on all task in a
+ * week = Done this week (DTW) => All the time done this week, excluding today =
+ * Done today (DT) => All the time done today, the time already used for task =
+ * This week remaining (TWR) => WQ - DTW =
+ * Days remaining (DR) => The number of days remaining, 7 is the maximum and 1
+ * is the minimum, the last day. =
+ * Leftovers (LO) => For daily quotas, indicates unused time from previous days.
+ *  it is total before today - DTW.
+ * Today quota (TQ) => the time that should be alloted for today. It depends on
+ *  weekly quota or daily quota.
+ * Today time (TT) => The time that is alloted for today, ideally it should be
+ * TQ, but if DT > TQ, then it is DT
+ * Upcoming time (UT) => The time that remains for future task, ie TWR - TT
+ * Today remaining (TR) => The time still available for assigning task today,
+ * it's TQ - DT
+ */

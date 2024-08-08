@@ -1,8 +1,8 @@
 import useSchedule from "@/context/schedule/useSchedule";
 import { ScrollView } from "react-native";
 import SectionHeader from "./SectionHeader";
-import ActivityCard from "./ActivityCard";
 import { ThemedView } from "@/components/ThemedView";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function OverflowView() {
   const { schedule = [] } = useSchedule();
@@ -13,7 +13,7 @@ export default function OverflowView() {
         <SectionHeader title="Overflow" />
         <ScrollView horizontal>
           {overflow.map((item) => (
-            <ActivityCard key={item.id} schedule={item} type="overflow" />
+            <ProjectCard key={item.id} item={item} type="overflow" />
           ))}
         </ScrollView>
       </ThemedView>

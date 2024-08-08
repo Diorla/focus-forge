@@ -1,11 +1,8 @@
 import { ScrollView } from "react-native";
-import ActivityCard from "./ActivityCard";
 import SectionHeader from "./SectionHeader";
 import useSchedule from "@/context/schedule/useSchedule";
 import { ThemedView } from "@/components/ThemedView";
-import Schedule from "@/context/schedule/Schedule";
-import DoneCard from "./DoneCard";
-import Checklist from "@/context/schedule/Checklist";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function PreviousView() {
   const { schedule, checklist } = useSchedule();
@@ -21,13 +18,9 @@ export default function PreviousView() {
             .sort((prev, next) => prev.lastDone - next.lastDone)
             .map((item) =>
               item.isOccurrence ? (
-                <DoneCard key={item.id} activity={item as Checklist} />
+                <ProjectCard key={item.id} item={item} type="checked" />
               ) : (
-                <ActivityCard
-                  key={item.id}
-                  schedule={item as Schedule}
-                  type="previous"
-                />
+                <ProjectCard key={item.id} item={item} type="previous" />
               )
             )}
         </ScrollView>

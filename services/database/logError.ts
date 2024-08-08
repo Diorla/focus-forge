@@ -5,7 +5,7 @@ import { doc } from "./firestore";
 
 /**
  * It will be used to save errors to database
- * @param identifier This will be used to identify the user that generated the error
+ * @param identifier will be used to identify the user that generated the error
  * @param event the activity that generated the error
  * @param err the error that was generated
  */

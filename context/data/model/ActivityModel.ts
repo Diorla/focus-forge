@@ -58,7 +58,8 @@ interface ActivityModel {
     [created: string]: {
       title: string;
       /**
-       * I'm using number to represent the date it was checked while 0 is not checked
+       * I'm using number to represent the date it was checked while 0 is not
+       * checked
        */
       checked: number;
     };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import UserContext from "./userContext";
 import UserModel from "./UserModel";
 import { initialUser } from "./initialUser";
@@ -9,80 +9,22 @@ import watchUser from "@/services/database/watchUser";
 import getUserCred from "@/services/database/getUserCred";
 import signIn from "@/services/auth/signIn";
 import { Dimensions, useColorScheme, View } from "react-native";
-import { Platform } from "react-native";
-import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import Constants from "expo-constants";
 import { Colors } from "@/constants/Colors";
+import getMarginLeft from "./getMarginLeft";
+import useNotifications from "./useNotifications";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
     shouldPlaySound: true,
-    shouldSetBadge: false,
+    shouldSetBadge: true,
   }),
 });
-
-function handleRegistrationError(errorMessage: string) {
-  const newError = new Error(errorMessage);
-  logError("no id", errorMessage, newError);
-}
-
-async function registerForPushNotificationsAsync() {
-  if (Platform.OS === "web") return;
-  if (Platform.OS === "android") {
-    Notifications.setNotificationChannelAsync("default", {
-      name: "default",
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: Colors.light.primary,
-    });
-  }
-
-  if (Device.isDevice) {
-    const { status: existingStatus } =
-      await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== "granted") {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== "granted") {
-      handleRegistrationError(
-        "Permission not granted to get push token for push notification!"
-      );
-      return;
-    }
-    const projectId =
-      Constants?.expoConfig?.extra?.eas?.projectId ??
-      Constants?.easConfig?.projectId;
-    if (!projectId) {
-      handleRegistrationError("Project ID not found");
-    }
-    try {
-      const pushTokenString = (
-        await Notifications.getExpoPushTokenAsync({
-          projectId,
-        })
-      ).data;
-      console.log(pushTokenString);
-      return pushTokenString;
-    } catch (e: unknown) {
-      handleRegistrationError(`${e}`);
-    }
-  } else {
-    handleRegistrationError("Must use physical device for push notifications");
-  }
-}
 
 const auth = getAuth(app);
 
 const maxWidth = 720;
-const getMarginLeft = (width: number) => {
-  const left = (Dimensions.get("window").width - width) / 2;
-  if (left < 0) return 0;
-  return left;
-};
 export default function UserProvider({
   children,
 }: {
@@ -94,44 +36,13 @@ export default function UserProvider({
   const [theme, setTheme] = useState(Colors.light);
   const colorScheme = useColorScheme();
 
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState<
-    Notifications.Notification | undefined
-  >(undefined);
-  const notificationListener = useRef<Notifications.Subscription>();
-  const responseListener = useRef<Notifications.Subscription>();
+  const { expoPushToken, notification } = useNotifications();
 
   useEffect(() => {
     const theme = user.mode ? user.mode : colorScheme;
     if (theme === "dark") setTheme(Colors.dark);
     else setTheme(Colors.light);
-    return () => {};
   }, [colorScheme, user.mode]);
-
-  useEffect(() => {
-    registerForPushNotificationsAsync()
-      .then((token) => setExpoPushToken(token ?? ""))
-      .catch((error: any) => setExpoPushToken(`${error}`));
-
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
-
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
-      });
-
-    return () => {
-      notificationListener.current &&
-        Notifications.removeNotificationSubscription(
-          notificationListener.current
-        );
-      responseListener.current &&
-        Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
 
   useEffect(() => {
     setMarginLeft(getMarginLeft(maxWidth));

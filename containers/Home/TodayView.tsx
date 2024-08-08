@@ -1,34 +1,19 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { TodayCard } from "./TodayCard";
 import { useState } from "react";
 import useSchedule from "../../context/schedule/useSchedule";
-// import { useInterstitialAd } from "react-native-google-mobile-ads";
-// import getAdsId from "../../services/utils/getAdsId";
-import ChecklistModal from "./ChecklistModal";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
-import Schedule from "@/context/schedule/Schedule";
 import { ThemedView } from "@/components/ThemedView";
 import useUser from "@/context/user/useUser";
-
-const getTimeRemaining = (item: Schedule) => {
-  const { weeklyTarget, doneToday, doneThisWeek } = item;
-  return weeklyTarget - doneThisWeek - doneToday;
-};
+import getTimeRemaining from "./getTimeRemaining";
+import ExpandedList from "./ExpandedList";
+import ProjectCard from "@/components/ProjectCard";
 
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
   const { schedule } = useSchedule();
-  const [currentSchedule, setCurrentSchedule] = useState<Schedule | null>(null);
   const { theme } = useUser();
 
-  // const { isLoaded, show, load } = useInterstitialAd(getAdsId("interstitial"), {
-  //   keywords: schedule.map((item) => item.name),
-  // });
-
-  // useEffect(() => {
-  //   load();
-  // }, [load]);
   const today = schedule
     .filter((item) => {
       const todo = item.todayTime - item.doneToday;
@@ -51,13 +36,6 @@ export default function TodayView() {
 
     return (
       <ThemedView style={{ marginVertical: 8, paddingVertical: 8 }}>
-        {currentSchedule ? (
-          <ChecklistModal
-            activity={currentSchedule}
-            visible={!!currentSchedule}
-            closeModal={() => setCurrentSchedule(null)}
-          />
-        ) : null}
         <ThemedView
           style={{
             flexDirection: "row",
@@ -76,33 +54,9 @@ export default function TodayView() {
         </ThemedView>
         <ThemedView>
           {first.map((item) => (
-            <TodayCard
-              key={item.id}
-              schedule={item}
-              setCurrentSchedule={() => setCurrentSchedule(item)}
-              // isLoadedAd={isLoaded}
-              // showAd={show}
-            />
+            <ProjectCard item={item} type="today" key={item.id} />
           ))}
-          {expanded ? (
-            <>
-              {rest
-                .sort((a, b) => {
-                  if (b.timerStart) return 1;
-                  if (a.timerStart) return -1;
-                  return 0;
-                })
-                .map((item) => (
-                  <TodayCard
-                    key={item.id}
-                    schedule={item}
-                    setCurrentSchedule={() => setCurrentSchedule(item)}
-                    // isLoadedAd={isLoaded}
-                    // showAd={show}
-                  />
-                ))}
-            </>
-          ) : null}
+          <ExpandedList expanded={expanded} scheduleList={rest} />
         </ThemedView>
         {rest.length ? (
           <ThemedView

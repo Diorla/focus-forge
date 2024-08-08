@@ -2,10 +2,9 @@ import { ScrollView } from "react-native";
 import Time from "./Time";
 import { Card, Divider } from "@rneui/themed";
 import Range from "./Range";
-import Task from "./Task";
 import History from "./History";
 import PriorityLabel from "./PriorityLabel";
-import Checked from "./Checked";
+import CheckedHistory from "./CheckedHistory";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { getContrastColor } from "@/services/color";
@@ -14,6 +13,7 @@ import goBack from "@/services/routing";
 import { ThemedView } from "@/components/ThemedView";
 import TodoFormat from "../Home/TodoFormat";
 import useUser from "@/context/user/useUser";
+import Checklist from "@/components/Checklist";
 
 export default function ActivityScreen({ id }: { id: string }) {
   const { theme } = useUser();
@@ -44,7 +44,7 @@ export default function ActivityScreen({ id }: { id: string }) {
             backgroundColor: theme.background,
           }}
         >
-          <Task activity={timedActivity} />
+          <Checklist activity={timedActivity} />
         </Card>
         <History activity={timedActivity} />
       </ScrollView>
@@ -82,9 +82,9 @@ export default function ActivityScreen({ id }: { id: string }) {
             backgroundColor: theme.background,
           }}
         >
-          <Task activity={activity} />
+          <Checklist activity={activity} />
         </Card>
-        <Checked activity={activity} />
+        <CheckedHistory activity={activity} />
       </ScrollView>
     );
   }

@@ -5,7 +5,7 @@ import { ThemedButton } from "@/components/ThemedButton";
 import QuotaForm from "./QuotaForm";
 import useUser from "@/context/user/useUser";
 import { router } from "expo-router";
-import FormContainer from "../Form";
+import ProfileForm from "../ProfileForm";
 import updateUser from "@/services/database/updateUser";
 import { ThemedView } from "@/components/ThemedView";
 import ThemedInput from "@/components/ThemedInput";
@@ -20,7 +20,7 @@ export default function Registration() {
     }
   }, [user]);
 
-  if (!user.id) return <FormContainer />;
+  if (!user.id) return <ProfileForm />;
 
   if (user.name)
     return (

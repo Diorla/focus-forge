@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { ThemedText } from "@/components/ThemedText";
 import { Link } from "expo-router";
-import { priority } from "@/constants/Priority";
+import { priorityList } from "@/constants/Priority";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import { secondsToHrMm } from "@/services/datetime";
 import { ThemedView } from "@/components/ThemedView";
@@ -78,7 +78,7 @@ export default function ActivityCard({
         style={{ flexDirection: "row", justifyContent: "space-between" }}
       >
         <ThemedText style={{ textTransform: "capitalize" }}>
-          {priority[activity.priority] || "None"}
+          {priorityList[activity.priority] || "None"}
         </ThemedText>
 
         <TouchableOpacity onPress={() => setVisible(!visible)}>
