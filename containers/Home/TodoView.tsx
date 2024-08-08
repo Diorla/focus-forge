@@ -32,6 +32,7 @@ export default function TodoView() {
       </ThemedText>
       <ScrollView horizontal style={{ paddingBottom: 16 }}>
         {todo
+          .filter((item) => !item.archived)
           .sort((a, b) => a.doneTimes - b.doneTimes)
           .sort((a, b) => (a.occurrenceStart || 0) - (b.occurrenceStart || 0))
           .sort((a, b) => getChecksValue(a) - getChecksValue(b))
