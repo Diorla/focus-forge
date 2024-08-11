@@ -44,10 +44,14 @@ export default function ChecklistItem({
   const deleteTask = (id: number) => {
     const tempTask = { ...tasks };
     delete tempTask[id];
-    updateActivity({
-      tasks: tempTask,
-      id: activity.id,
-    });
+    updateActivity(
+      {
+        ...activity,
+        tasks: tempTask,
+        id: activity.id,
+      },
+      false
+    );
   };
   const { theme } = useUser();
   return (

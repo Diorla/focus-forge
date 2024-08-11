@@ -16,9 +16,11 @@ export default function Checklist({ activity }: { activity: ActivityModel }) {
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
+    const list: { title: string; checked: number; created: number }[] = [];
     Object.keys(tasks).forEach((key) => {
-      setTaskList((prev) => [...prev, { ...tasks[key], created: Number(key) }]);
+      list.push({ ...tasks[key], created: Number(key) });
     });
+    setTaskList(list);
   }, [activity.id, tasks]);
 
   return (
