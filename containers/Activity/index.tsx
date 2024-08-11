@@ -4,7 +4,6 @@ import { Card, Divider } from "@rneui/themed";
 import Range from "./Range";
 import History from "./History";
 import PriorityLabel from "./PriorityLabel";
-import CheckedHistory from "./CheckedHistory";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import { getContrastColor } from "@/services/color";
@@ -84,7 +83,7 @@ export default function ActivityScreen({ id }: { id: string }) {
         >
           <Checklist activity={activity} />
         </Card>
-        <CheckedHistory activity={activity} />
+        <History activity={activity} />
       </ScrollView>
     );
   }

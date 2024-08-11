@@ -1,8 +1,7 @@
-export type HistoryType = {
-  time: string;
-  description: string;
+export default interface HistoryProps {
   datetime: string;
   comment: string;
   length: number;
   id: string;
-};
+  time: string;
+}

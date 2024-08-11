@@ -46,9 +46,10 @@ interface ActivityModel {
    * The key is the datetime that it happened
    */
   done: {
-    [datetime: string]: {
+    [key: string]: {
       length: number;
       comment: string;
+      datetime: number;
     };
   };
   /**
