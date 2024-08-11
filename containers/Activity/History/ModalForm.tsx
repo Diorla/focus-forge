@@ -28,6 +28,12 @@ export default function ModalForm({
   const createDone = (data: DoneType) => {
     const key = uuid.v4().toString();
     updateActivity({ id: activity.id, done: { ...done, [key]: data } });
+    setDoneItem({
+      comment: "",
+      datetime: Date.now(),
+      length: 0,
+    });
+    closeModal();
   };
 
   return (
@@ -46,14 +52,8 @@ export default function ModalForm({
         >
           <ThemedButton
             onPress={() => {
-              if (doneItem.length) {
+              if (doneItem.length || isOccurrence) {
                 createDone(doneItem);
-                closeModal();
-                setDoneItem({
-                  comment: "",
-                  datetime: Date.now(),
-                  length: 0,
-                });
               }
             }}
             style={{ marginHorizontal: 8 }}

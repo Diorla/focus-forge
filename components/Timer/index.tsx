@@ -2,7 +2,6 @@ import * as React from "react";
 import { AppState } from "react-native";
 import * as Progress from "react-native-progress";
 import { useEffect, useState } from "react";
-import { getDateTimeKey } from "../../services/datetime";
 import { useKeepAwake } from "expo-keep-awake";
 import useDataQuery from "../../context/data/useDataQuery";
 import useInterval from "@/hooks/useTimeInterval";
@@ -10,6 +9,7 @@ import Time from "./Time";
 import { ThemedView } from "../ThemedView";
 import updateActivity from "@/services/database/updateActivity";
 import useUser from "@/context/user/useUser";
+import uuid from "react-native-uuid";
 
 export default function Timer({
   startTime,
@@ -38,8 +38,17 @@ export default function Timer({
     startTime: number;
   }) => {
     const done = activityList.filter((activity) => activity.id === id)[0].done;
-    const datetime = getDateTimeKey(currentDone.startTime);
-    updateActivity({ done: { ...done, [datetime]: currentDone }, id });
+
+    updateActivity({
+      done: {
+        ...done,
+        [uuid.v4().toString()]: {
+          ...currentDone,
+          datetime: currentDone.startTime,
+        },
+      },
+      id,
+    });
   };
   const endTimer = (id: string, startTime: number) => {
     updateActivity({

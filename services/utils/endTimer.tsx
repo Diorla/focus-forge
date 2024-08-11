@@ -4,7 +4,7 @@ import updateActivity from "@/services/database/updateActivity";
 export default function endTimer(
   id: string,
   startTime: number,
-  done: { [key: string]: { length: number; comment: string } }
+  done: { [key: string]: { length: number; comment: string; datetime: number } }
 ) {
   const length = (Date.now() - startTime) / 1000;
   const key = getDateTimeKey(startTime);
@@ -19,6 +19,7 @@ export default function endTimer(
       [key]: {
         length,
         comment: "",
+        datetime: startTime,
       },
     },
   });

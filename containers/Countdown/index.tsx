@@ -11,11 +11,11 @@ import useSchedule from "@/context/schedule/useSchedule";
 import { ThemedButton } from "@/components/ThemedButton";
 import updateUser from "@/services/database/updateUser";
 import updateActivity from "@/services/database/updateActivity";
-import { getDateTimeKey } from "@/services/datetime";
 import Time from "@/components/Stopwatch/Time";
 import { useToast } from "react-native-toast-notifications";
 import ProjectInfo from "./ProjectInfo";
 import Player from "./Player";
+import uuid from "react-native-uuid";
 
 export default function Countdown() {
   const [currentTaskId, setCurrentTaskId] = useState("");
@@ -33,7 +33,7 @@ export default function Countdown() {
     if (!currentTask) return;
     const { done } = currentTask;
     const length = (Date.now() - user.startTime) / 1000;
-    const datetime = getDateTimeKey(user.startTime);
+
     updateActivity({
       timerStart: 0,
       timerLength: 0,
@@ -41,7 +41,11 @@ export default function Countdown() {
       id: currentTaskId,
       done: {
         ...done,
-        [datetime]: { comment: "", length },
+        [uuid.v4().toString()]: {
+          comment: "",
+          length,
+          datetime: user.startTime,
+        },
       },
     });
 
