@@ -48,7 +48,12 @@ export default function PriorityLabel({ priority }: { priority: number }) {
         justifyContent: "center",
       }}
     >
-      <Chip buttonStyle={{ backgroundColor: theme.grey5 }}>None</Chip>
+      <Chip
+        buttonStyle={{ backgroundColor: theme.grey5 }}
+        titleStyle={{ color: theme.text }}
+      >
+        None
+      </Chip>
     </ThemedView>
   );
 }

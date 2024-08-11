@@ -9,9 +9,7 @@ import HistoryProps from "./HistoryProps";
 
 export default function generateHistory(done: { [key: string]: DoneType }) {
   const history: { [key: string]: HistoryProps[] } = {};
-  console.log("history", history);
   Object.keys(done).forEach((item) => {
-    console.log("item", item);
     const { comment, length, datetime } = done[item];
     const date = getDateKey(item);
     const [hr, mm] = secondsToHrMm(length);

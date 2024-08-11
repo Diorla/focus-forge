@@ -73,7 +73,6 @@ export default function ActivityScreen({ id }: { id: string }) {
           </ThemedText>
         </ThemedView>
         <Range activity={activity} color={color} />
-        <PriorityLabel priority={activity?.priority} />
         <Divider style={{ marginVertical: 8 }} />
         <ThemedText color={color}>{activity.description}</ThemedText>
         <Card
