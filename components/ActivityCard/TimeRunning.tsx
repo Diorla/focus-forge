@@ -12,7 +12,7 @@ import { useToast } from "react-native-toast-notifications";
 import { secondsToHrMm } from "@/services/datetime";
 import Schedule from "@/context/schedule/Schedule";
 import * as Progress from "react-native-progress";
-import dateRange from "@/components/ProjectCard/dateRange";
+import dateRange from "@/components/ActivityCard/dateRange";
 import PlayButton from "./PlayButton";
 
 export default function TimeRunning({ schedule }: { schedule: Schedule }) {

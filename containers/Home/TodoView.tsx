@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import useSchedule from "../../context/schedule/useSchedule";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 import getHoursRemaining from "./getHoursRemaining";
 
 export default function TodoView() {
@@ -22,7 +22,7 @@ export default function TodoView() {
           .sort((a, b) => (a.occurrenceStart || 0) - (b.occurrenceStart || 0))
           .sort((a, b) => getHoursRemaining(a) - getHoursRemaining(b))
           .map((item) => (
-            <ProjectCard item={item} key={item.id} type="todo" />
+            <ActivityCard item={item} key={item.id} type="todo" />
           ))}
       </ScrollView>
     </ThemedView>

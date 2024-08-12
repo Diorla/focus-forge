@@ -7,7 +7,7 @@ import { ThemedView } from "@/components/ThemedView";
 import useUser from "@/context/user/useUser";
 import getTimeRemaining from "./getTimeRemaining";
 import ExpandedList from "./ExpandedList";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 
 export default function TodayView() {
   const [expanded, setExpanded] = useState(false);
@@ -54,7 +54,7 @@ export default function TodayView() {
         </ThemedView>
         <ThemedView>
           {first.map((item) => (
-            <ProjectCard item={item} type="today" key={item.id} />
+            <ActivityCard item={item} type="today" key={item.id} />
           ))}
           <ExpandedList expanded={expanded} scheduleList={rest} />
         </ThemedView>

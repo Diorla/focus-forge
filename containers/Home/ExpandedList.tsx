@@ -1,5 +1,5 @@
 import Schedule from "@/context/schedule/Schedule";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 
 export default function ExpandedList({
   expanded,
@@ -18,7 +18,7 @@ export default function ExpandedList({
             return 0;
           })
           .map((item) => (
-            <ProjectCard item={item} type="today" key={item.id} />
+            <ActivityCard item={item} type="today" key={item.id} />
           ))}
       </>
     );

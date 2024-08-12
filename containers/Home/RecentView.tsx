@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import SectionHeader from "./SectionHeader";
 import useSchedule from "@/context/schedule/useSchedule";
 import { ThemedView } from "@/components/ThemedView";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 
 export default function RecentView() {
   const { schedule = [] } = useSchedule();
@@ -27,7 +27,7 @@ export default function RecentView() {
           {completed
             .sort((prev, next) => next.lastDone - prev.lastDone)
             .map((item) => (
-              <ProjectCard key={item.id} item={item} type="recent" />
+              <ActivityCard key={item.id} item={item} type="recent" />
             ))}
         </ScrollView>
       </ThemedView>

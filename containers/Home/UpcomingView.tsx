@@ -3,7 +3,7 @@ import SectionHeader from "./SectionHeader";
 import useSchedule from "../../context/schedule/useSchedule";
 import TimeFormat from "@/components/TimeFormat";
 import { ThemedView } from "@/components/ThemedView";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 
 export default function UpcomingView() {
   const { schedule } = useSchedule();
@@ -20,7 +20,7 @@ export default function UpcomingView() {
           {upcoming
             .sort((prev, next) => next.upcomingTime - prev.upcomingTime)
             .map((item) => (
-              <ProjectCard key={item.id} item={item} type="upcoming" />
+              <ActivityCard key={item.id} item={item} type="upcoming" />
             ))}
         </ScrollView>
       </ThemedView>

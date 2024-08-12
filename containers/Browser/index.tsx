@@ -8,7 +8,7 @@ import { Input } from "@rneui/base";
 import Fuse from "fuse.js";
 import { ThemedText } from "@/components/ThemedText";
 import useUser from "@/context/user/useUser";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 
 export default function BrowserScreen() {
   const { theme } = useUser();
@@ -82,7 +82,7 @@ export default function BrowserScreen() {
         </ThemedView>
       </ThemedView>
       {currentList.sort(sortFn).map((item) => (
-        <ProjectCard item={item} />
+        <ActivityCard item={item} />
         // <ActivityCard activity={item} key={item.id} />
       ))}
     </ThemedView>

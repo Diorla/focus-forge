@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import SectionHeader from "./SectionHeader";
 import useSchedule from "@/context/schedule/useSchedule";
 import { ThemedView } from "@/components/ThemedView";
-import ProjectCard from "@/components/ProjectCard";
+import ActivityCard from "@/components/ActivityCard";
 
 export default function ArchivedView() {
   const { schedule, checklist } = useSchedule();
@@ -18,7 +18,7 @@ export default function ArchivedView() {
           {archived
             .sort((prev, next) => prev.lastDone - next.lastDone)
             .map((item) => (
-              <ProjectCard key={item.id} item={item} type="archived" />
+              <ActivityCard key={item.id} item={item} type="archived" />
             ))}
         </ScrollView>
       </ThemedView>
