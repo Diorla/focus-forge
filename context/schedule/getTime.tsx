@@ -58,7 +58,7 @@ export default function getTime(activities: ActivityModel[], user: UserModel) {
   activities?.forEach((item) => {
     const doneList = Object.keys(item.done).map((key) => {
       return {
-        datetime: key,
+        datetime: item.done[key].datetime,
         length: item.done[key].length,
         comment: item.done[key].comment,
       };

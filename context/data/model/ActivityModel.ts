@@ -1,3 +1,5 @@
+import DoneType from "../types/DoneType";
+
 export type OccurrenceType = "daily" | "weekly" | "monthly" | "yearly";
 
 interface ActivityModel {
@@ -46,11 +48,7 @@ interface ActivityModel {
    * The key is the datetime that it happened
    */
   done: {
-    [key: string]: {
-      length: number;
-      comment: string;
-      datetime: number;
-    };
+    [key: string]: DoneType;
   };
   /**
    * All the task added to an activity

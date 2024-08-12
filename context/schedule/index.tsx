@@ -9,7 +9,7 @@ import Checklist from "./Checklist";
 import getChecklist from "./getChecklist";
 import { logError } from "@/services/database";
 import PageLoader from "@/components/PageLoader";
-import { AppState } from "react-native";
+import { AppState, Platform } from "react-native";
 import filterChecklist from "./filterChecklist";
 import generateSchedule from "./generateSchedule";
 import initialTime from "./initialTime";
@@ -66,6 +66,13 @@ export default function ScheduleProvider({
     });
     return () => subscription.remove();
   }, [activityList, activityList.length, refresh, user, userTime]);
+
+  useEffect(() => {
+    if (Platform.OS === "web") {
+      window.addEventListener("focus", refresh);
+      return () => window.removeEventListener("focus", refresh);
+    }
+  }, [refresh]);
 
   if (loading) return <PageLoader />;
   return (

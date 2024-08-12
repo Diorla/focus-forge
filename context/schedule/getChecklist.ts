@@ -5,6 +5,7 @@ import Checklist from "./Checklist";
 const minimumZero = (value: number): number => {
   return Math.max(0, value);
 };
+
 export default function getChecklist(
   activityList: ActivityModel[]
 ): Checklist[] {
@@ -13,8 +14,8 @@ export default function getChecklist(
     const { occurrenceType, occurrence } = activity;
     if (occurrenceType === "daily") {
       const { done } = activity;
-      const doneTimes = Object.keys(done).filter((date) =>
-        dayjs(date).isToday()
+      const doneTimes = Object.keys(done).filter((doneItem) =>
+        dayjs(done[doneItem].datetime).isToday()
       ).length;
       checklist.push({
         ...activity,
@@ -23,8 +24,8 @@ export default function getChecklist(
       });
     } else if (occurrenceType === "weekly") {
       const { done } = activity;
-      const doneTimes = Object.keys(done).filter((date) =>
-        dayjs().isSame(date, "week")
+      const doneTimes = Object.keys(done).filter((doneItem) =>
+        dayjs().isSame(done[doneItem].datetime, "week")
       ).length;
       checklist.push({
         ...activity,
@@ -33,8 +34,8 @@ export default function getChecklist(
       });
     } else if (occurrenceType === "monthly") {
       const { done } = activity;
-      const doneTimes = Object.keys(done).filter((date) =>
-        dayjs().isSame(date, "month")
+      const doneTimes = Object.keys(done).filter((doneItem) =>
+        dayjs().isSame(done[doneItem].datetime, "month")
       ).length;
       checklist.push({
         ...activity,
@@ -43,8 +44,8 @@ export default function getChecklist(
       });
     } else {
       const { done } = activity;
-      const doneTimes = Object.keys(done).filter((date) =>
-        dayjs().isSame(date, "year")
+      const doneTimes = Object.keys(done).filter((doneItem) =>
+        dayjs().isSame(done[doneItem].datetime, "year")
       ).length;
       checklist.push({
         ...activity,

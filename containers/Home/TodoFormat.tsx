@@ -1,12 +1,7 @@
 import { ThemedText } from "@/components/ThemedText";
 
 import { OccurrenceType } from "@/context/data/model/ActivityModel";
-
-export function occurrenceAbbrev(value: number, period: OccurrenceType) {
-  if (period === "daily") return `${value} per day`;
-  if (period === "weekly") return `${value} per week`;
-  return `${value} per month`;
-}
+import occurrenceAbbrev from "./occurrenceAbbrev";
 
 export default function TodoFormat({
   occurrence,

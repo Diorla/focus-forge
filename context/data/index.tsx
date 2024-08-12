@@ -4,6 +4,7 @@ import ActivityModel from "./model/ActivityModel";
 import useInterval from "@/hooks/useTimeInterval";
 import useUser from "../user/useUser";
 import watchActivityList from "@/services/database/watchActivityList";
+import fixActivity from "./fixActivity";
 
 export default function DataProvider({
   children,
@@ -22,7 +23,8 @@ export default function DataProvider({
     if (!user.id) return;
 
     watchActivityList(user.id, (list) => {
-      setActivityList(list);
+      const updatedList = list.map(fixActivity);
+      setActivityList(updatedList);
     });
   }, [user.id]);
 

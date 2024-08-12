@@ -4,7 +4,6 @@ import getDoneThisWeek from "./getDoneThisWeek";
 import getTodayQuota from "./getTodayQuota";
 import getTodayTime from "./getTodayTime";
 import ActivityModel from "../../data/model/ActivityModel";
-import dayjs from "dayjs";
 
 type ScheduleProps = {
   activities: ActivityModel[];
@@ -35,7 +34,7 @@ export default function getSchedule({
     .forEach((item) => {
       const doneList = Object.keys(item.done).map((key) => {
         return {
-          datetime: dayjs(key).valueOf(),
+          datetime: item.done[key].datetime,
           length: item.done[key].length,
           comment: item.done[key].comment,
         };
