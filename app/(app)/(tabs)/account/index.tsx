@@ -31,21 +31,21 @@ export default function AccountScreen() {
               title="Change password"
               icon="keypad"
             />
-            <SettingsItem
+            {/* <SettingsItem
               path="subscription"
               title="Subscription"
               icon="star"
-            />
+            /> */}
           </>
         )}
-        <SettingsItem path="stat" title="Stat" icon="stats-chart" />
+        {/* <SettingsItem path="stat" title="Stat" icon="stats-chart" /> */}
         <SettingsItem path="help" title="Help" icon="help" />
-        <SettingsItem
+        {/* <SettingsItem
           path="history"
           title="History"
           icon="history"
           iconType="material"
-        />
+        /> */}
         <SettingsItem path="settings" title="Settings" icon="settings" />
         {isLoggedIn ? (
           <>
