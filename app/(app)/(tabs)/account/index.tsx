@@ -5,6 +5,7 @@ import useUser from "@/context/user/useUser";
 import Confirm from "@/components/Confirm";
 import signOut from "@/services/auth/signOut";
 import removeUserCred from "@/services/database/removeUserCred";
+import * as WebBrowser from "expo-web-browser";
 import { Icon, ListItem } from "@rneui/themed";
 
 /**
@@ -20,12 +21,25 @@ export default function AccountScreen() {
   const isLoggedIn = user.id !== "user";
   const { background } = theme;
 
+  const _handlePressButtonAsync = async () => {
+    let result = await WebBrowser.openBrowserAsync(
+      "https://buymeacoffee.com/diorla"
+    );
+    // setResult(result);
+    console.log("result", result);
+  };
+
   return (
     <ParallaxScrollView name="person">
       <ThemedView style={{ margin: 8, backgroundColor: background }}>
         {isLoggedIn && (
           <>
-            <SettingsItem path="profile" title="Profile" icon="person-circle" />
+            <SettingsItem
+              path="profile"
+              title="Profile"
+              icon="user"
+              iconType="feather"
+            />
             <SettingsItem
               path="password"
               title="Change password"
@@ -46,7 +60,18 @@ export default function AccountScreen() {
           icon="history"
           iconType="material"
         /> */}
-        <SettingsItem path="settings" title="Settings" icon="settings" />
+        <SettingsItem
+          path="settings"
+          title="Settings"
+          icon="settings"
+          iconType="feather"
+        />
+        <ListItem onPress={_handlePressButtonAsync}>
+          <Icon name="coffee" type="feather" />
+          <ListItem.Content>
+            <ListItem.Title>Buy me a coffee</ListItem.Title>
+          </ListItem.Content>
+        </ListItem>
         {isLoggedIn ? (
           <>
             <Confirm
@@ -55,7 +80,7 @@ export default function AccountScreen() {
               acceptFn={() => removeUserCred().then(() => signOut())}
             >
               <ListItem>
-                <Icon name="log-out" type="ionicon" />
+                <Icon name="log-out" type="feather" />
                 <ListItem.Content>
                   <ListItem.Title>Log out</ListItem.Title>
                 </ListItem.Content>
@@ -63,7 +88,12 @@ export default function AccountScreen() {
             </Confirm>
           </>
         ) : (
-          <SettingsItem path="form" title="Login" icon="log-in" />
+          <SettingsItem
+            path="form"
+            title="Login"
+            icon="log-in"
+            iconType="feather"
+          />
         )}
       </ThemedView>
     </ParallaxScrollView>
