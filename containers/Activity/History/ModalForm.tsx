@@ -7,6 +7,7 @@ import ThemedModal from "@/components/ThemedModal";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import uuid from "react-native-uuid";
 import Form from "./Form";
+import { ThemedText } from "@/components/ThemedText";
 
 export default function ModalForm({
   activity,
@@ -39,6 +40,12 @@ export default function ModalForm({
   return (
     <ThemedModal visible={visible}>
       <ThemedView style={{ justifyContent: "center", flex: 1 }}>
+        <ThemedText
+          type="title"
+          style={{ textAlign: "center", marginBottom: 10 }}
+        >
+          {activity.name}
+        </ThemedText>
         <Form
           doneItem={doneItem}
           isOccurrence={isOccurrence}

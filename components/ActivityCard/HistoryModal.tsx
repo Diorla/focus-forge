@@ -9,6 +9,7 @@ import updateActivity from "@/services/database/updateActivity";
 import { ThemedView } from "@/components/ThemedView";
 import ThemedModal from "@/components/ThemedModal";
 import ActivityModel from "@/context/data/model/ActivityModel";
+import { ThemedText } from "../ThemedText";
 
 export default function HistoryModal({
   activity,
@@ -35,6 +36,12 @@ export default function HistoryModal({
   return (
     <ThemedModal visible={visible}>
       <ThemedView style={{ justifyContent: "center", flex: 1 }}>
+        <ThemedText
+          type="title"
+          style={{ textAlign: "center", marginBottom: 10 }}
+        >
+          {activity.name}
+        </ThemedText>
         <Input
           label="Note"
           value={newTime.comment}
