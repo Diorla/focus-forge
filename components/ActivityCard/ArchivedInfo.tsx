@@ -12,7 +12,7 @@ export default function ArchivedInfo({ item }: { item: ActivityModel }) {
         marginVertical: 10,
       }}
     >
-      <ThemedText>Archived: {format(archived, "date")}</ThemedText>
+      <ThemedText>{format(archived, "date")}</ThemedText>
     </ThemedView>
   );
 }
