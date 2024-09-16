@@ -22,12 +22,13 @@ export default function Countdown() {
   const { schedule } = useSchedule();
   const { user } = useUser();
 
+  const taskList = schedule.filter((item) => !item.archived);
   const toast = useToast();
   useEffect(() => {
-    if (schedule.length) setCurrentTaskId(schedule[0].id);
-  }, [schedule]);
+    if (taskList.length) setCurrentTaskId(taskList[0].id);
+  }, [taskList]);
 
-  const currentTask = schedule.find((task) => task.id === currentTaskId);
+  const currentTask = taskList.find((task) => task.id === currentTaskId);
 
   const endTimer = () => {
     if (!currentTask) return;
@@ -76,7 +77,7 @@ export default function Countdown() {
             label="Select activity"
             value={currentTaskId}
             onValueChange={(value) => setCurrentTaskId(value)}
-            list={schedule.map((item) => {
+            list={taskList.map((item) => {
               return {
                 label: item.name,
                 value: item.id,
