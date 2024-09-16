@@ -31,7 +31,7 @@ export default function ActivityCard({ item, type }: CardProps) {
         containerStyle={{
           borderRadius: 8,
           backgroundColor: theme.background,
-          minWidth: 300,
+          minWidth: 240,
           ...borderStyle,
         }}
         wrapperStyle={{
