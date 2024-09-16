@@ -52,9 +52,9 @@ export default function AccountScreen() {
             /> */}
           </>
         )}
-        {/* <SettingsItem path="stat" title="Stat" icon="stats-chart" /> */}
+        {/* <SettingsItem path="stat" title="Stat" icon="stats-chart" />
         <SettingsItem path="help" title="Help" icon="help" />
-        {/* <SettingsItem
+        <SettingsItem
           path="history"
           title="History"
           icon="history"
