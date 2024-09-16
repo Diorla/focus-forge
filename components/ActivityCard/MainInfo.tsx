@@ -27,7 +27,7 @@ export default function MainInfo({
       <TimeFormat value={generateCardTime(type, schedule)} />
       <Divider
         color={theme.grey5}
-        style={{ width: "50%", marginVertical: 4 }}
+        style={{ width: "50%", marginVertical: 2 }}
       />
       <CardInfo
         type={type}
