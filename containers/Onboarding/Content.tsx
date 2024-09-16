@@ -14,6 +14,7 @@ export default function Content({
   index,
   source,
   title,
+  description,
 }: {
   prevClick: () => void;
   nextClick: () => void;
@@ -22,6 +23,7 @@ export default function Content({
   index: number;
   source: ImageSourcePropType | undefined;
   title: string;
+  description: string;
 }) {
   const { theme } = useUser();
   const prevDisabled = index === 0;
@@ -36,6 +38,9 @@ export default function Content({
         alignItems: "center",
       }}
     >
+      <ThemedText color={theme.background} type="title">
+        {title}
+      </ThemedText>
       <ThemedView
         style={{ alignItems: "center", backgroundColor: "transparent" }}
       >
@@ -44,13 +49,12 @@ export default function Content({
           style={{
             height: 200,
             width: 200,
-            borderRadius: 100,
           }}
         />
       </ThemedView>
       <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
-        <ThemedText color={theme.background} type="title">
-          {title}
+        <ThemedText color={theme.background} type="defaultSemiBold">
+          {description}
         </ThemedText>
         <ThemedView
           style={{

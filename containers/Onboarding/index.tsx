@@ -34,8 +34,9 @@ export default function Onboarding({
           }}
           setIndex={setIndex}
           index={index}
-          source={require("../../assets/images/puzzle.jpg")}
-          title="Break your task into chunks to reduce their difficulty"
+          source={require("../../assets/images/puzzle.png")}
+          title="Chunking"
+          description="Break your task into chunks to reduce their difficulty and make it attainable"
         />
       </ThemedView>
     );
@@ -59,8 +60,9 @@ export default function Onboarding({
           }}
           setIndex={setIndex}
           index={index}
-          source={require("../../assets/images/hourglass.jpg")}
-          title="Manage your time more effectively to get the best out of your day"
+          source={require("../../assets/images/hourglass.png")}
+          title="Timing"
+          description="Manage your time more effectively to get the best out of your day"
         />
       </ThemedView>
     );
@@ -84,8 +86,9 @@ export default function Onboarding({
         }}
         setIndex={setIndex}
         index={index}
-        source={require("../../assets/images/deadline.jpg")}
-        title="Avoid distractions, achieve your goals and beat deadlines"
+        source={require("../../assets/images/deadline.png")}
+        title="Achievable goals"
+        description="Define specific, measurable and realistic goal for clear outcome"
       />
     </ThemedView>
   );
