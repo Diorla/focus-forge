@@ -31,7 +31,6 @@ export default function DailyQuotaForm({
           backgroundColor: "transparent",
         }}
       >
-        <ThemedView style={{ height: 70, backgroundColor: "transparent" }} />
         <ThemedView>
           <ThemedView style={{ padding: 8, backgroundColor: "transparent" }}>
             <ThemedText type="defaultSemiBold">
@@ -51,13 +50,13 @@ export default function DailyQuotaForm({
                   key={index}
                   value={quota.dailyQuota[index]}
                   label={day}
-                  onChange={() => {
+                  onChange={(value) => {
                     setQuota({
                       ...quota,
                       dailyQuota: insertArray(
                         quota.dailyQuota,
                         index,
-                        quota.dailyQuota[index]
+                        value
                       ) as DailyQuota,
                     });
                   }}

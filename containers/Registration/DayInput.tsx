@@ -7,7 +7,7 @@ export function DayInput({
   label,
 }: {
   value: number;
-  onChange: () => void;
+  onChange: (value: number) => void;
   label: string;
 }) {
   const { theme } = useUser();

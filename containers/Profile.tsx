@@ -6,6 +6,7 @@ import { useToast } from "react-native-toast-notifications";
 import DailyQuotaForm from "./Registration/DailyQuotaForm";
 import QuotaFormState from "./Registration/QuotaFormState";
 import WeeklyQuotaForm from "./Registration/WeeklyQuotaForm";
+import KeyboardWrapper from "@/components/KeyboardWrapper";
 
 export function Profile() {
   const { user } = useUser();
@@ -38,7 +39,13 @@ export function Profile() {
 
   if (!quota.useWeeklyQuota)
     return (
-      <DailyQuotaForm quota={quota} setQuota={setQuota} saveQuota={saveQuota} />
+      <KeyboardWrapper>
+        <DailyQuotaForm
+          quota={quota}
+          setQuota={setQuota}
+          saveQuota={saveQuota}
+        />
+      </KeyboardWrapper>
     );
 
   return (
