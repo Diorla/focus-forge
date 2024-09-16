@@ -13,6 +13,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedButton } from "@/components/ThemedButton";
 import DarkTheme from "@/constants/DarkTheme";
 import DefaultTheme from "@/constants/DefaultTheme";
+import useTitle from "@/hooks/useTitle";
 
 const CustomFallback = (props: {
   error: Error;
@@ -37,6 +38,7 @@ const CustomFallback = (props: {
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  useTitle();
 
   return (
     <UserProvider>
