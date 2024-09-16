@@ -3,12 +3,10 @@ import useDataQuery from "@/context/data/useDataQuery";
 import { useEffect, useState } from "react";
 import ActivityModel from "@/context/data/model/ActivityModel";
 import FilterModal from "./FilterModal";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Input } from "@rneui/base";
 import Fuse from "fuse.js";
-import { ThemedText } from "@/components/ThemedText";
 import useUser from "@/context/user/useUser";
 import ActivityCard from "@/components/ActivityCard";
+import ThemedInput from "@/components/ThemedInput";
 
 export default function BrowserScreen() {
   const { theme } = useUser();
@@ -58,28 +56,28 @@ export default function BrowserScreen() {
           }}
         >
           <ThemedView style={{ flex: 1, alignItems: "flex-start" }}>
-            <Input
+            <ThemedInput
               placeholder="Search"
               style={{ marginTop: 4, marginHorizontal: 4 }}
               onChangeText={setSearch}
             />
           </ThemedView>
-          <Ionicons
+          {/* <Ionicons
             name="filter-circle"
             size={36}
             color={theme.text}
             style={{ marginHorizontal: 8 }}
             onPress={() => setFilterVisible(true)}
-          />
+          /> */}
         </ThemedView>
-        <ThemedView>
+        {/* <ThemedView>
           <ThemedText
             type="link"
             style={{ textTransform: "capitalize", textAlign: "center" }}
           >
             {sort}, {filters || "No filters"}
           </ThemedText>
-        </ThemedView>
+        </ThemedView> */}
       </ThemedView>
       {currentList.sort(sortFn).map((item) => (
         <ActivityCard item={item} />
