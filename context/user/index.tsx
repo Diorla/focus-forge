@@ -24,7 +24,7 @@ Notifications.setNotificationHandler({
 
 const auth = getAuth(app);
 
-const maxWidth = 720;
+const maxWidth = 960;
 export default function UserProvider({
   children,
 }: {
