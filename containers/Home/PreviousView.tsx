@@ -15,7 +15,7 @@ export default function PreviousView() {
         <SectionHeader title="Past activities" />
         <ScrollView horizontal style={{ paddingBottom: 16 }}>
           {previous
-            .sort((prev, next) => prev.lastDone - next.lastDone)
+            .sort((prev, next) => next.lastDone - prev.lastDone)
             .map((item) =>
               item.isOccurrence ? (
                 <ActivityCard key={item.id} item={item} type="checked" />

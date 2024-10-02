@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import ActivityModel from "../data/model/ActivityModel";
 import Checklist from "./Checklist";
+import { getLastDone } from "./getLastDone";
 
 const minimumZero = (value: number): number => {
   return Math.max(0, value);
@@ -20,6 +21,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        lastDone: getLastDone(Object.values(done).map((item) => item.datetime)),
         doneTimes,
       });
     } else if (occurrenceType === "weekly") {
@@ -30,6 +32,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        lastDone: getLastDone(Object.values(done).map((item) => item.datetime)),
         doneTimes,
       });
     } else if (occurrenceType === "monthly") {
@@ -40,6 +43,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        lastDone: getLastDone(Object.values(done).map((item) => item.datetime)),
         doneTimes,
       });
     } else {
@@ -50,6 +54,7 @@ export default function getChecklist(
       checklist.push({
         ...activity,
         remaining: minimumZero(occurrence - doneTimes),
+        lastDone: getLastDone(Object.values(done).map((item) => item.datetime)),
         doneTimes,
       });
     }
