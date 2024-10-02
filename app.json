@@ -3,13 +3,17 @@
     "name": "Focus Forge",
     "description": "A simple app to help you focus on your work and prevent procrastination.",
     "slug": "focus-forge",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "orientation": "portrait",
     "privacy": "public",
     "icon": "./assets/images/icon.png",
     "scheme": "focus-forge",
     "userInterfaceStyle": "automatic",
-    "platforms": ["android", "ios", "web"],
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
     "githubUrl": "https://github.com/Diorla/focus-forge",
     "primaryColor": "#6a13e3",
     "notification": {
@@ -27,7 +31,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.diorla.focusforge",
-      "buildNumber": "16",
+      "buildNumber": "17",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -38,7 +42,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.diorla.focusforge",
-      "versionCode": 18
+      "versionCode": 19
     },
     "web": {
       "bundler": "metro",
