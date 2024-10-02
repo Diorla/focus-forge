@@ -24,5 +24,6 @@ module.exports = {
       "error",
       { max: 100, skipBlankLines: true, skipComments: true },
     ],
+    "no-console": "warn",
   },
 };
