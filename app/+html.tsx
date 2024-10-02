@@ -50,4 +50,30 @@ body {
 * {
   outline: none;
 }
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #efe5fc;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  background-color: #efe5fc;
+}
+
+::-webkit-scrollbar-thumb {
+  background-image: -webkit-gradient(linear,
+      left bottom,
+      left top,
+      color-stop(0.4, #0000c9),
+      color-stop(0.7, #5e0cdd),
+      color-stop(0.8, #9c68ed));
+}
+
+textarea::-webkit-scrollbar {
+  width: 1px;
+}
+div::-webkit-scrollbar {
+  height: 4px;
+}
 `;
