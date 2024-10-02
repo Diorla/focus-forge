@@ -44,7 +44,7 @@ body {
 }
 @media (prefers-color-scheme: dark) {
   body {
-  background-color: ${Colors.dark.grey5};
+  background-color: ${Colors.dark.grey0};
   }
 }
 * {
@@ -53,21 +53,20 @@ body {
 
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #efe5fc;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar {
   width: 4px;
-  background-color: #efe5fc;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
   background-image: -webkit-gradient(linear,
       left bottom,
       left top,
-      color-stop(0.4, #0000c9),
-      color-stop(0.7, #5e0cdd),
-      color-stop(0.8, #9c68ed));
+      color-stop(0.4, ${Colors.light.primary}),
+      color-stop(0.8,  ${Colors.dark.primary}));
 }
 
 textarea::-webkit-scrollbar {

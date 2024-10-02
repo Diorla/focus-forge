@@ -28,9 +28,9 @@ export const Colors: { light: ColorType; dark: ColorType } = {
   light: {
     text: "#11181C",
     background: "#ffffff",
-    primary: "#6a13e3",
+    primary: "#b21d51",
     secondary: "#009497",
-    accent: "#b21d51",
+    accent: "#6a13e3",
     grey0: "#393e42",
     grey1: "#43484d",
     grey2: "#5e6977",
@@ -45,9 +45,9 @@ export const Colors: { light: ColorType; dark: ColorType } = {
   dark: {
     text: "#ffffff",
     background: "#11181C",
-    primary: "#c69efa",
+    primary: "#ec8ca9",
     secondary: "#80dddb",
-    accent: "#ec8ca9",
+    accent: "#c69efa",
     grey0: "#e1e8ee",
     grey1: "#bdc6cf",
     grey2: "#86939e",
