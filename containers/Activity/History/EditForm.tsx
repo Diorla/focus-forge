@@ -8,6 +8,8 @@ import updateActivity from "@/services/database/updateActivity";
 import useDataQuery from "@/context/data/useDataQuery";
 import Form from "./Form";
 import useUser from "@/context/user/useUser";
+import Confirm from "@/components/Confirm";
+import { ThemedText } from "@/components/ThemedText";
 
 export default function EditForm({
   isOccurrence,
@@ -76,12 +78,19 @@ export default function EditForm({
         />
       </ThemedView>
       <ThemedView style={{ alignItems: "center" }}>
-        <ThemedButton
-          onPress={deleteDone}
-          style={{ marginHorizontal: 8 }}
+        <Confirm
           title="Delete"
-          color={theme.error}
-        />
+          message="You can't undo this action. Perhaps you want to delete it."
+          acceptFn={deleteDone}
+          acceptTitle="Delete"
+        >
+          <ThemedText
+            style={{ marginHorizontal: 8, fontWeight: "bold" }}
+            color={theme.error}
+          >
+            Delete
+          </ThemedText>
+        </Confirm>
       </ThemedView>
     </ThemedView>
   );

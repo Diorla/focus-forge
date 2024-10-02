@@ -70,7 +70,7 @@ export default function Menu({
             />
             <Confirm
               title="Delete"
-              message="You can't undo this action. Perhaps you want to archive it."
+              message="You can't undo this action. Perhaps you want to delete it."
               acceptFn={() => deleteActivity(activity.id)}
               acceptTitle="Delete"
             >
