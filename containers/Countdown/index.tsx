@@ -25,8 +25,8 @@ export default function Countdown() {
   const taskList = schedule.filter((item) => !item.archived);
   const toast = useToast();
   useEffect(() => {
-    if (taskList.length) setCurrentTaskId(taskList[0].id);
-  }, [taskList]);
+    if (taskList.length && !currentTaskId) setCurrentTaskId(taskList[0].id);
+  }, [currentTaskId, taskList]);
 
   const currentTask = taskList.find((task) => task.id === currentTaskId);
 
