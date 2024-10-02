@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 
-console.log("process.env.EXPO_PUBLIC_KEY", process.env.EXPO_PUBLIC_API_KEY);
 const firebaseConfig = {
   apiKey: process.env.EXPO_PUBLIC_API_KEY,
   authDomain: process.env.EXPO_PUBLIC_AUTH_DOMAIN,

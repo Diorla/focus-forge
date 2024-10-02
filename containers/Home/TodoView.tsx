@@ -18,17 +18,6 @@ export default function TodoView() {
 
   const todo = checklist.filter((item) => item.remaining);
 
-  console.log(
-    todo
-      .filter((item) => !item.archived)
-      .map((item) => {
-        return {
-          name: item.name,
-          start: item.occurrenceStart,
-        };
-      })
-  );
-
   return (
     <ThemedView style={{ marginVertical: 8, paddingVertical: 8 }}>
       <ThemedText type="title" style={{ paddingHorizontal: 4 }}>

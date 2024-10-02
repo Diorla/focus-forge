@@ -25,8 +25,7 @@ export default function AccountScreen() {
     let result = await WebBrowser.openBrowserAsync(
       "https://buymeacoffee.com/diorla"
     );
-    // setResult(result);
-    console.log("result", result);
+    return result;
   };
 
   return (
