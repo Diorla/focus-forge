@@ -18,7 +18,7 @@ export default function ChecklistModal({
   closeModal: () => void;
 }) {
   return (
-    <ThemedModal visible={visible} style={{ flex: 1 }}>
+    <ThemedModal visible={visible} style={{ flex: 1, padding: 8 }}>
       <ScrollView style={{ flex: 1, marginTop: 52 }}>
         <ThemedText
           type="title"
